@@ -1,4 +1,4 @@
-# Signal v0.3 — deck system (navy · ivory · orange)
+# Signal v0.4 — deck system (navy · ivory · orange)
 
 Satu sumber kebenaran untuk **deck, dokumen, web, dan app**.
 Dua bahasa digabung: disiplin deck pitch (satu ide per slide, display besar, angka mono) dan bahasa
@@ -11,9 +11,10 @@ tokens/
   component/   button · card · table · slide
 build/
   build.py     resolver alias + generator (css/tailwind/ts/json/office/docs)
-  deck.py      spec slide 1280x720 -> pptx
-  preview.py   spec yang sama -> HTML (lihat tanpa PowerPoint)
-  examples.py  cover + laporan contoh
+  deck.py      spec slide 1280x720 -> pptx (rect · text · chart · image)
+  preview.py   spec yang sama -> HTML (chart jadi SVG, foto file yang sama)
+  photos.py    placeholder foto (ganti PNG-nya, layout tidak bergeser)
+  examples.py  laporan contoh
 dist/          hasil generate, jangan diedit manual
 examples/      pitch-deck.pptx · sample-report.docx · preview.html
 ```
@@ -23,6 +24,7 @@ examples/      pitch-deck.pptx · sample-report.docx · preview.html
 ```bash
 python3 build/build.py          # generate dist/
 python3 build/build.py --check  # validasi alias + kontras WCAG (terang & gelap)
+python3 build/photos.py         # placeholder foto (sekali saja)
 python3 build/deck.py           # examples/pitch-deck.pptx
 python3 build/preview.py        # examples/preview.html
 ```
@@ -70,8 +72,25 @@ slide; pptx mengonversi 1px = 9525 EMU, jadi preview HTML dan file PowerPoint id
 5. **`dist/` tidak pernah diedit tangan.**
 6. **Kontras dijaga CI** — `build.py --check` memeriksa tema terang dan gelap.
 
+## Modul (v0.4)
+
+Diambil dari Style 1/2, tapi ditulis ulang dengan body 13–18px — bukan 6.4pt:
+
+- **KPI card** — angka mono 46px, label 13px, delta kecil; border atas oranye 2px.
+- **Chart** — bar berkategori dan line dua seri. Di pptx ini chart native (bisa diedit di
+  PowerPoint); di preview digambar SVG dari angka yang sama.
+- **Pricing** — dua panel: netral (ivory + hairline) dan penuh oranye dengan teks charcoal.
+- **Budget** — tiga baris label/angka/delta, dipisah hairline; baris terakhir pakai aksen.
+- **Contact** — 2 kolom label mono + value, garis tipis di atas.
+- **Photo slot** — dua rasio tetap: `photo-cover.png` (780×1080, panel kanan cover) dan
+  `photo-43.png` (1024×768). Foto asli menimpa file itu; koordinat slide tidak berubah.
+
+Foto **tidak pernah** menutupi teks: slot selalu di sisi kanan atau panel terpisah, teks tetap
+di kolom kiri. Placeholder sengaja diberi label `PHOTO` supaya kelihatan belum diisi.
+
 ## Versioning
 
+- `v0.4.0` — modul Style 1 (KPI card, chart bar/line, pricing, budget, contact) + slot foto. Deck 9 slide.
 - `v0.3.0` — palet navy/ivory/orange, Manrope, bahasa infografik Style 2. Deck 6 slide tanpa slot foto.
 - `v0.2.0` — Signal pitch: ink/bone/orange, Space Grotesk.
 - `v0.1.0` — Corporate Calm: navy/sand, Source Serif 4.
