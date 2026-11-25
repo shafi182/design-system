@@ -465,6 +465,89 @@ A.add("light", "Orbit, segmen, hub ganda, dan empat aksi", None, [
 ], A.FOOT, 11)
 
 
+# ------------------------------------------- 12 architecture + geo + nodes + cycle
+A.add("light", "Arsitektur saluran, peta per segmen, node bertema, siklus tata kelola", None, [
+    *box(0, 0, "channel_arch", "Saluran akuisisi di atas, merek di tengah, produk + chip strategi",
+         lambda x, y, w, h: S.channel_arch(
+             x, y, w, h,
+             ["Pemasaran langsung", "Aplikasi alat finansial", "Merchant di titik jual",
+              "Korporat via unit", "Relasi korporat"],
+             "Merek inti", [("Cek", "bangun"), ("Kartu", "beli"), ("Pinjaman", "investasi"),
+                            ("Tabungan", "kemitraan"), ("Investasi", "beli")],
+             ["Bangun", "Beli", "Investasi", "Kemitraan"], "light")),
+    *box(1, 0, "geo_columns", "Kolom angka di kiri, satu peta + butir per segmen",
+         lambda x, y, w, h: S.geo_columns(
+             x, y, w, h,
+             [("Ticker", "USB"), ("Berdiri", "1863"), ("Kap. pasar", "$82B"),
+              ("Cabang", "2.252"), ("ATM", "4.083"), ("Aset", "$567B")],
+             [("Regional", "Ritel dan komersial, satu wilayah",
+               ["Perbankan pribadi", "Usaha kecil", "Manajemen aset"]),
+              ("Nasional", "Korporat dan investasi, seluruh negeri",
+               ["Perbankan korporat", "Pasar modal", "Pembayaran"]),
+              ("Internasional", "Pembayaran dan jasa investasi",
+               ["Kliring", "Kustodi", "Valas"])], "light")),
+    *box(0, 1, "node_grid", "Angka utama + dua pita label berisi node bulat",
+         lambda x, y, w, h: S.node_grid(
+             x, y, w, h, ("$750M", "Pembiayaan berkelanjutan sampai 2030"),
+             ["Limbah dan material", "Pangan dan pertanian", "Jasa ekosistem",
+              "Pendidikan terjangkau", "Kesehatan terjangkau", "Energi bersih",
+              "Transportasi lestari", "Inklusi finansial", "Komunitas", "Air dan sanitasi"],
+             ["Pertumbuhan inklusif", "Transisi iklim"], "light")),
+    *box(1, 1, "cycle_checklist", "Siklus tiga langkah + daftar cek + chip risiko + angka",
+         lambda x, y, w, h: S.cycle_checklist(
+             x, y, w, h,
+             ["Budaya risiko", "Perbaikan berkelanjutan", "Pengawasan proses"],
+             ["Pengambil risiko di garis depan", "Fungsi kontrol independen",
+              "Mark-to-market dan uji tekanan", "Insentif risiko yang hati-hati"],
+             ["Kredit", "Pasar", "Operasional", "Likuiditas", "Modal", "Reputasi",
+              "Kepatuhan", "Iklim", "Model"],
+             [("+30%", "ekuitas biasa"), ("+70%", "aset likuid inti"),
+              ("-11 pp", "pinjaman tanpa jaminan")], "light")),
+], A.FOOT, 12)
+
+# ------------------------------------ 13 diamond + platform rows + stages + columns
+A.add("light", "Diamond segmen, baris platform, tahap vs contoh, tiga kolom progres", None, [
+    *box(0, 0, "diamond_columns", "Empat segmen di diamond, tiga kolom pendukung",
+         lambda x, y, w, h: S.diamond_columns(
+             x, y, w, h,
+             ["Konsumen dan kekayaan", "Perbankan investasi", "Manajemen aset",
+              "Pasar global"],
+             [("Akses modal", ["Klien ultra-high", "Klien institusi", "Neraca sendiri"]),
+              ("Sumber deal", ["Relasi korporat", "Kemitraan klien", "Jejak global"]),
+              ("Modal intelektual", ["Keahlian operasi", "Wawasan pasar", "Strategi keluar"])],
+             "light")),
+    *box(1, 0, "platform_rows", "Label baris + sel logo + chip metrik",
+         lambda x, y, w, h: S.platform_rows(
+             x, y, w, h,
+             [("Mencocokkan orang dengan pekerjaan", 3,
+               ["7.999 pencarian/menit", "364 juta anggota", "24 juta pengunjung"]),
+              ("Kerja sesuai permintaan", 3,
+               ["12,5 juta pengguna", "1 juta pengemudi", "25 ribu penyedia"]),
+              ("Alat kelola talenta", 3, ["", "", ""])], "light")),
+    *box(0, 1, "stages_compare", "Baris tahap + praktik terbaik vs contoh per negara",
+         lambda x, y, w, h: S.stages_compare(
+             x, y, w, h,
+             ["Angkutan jalan", "Pelabuhan domestik", "Depot",
+              "Perencanaan dan investasi"],
+             ["Akses 24/7 dengan batas jalur", "Investasi swasta menaikkan throughput",
+              "Jaringan rapat mengikuti jalan", "Kerangka investasi jangka panjang"],
+             ["AS: batas jalur, 24/7. Prancis: 44 ton",
+              "AS: swasta. Prancis: swasta, diatur negara",
+              "Prancis: rapat. AS: bergantung infrastruktur swasta",
+              "AS: dana federal. Prancis: kontrak negara"], "light")),
+    *box(1, 1, "three_col_progress", "Peluang / aksi / progres, ditutup band hasil",
+         lambda x, y, w, h: S.three_col_progress(
+             x, y, w, h, ["Peluang", "Aksi yang diambil", "Progres sejauh ini"],
+             [["Akuisisi klien", "Ekosistem digital dan pemasaran",
+               "Tingkat penangkapan +12 pp"],
+              ["Optimasi penjualan", "Model AI dan prioritas prospek",
+               "Efisiensi >3x"],
+              ["Otomasi pemenuhan", "Alur kerja otomatis",
+               "Waktu underwriting -50%"]],
+             "Target ROE 15% sepanjang siklus", "light")),
+], A.FOOT, 13)
+
+
 if __name__ == "__main__":
     out = ROOT / "examples" / f"atlas-{A.PALETTE}.pptx"
     A.render_pptx(out)

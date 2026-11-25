@@ -806,3 +806,255 @@ def orbit_ring(x, y, w, h, center, items, theme="light"):
                      cy + math.sin(ang) * rad * 1.10 - 1.5, 3, 3, "brand.primary", theme,
                      radius=1))
     return out
+
+
+# ------------------------------------- architectures, cycles, node grids, compare
+def channel_arch(x, y, w, h, channels, brand, products, legend, theme="light"):
+    """Acquisition channels on top, brand in the middle, product stack with strategy chips."""
+    out = []
+    n = len(channels)
+    gap = 8
+    cw = (w - gap * (n - 1)) / n
+    for i, c in enumerate(channels):
+        bx = x + i * (cw + gap)
+        out.append(r(bx, y, cw, 26, "surface.raised", theme, radius=3,
+                     stroke="border.subtle"))
+        out.append(t(bx + 5, y + 4, cw - 10, 18, c, "text.primary", theme, size=6.4,
+                     align="center", leading=1.15))
+        out.append(r(bx + cw / 2 - 0.5, y + 26, 1, 12, "border.strong", theme))
+    out.append(r(x + w * 0.20, y + 38, w * 0.60, 22, "brand.primary", theme, radius=3))
+    out.append(t(x + w * 0.20, y + 43, w * 0.60, 14, brand, "text.on-brand", theme,
+                 size=8.5, bold=True, align="center"))
+    py = y + 70
+    ph = h - (py - y) - 24
+    pw = (w - gap * (len(products) - 1)) / len(products)
+    for i, (name, strat) in enumerate(products):
+        bx = x + i * (pw + gap)
+        out.append(r(bx, py, pw, ph, "surface.raised", theme, radius=3,
+                     stroke="border.subtle"))
+        out.append(t(bx + 4, py + 8, pw - 8, 22, name, "text.primary", theme, size=7.2,
+                     bold=True, align="center", leading=1.15))
+        out.append(r(bx, py + ph - 16, pw, 16, SERIES[i % 4], theme, radius=2))
+        out.append(t(bx, py + ph - 13, pw, 12, strat, "text.on-brand", theme, size=6.2,
+                     bold=True, caps=True, align="center"))
+    ly = y + h - 14
+    lx = x
+    for i, lab in enumerate(legend):
+        out.append(r(lx, ly + 3, 7, 7, SERIES[i % 4], theme, radius=1))
+        out.append(t(lx + 11, ly, 70, 10, lab, "text.muted", theme, size=6.4))
+        lx += 76
+    return out
+
+
+def geo_columns(x, y, w, h, stats, regions, theme="light"):
+    """Stat column on the left, then one map block + bullets per region."""
+    out = []
+    sw = w * 0.24
+    rowh = (h - 8) / len(stats)
+    for i, (lab, val) in enumerate(stats):
+        yy = y + i * rowh
+        out.append(t(x, yy, sw - 10, 10, lab, "text.muted", theme, size=6.4, caps=True,
+                     spacing=0.08))
+        out.append(t(x, yy + 10, sw - 10, 14, val, "text.primary", theme, size=9,
+                     bold=True))
+        out.append(r(x, yy + rowh - 3, sw - 10, 1, "border.subtle", theme))
+    cw = (w - sw - 16) / len(regions)
+    for k, (name, claim, items) in enumerate(regions):
+        bx = x + sw + 16 + k * cw
+        out.append(t(bx, y, cw - 10, 12, name, "brand.primary", theme, size=7.4, bold=True,
+                     caps=True, spacing=0.1))
+        out.append(t(bx, y + 14, cw - 10, 26, claim, "text.secondary", theme, size=6.8,
+                     leading=1.2))
+        out.append(r(bx, y + 44, cw - 12, h * 0.38, "surface.band", theme, radius=3,
+                     stroke="border.subtle"))
+        out.append(t(bx + 6, y + 44 + h * 0.19 - 5, cw - 24, 10, "placeholder geo",
+                     "text.muted", theme, size=6, align="center"))
+        for j, it in enumerate(items):
+            yy = y + 48 + h * 0.38 + j * 13
+            out.append(r(bx, yy + 4, 4, 4, "brand.primary", theme, radius=1))
+            out.append(t(bx + 10, yy, cw - 20, 13, it, "text.secondary", theme, size=6.4,
+                         leading=1.15))
+    return out
+
+
+def node_grid(x, y, w, h, hero, items, bands, theme="light", per_row=5):
+    """Hero number, then two labelled bands of round nodes (the 10-theme form)."""
+    out = []
+    out.append(t(x, y, w * 0.5, 40, hero[0], "brand.primary", theme, size=26, bold=True))
+    out.append(t(x, y + 40, w * 0.5, 14, hero[1], "text.secondary", theme, size=7.4))
+    gy = y + 62
+    rows = [items[:per_row], items[per_row:per_row * 2]]
+    band_h = 14
+    for b, row in enumerate(rows):
+        by = gy + b * ((h - 62) / 2)
+        if b < len(bands):
+            out.append(t(x, by, w, band_h, bands[b], "text.muted", theme, size=6.4,
+                         caps=True, spacing=0.12))
+        cell = w / per_row
+        d = min(cell - 12, ((h - 62) / 2) - 26)
+        for i, name in enumerate(row):
+            cx = x + i * cell + cell / 2
+            cy = by + 20 + d / 2
+            out.append(r(cx - d / 2, cy - d / 2, d, d, "surface.raised", theme,
+                         radius=int(d / 2), stroke="brand.primary"))
+            out.append(t(cx - d / 2 + 5, cy - 11, d - 10, 22, name, "text.primary", theme,
+                         size=6.2, align="center", leading=1.15))
+    return out
+
+
+def cycle_checklist(x, y, w, h, cycle, checks, risks, stats, theme="light"):
+    """Three-step loop on the left, checklist under it, risk chips right, stats at foot."""
+    out = []
+    lw = w * 0.44
+    cx, cy = x + lw / 2, y + h * 0.26
+    rad = min(lw, h * 0.5) * 0.14
+    out.append(r(cx - rad * 2.6, cy - rad * 2.6, rad * 5.2, rad * 5.2, "surface.base",
+                 theme, radius=int(rad * 2.6), stroke="border.subtle"))
+    for i, name in enumerate(cycle[:3]):
+        ang = -math.pi / 2 + 2 * math.pi * i / 3
+        nx, ny = cx + math.cos(ang) * rad * 2.15, cy + math.sin(ang) * rad * 2.15
+        out.append(r(nx - rad, ny - rad, rad * 2, rad * 2, "brand.primary", theme,
+                     radius=int(rad)))
+        out.append(t(nx - rad, ny - 9, rad * 2, 18, str(i + 1), "text.on-brand", theme,
+                     size=10, bold=True, align="center"))
+        out.append(t(nx - rad * 1.8, ny + rad + 4, rad * 3.6, 20, name, "text.primary",
+                     theme, size=6.4, bold=True, align="center", leading=1.15))
+    out.append(t(cx - 30, cy - 5, 60, 10, "INTI", "text.muted", theme, size=6, caps=True,
+                 align="center"))
+    cy2 = y + h * 0.56
+    for i, c in enumerate(checks):
+        yy = cy2 + i * 14
+        out.append(r(x, yy + 4, 6, 6, "surface.base", theme, radius=1,
+                     stroke="brand.primary"))
+        out.append(t(x + 12, yy, lw - 14, 14, c, "text.secondary", theme, size=6.6,
+                     leading=1.15))
+    rx, rw = x + lw + 16, w - lw - 16
+    out.append(t(rx, y, rw, 10, "JENIS RISIKO", "text.muted", theme, size=6.4, caps=True,
+                 spacing=0.1))
+    cols = 3
+    cw = (rw - 6 * (cols - 1)) / cols
+    for i, rk in enumerate(risks):
+        bx = rx + (i % cols) * (cw + 6)
+        by = y + 16 + (i // cols) * 22
+        out.append(r(bx, by, cw, 18, "surface.raised", theme, radius=2,
+                     stroke="border.subtle"))
+        out.append(t(bx + 3, by + 4, cw - 6, 12, rk, "text.primary", theme, size=6.2,
+                     align="center"))
+    sy = y + h - 26
+    out.append(r(rx, sy, rw, 1, "border.strong", theme))
+    stw = rw / len(stats)
+    for i, (val, lab) in enumerate(stats):
+        bx = rx + i * stw
+        out.append(t(bx, sy + 4, stw - 8, 14, val, "brand.primary", theme, size=8.5,
+                     bold=True))
+        out.append(t(bx, sy + 17, stw - 8, 10, lab, "text.muted", theme, size=6,
+                     leading=1.1))
+    return out
+
+
+def diamond_columns(x, y, w, h, segments, columns, theme="light"):
+    """Four segments on a diamond, three supporting columns to the right."""
+    out = []
+    dw = w * 0.36
+    cx, cy = x + dw / 2, y + h / 2
+    bw, bh = dw * 0.46, 22
+    spots = [(0, -1), (-1, 0), (1, 0), (0, 1)]
+    for i, seg in enumerate(segments[:4]):
+        dx, dy = spots[i]
+        bx = cx + dx * (dw * 0.22) - bw / 2
+        by = cy + dy * (h * 0.30) - bh / 2
+        out.append(r(bx, by, bw, bh, "brand.primary" if i == 0 else "surface.raised",
+                     theme, radius=2, stroke="border.subtle"))
+        out.append(t(bx + 4, by + 5, bw - 8, 12, seg,
+                     "text.on-brand" if i == 0 else "text.primary", theme, size=6.2,
+                     bold=True, align="center", leading=1.1))
+    px, pw = x + dw + 12, w - dw - 12
+    cw = (pw - 10 * (len(columns) - 1)) / len(columns)
+    for k, (title, items) in enumerate(columns):
+        bx = px + k * (cw + 10)
+        out.append(t(bx, y, cw, 12, title, "brand.primary", theme, size=7, bold=True,
+                     caps=True, spacing=0.08))
+        out.append(r(bx, y + 16, cw, 1, "border.strong", theme))
+        for j, it in enumerate(items):
+            yy = y + 24 + j * ((h - 24) / len(items))
+            out.append(t(bx, yy, cw, 12, it, "text.secondary", theme, size=6.8,
+                         leading=1.2))
+            if j < len(items) - 1:
+                out.append(r(bx, yy + (h - 24) / len(items) - 4, cw, 1, "border.subtle",
+                             theme))
+    return out
+
+
+def platform_rows(x, y, w, h, rows, theme="light"):
+    """Row label on the left, logo placeholders + metric chips on the right."""
+    out = []
+    lw = w * 0.30
+    for i, (name, logos, metrics) in enumerate(rows):
+        yy = y + i * (h / len(rows))
+        rh = h / len(rows)
+        if i:
+            out.append(r(x, yy, w, 1, "border.subtle", theme))
+        out.append(t(x, yy + 8, lw - 12, rh - 12, name, "text.primary", theme, size=7.4,
+                     bold=True, leading=1.2))
+        cell = (w - lw) / logos
+        for j in range(logos):
+            bx = x + lw + j * cell
+            out.append(r(bx + 4, yy + 8, cell - 14, 26, "surface.raised", theme,
+                         radius=2, stroke="border.subtle"))
+            out.append(t(bx + 6, yy + 17, cell - 18, 10, "LOGO", "text.muted", theme,
+                         size=5.8, caps=True, align="center", spacing=0.1))
+            if j < len(metrics) and metrics[j]:
+                out.append(t(bx + 4, yy + 38, cell - 12, 12, metrics[j], "brand.primary",
+                             theme, size=7, bold=True))
+    return out
+
+
+def stages_compare(x, y, w, h, stages, practice, examples, theme="light", split=0.42):
+    """Stage rows on the left, best practice vs example columns to the right."""
+    out = []
+    lw = w * 0.26
+    ew = (w - lw) / 2
+    out.append(t(x, y, lw, 10, "TAHAP", "text.muted", theme, size=6.2, caps=True,
+                 spacing=0.1))
+    for k, hd in enumerate(("PRAKTIK TERBAIK", "CONTOH: AS / PRANCIS")):
+        out.append(t(x + lw + k * ew, y, ew - 10, 10, hd, "brand.primary", theme,
+                     size=6.2, bold=True, caps=True, spacing=0.1))
+    out.append(r(x, y + 14, w, 1, "border.strong", theme))
+    ry = y + 20
+    rowh = (h - (ry - y)) / len(stages)
+    for i, st in enumerate(stages):
+        yy = ry + i * rowh
+        if i:
+            out.append(r(x, yy, w, 1, "border.subtle", theme))
+        out.append(t(x, yy + 4, lw - 10, rowh - 8, st, "text.primary", theme, size=7.2,
+                     bold=True, leading=1.2))
+        out.append(t(x + lw, yy + 4, ew - 10, rowh - 8, practice[i], "text.secondary",
+                     theme, size=6.6, leading=1.25))
+        out.append(t(x + lw + ew, yy + 4, ew - 10, rowh - 8, examples[i], "text.secondary",
+                     theme, size=6.6, leading=1.25))
+    return out
+
+
+def three_col_progress(x, y, w, h, headers, rows, band, theme="light", band_h=26):
+    """Three columns of paired cells, then a full-width closing band."""
+    out = []
+    cw = w / len(headers)
+    for i, hd in enumerate(headers):
+        out.append(t(x + i * cw, y, cw - 10, 10, hd, "brand.primary", theme, size=6.6,
+                     bold=True, caps=True, spacing=0.1))
+    out.append(r(x, y + 14, w, 1, "border.strong", theme))
+    ry = y + 20
+    rh = (h - (ry - y) - band_h - 10) / len(rows)
+    for i, row in enumerate(rows):
+        yy = ry + i * rh
+        if i:
+            out.append(r(x, yy, w, 1, "border.subtle", theme))
+        for j, cell in enumerate(row):
+            out.append(t(x + j * cw + 2, yy + 4, cw - 14, rh - 8, cell,
+                         "text.primary" if j == 0 else "text.secondary", theme,
+                         size=7.2 if j == 0 else 6.8, bold=(j == 0), leading=1.25))
+    by = y + h - band_h
+    out.append(r(x, by, w, band_h, "status.danger", theme, radius=3))
+    out.append(t(x + 12, by + band_h / 2 - 6, w - 24, 12, band, "text.on-brand", theme,
+                 size=8, bold=True))
+    return out
