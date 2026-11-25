@@ -17,6 +17,11 @@
     "inverse": {
       "$type": "color",
       "$value": "{color.navy.900}"
+    },
+    "band": {
+      "$type": "color",
+      "$value": "{color.sand.500}",
+      "$description": "Band callout: sand, tetap seperti sebelumnya."
     }
   },
   "text": {

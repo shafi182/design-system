@@ -7,15 +7,20 @@
     },
     "raised": {
       "$type": "color",
-      "$value": "{color.cream.500}"
+      "$value": "{color.ivory.100}"
     },
     "sunken": {
       "$type": "color",
-      "$value": "{color.ivory.300}"
+      "$value": "{color.olive.100}"
     },
     "inverse": {
       "$type": "color",
       "$value": "{color.navy.900}"
+    },
+    "band": {
+      "$type": "color",
+      "$value": "{color.olive.100}",
+      "$description": "Band callout: olive tint, satu keluarga dengan palet."
     }
   },
   "text": {
@@ -32,7 +37,7 @@
     "muted": {
       "$type": "color",
       "$value": "{color.sage.600}",
-      "$description": "4.6:1 \u2014 batas bawah untuk teks kecil."
+      "$description": "Batas bawah untuk teks kecil."
     },
     "inverse": {
       "$type": "color",
@@ -40,13 +45,13 @@
     },
     "link": {
       "$type": "color",
-      "$value": "{color.orange.800}",
-      "$description": "4.8:1 di ivory. orange.700 hanya 3.64:1 \u2014 gagal."
+      "$value": "{color.teal.700}",
+      "$description": "6.69:1 \u2014 satu-satunya hue selain navy yang aman untuk tautan."
     },
     "on-brand": {
       "$type": "color",
-      "$value": "{color.charcoal.900}",
-      "$description": "Charcoal di atas oranye 5.65:1. Putih hanya 3.13:1 \u2014 gagal."
+      "$value": "{color.ivory.500}",
+      "$description": "Ivory di atas teal 6.69:1."
     }
   },
   "border": {
@@ -64,35 +69,36 @@
     },
     "focus": {
       "$type": "color",
-      "$value": "{color.orange.500}"
+      "$value": "{color.sage.500}"
     }
   },
   "brand": {
     "primary": {
       "$type": "color",
-      "$value": "{color.orange.500}"
+      "$value": "{color.teal.700}",
+      "$description": "Aksen tunggal: teal. Tidak ada oranye di palet ini."
     },
     "hover": {
       "$type": "color",
-      "$value": "{color.orange.600}"
+      "$value": "{color.teal.600}"
     },
     "active": {
       "$type": "color",
-      "$value": "{color.orange.700}"
+      "$value": "{color.teal.900}"
     },
     "subtle": {
       "$type": "color",
-      "$value": "{color.orange.100}"
+      "$value": "{color.sage.100}"
     },
     "calm": {
       "$type": "color",
-      "$value": "{color.teal.700}",
-      "$description": "Aksen kedua: teal. Untuk garis dan label, bukan tombol."
+      "$value": "{color.olive.700}",
+      "$description": "Aksen kedua untuk chart: olive, beda value dari teal."
     },
     "accent-text": {
       "$type": "color",
-      "$value": "{color.orange.800}",
-      "$description": "Aksen sebagai teks kecil. orange.500 gagal 4.5:1."
+      "$value": "{color.teal.700}",
+      "$description": "Teks aksen kecil: 6.69:1 di ivory."
     }
   },
   "status": {

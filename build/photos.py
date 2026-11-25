@@ -20,7 +20,7 @@ OLIVE = (182, 185, 165)
 WARM = {"ground": (34, 34, 34), "band": (245, 231, 198), "blade": (255, 109, 31),
         "rule": (245, 231, 198), "ink": (250, 243, 225)}
 COOL = {"ground": (26, 52, 62), "band": (36, 84, 90), "blade": OLIVE,
-        "rule": (255, 109, 31), "ink": (233, 229, 217)}
+        "rule": (143, 173, 169), "ink": (233, 229, 217)}   # sage rule: professional has no orange
 
 
 def _font(size: int):

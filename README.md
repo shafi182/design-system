@@ -1,4 +1,4 @@
-# Signal v0.6 — deck system, dua palet
+# Signal v0.7 — deck system, dua palet
 
 Satu sumber kebenaran untuk **deck, dokumen, web, dan app**.
 Dua bahasa digabung: disiplin deck pitch (satu ide per slide, display besar) dan bahasa
@@ -42,13 +42,18 @@ Di web/app, palet dipilih lewat atribut, bukan file berbeda:
 
 ## Dua palet
 
-**Professional · Sophisticated · Intellectual** — kanvas ivory, oranye sebagai aksen tunggal.
+**Professional · Sophisticated · Intellectual** — lima warna saja, tanpa oranye. Aksen = teal.
 
 - Deep Navy `#142C36` — kanvas gelap, teks utama di terang (11.55:1)
-- Deep Teal `#24545A` — teks sekunder (6.69:1), outline kartu netral
-- Muted Sage `#527C78` — garis, chart, blok; **bukan** teks kecil
-- Soft Olive `#B6B9A5` — teks sekunder di navy (7.26:1), hairline di terang
+- Deep Teal `#24545A` — aksen tunggal: brand, tautan, panel terpilih, teks sekunder (6.69:1)
+- Muted Sage `#527C78` — aksen di kanvas gelap (`brand.primary` = sage.300), fokus
+- Soft Olive `#B6B9A5` — hairline, teks sekunder di navy (7.26:1), seri kedua chart
 - Warm Ivory `#E9E5D9` — kanvas terang
+
+Tidak ada oranye di palet ini — `brand.primary` = teal.700 di terang, sage.300 di gelap.
+Chart dua seri pakai teal (aktual) versus olive (rencana), jadi bedanya value, bukan hue.
+Semantic profesional hanya mereferensikan lima warna itu; oranye tetap ada di `tokens/core`
+sebagai bahan palet adventurous, bukan bagian brand ini.
 
 **Adventurous · Creative · Approachable** — kanvas krem, charcoal sebagai tinta, oranye sebagai brand.
 
@@ -76,6 +81,9 @@ sungguhan (kode, ID), ubah satu token itu saja.
 
 `layout.slide-width 1280` · `slide-height 720` · `margin-x 72`. Koordinat di `build/deck.py`
 memakai piksel slide; pptx mengonversi 1px = 9525 EMU, jadi preview HTML dan PowerPoint identik.
+
+`surface.band` (band callout) adalah token semantik, bukan warna tetap: olive.100 di professional,
+sand.500 di adventurous. Ganti palet, band ikut.
 
 Radius: `sm` 6 · `md` 12 · `lg` 18 (kartu, panel, callout) · `xl` 28 (foto) · `pill` 999.
 Hairline dan rule tetap 0 — yang membulat hanya permukaan. Tanpa shadow: pemisahan dari beda
@@ -108,6 +116,7 @@ di kolom kiri. Placeholder diberi label `PHOTO` supaya kelihatan belum diisi.
 
 ## Versioning
 
+- `v0.7.0` — professional dikunci ke lima warna (tanpa oranye), band callout ikut palet lewat `surface.band`.
 - `v0.6.0` — dua palet (professional / adventurous), font tunggal Manrope, generator multi-palet.
 - `v0.5.0` — sudut membulat: kartu 18px, foto 28px, outline 1px untuk kartu netral.
 - `v0.4.0` — modul Style 1 (KPI card, chart, pricing, budget, contact) + slot foto. Deck 9 slide.

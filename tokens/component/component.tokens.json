@@ -104,7 +104,7 @@
     },
     "callout-bg": {
       "$type": "color",
-      "$value": "{color.sand.500}"
+      "$value": "{surface.band}"
     },
     "radius": {
       "$type": "dimension",

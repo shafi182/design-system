@@ -290,7 +290,7 @@ def run_contrast(tokens: dict[str, dict], theme: str = "light") -> list[str]:
 
 # ---------------------------------------------------------------- docs
 
-def emit_docs(light: dict, dark: dict, label: str = "navy / ivory / orange") -> str:
+def emit_docs(light: dict, dark: dict, label: str = "navy / teal / sage / olive / ivory") -> str:
     def swatches(tokens, prefix):
         rows = []
         for name in sorted(tokens):
@@ -363,7 +363,7 @@ td{{padding:var(--ds-space-4) 0;border-bottom:1px solid var(--ds-table-row-borde
 tbody tr:hover{{background:var(--ds-table-row-hover-bg)}}
 .meta{{font-family:var(--ds-type-family-mono);font-size:11px;color:var(--ds-text-secondary);margin-top:var(--ds-space-11)}}
 </style></head><body>
-<div class="kicker">Signal · v0.6.0 · {label}</div>
+<div class="kicker">Signal · v0.7.0 · {label}</div>
 <h1>Signal</h1>
 <p class="lead">Gabungan dua bahasa: disiplin deck pitch (satu ide per slide, display besar) dan bahasa infografik (garis hairline, label small-caps, modul bernomor). Nilai mentah hanya hidup di lapis core.</p>
 
@@ -480,7 +480,7 @@ def main() -> int:
         (DIST / "ts" / f"tokens{suffix}.ts").write_text(emit_ts(built[k]), encoding="utf-8")
         (DIST / "office" / f"theme-scheme{suffix}.xml").write_text(
             emit_office_theme(built[k]), encoding="utf-8")
-        label = "navy / ivory / orange" if palette == "professional" \
+        label = "navy / teal / sage / olive / ivory" if palette == "professional" \
                 else "cream / sand / orange / charcoal"
         (DIST / "docs" / f"index{suffix}.html").write_text(
             emit_docs(built[k], built.get(key(palette, "dark"), {}), label), encoding="utf-8")

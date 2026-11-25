@@ -2,8 +2,7 @@
   "surface": {
     "base": {
       "$type": "color",
-      "$value": "{color.navy.900}",
-      "$description": "Slide gelap: cover, traction, penutup."
+      "$value": "{color.navy.900}"
     },
     "raised": {
       "$type": "color",
@@ -16,6 +15,11 @@
     "inverse": {
       "$type": "color",
       "$value": "{color.ivory.500}"
+    },
+    "band": {
+      "$type": "color",
+      "$value": "{color.navy.800}",
+      "$description": "Band callout di kanvas navy."
     }
   },
   "text": {
@@ -25,13 +29,12 @@
     },
     "secondary": {
       "$type": "color",
-      "$value": "{color.olive.500}",
-      "$description": "7.26:1."
+      "$value": "{color.olive.300}"
     },
     "muted": {
       "$type": "color",
-      "$value": "{color.sage.300}",
-      "$description": "5.0:1."
+      "$value": "{color.olive.500}",
+      "$description": "7.26:1 \u2014 cukup untuk footer 10px."
     },
     "inverse": {
       "$type": "color",
@@ -39,11 +42,12 @@
     },
     "link": {
       "$type": "color",
-      "$value": "{color.orange.500}"
+      "$value": "{color.sage.300}"
     },
     "on-brand": {
       "$type": "color",
-      "$value": "{color.charcoal.900}"
+      "$value": "{color.navy.900}",
+      "$description": "Navy di atas sage terang."
     }
   },
   "border": {
@@ -57,70 +61,71 @@
     },
     "strong": {
       "$type": "color",
-      "$value": "{color.olive.500}"
+      "$value": "{color.sage.500}"
     },
     "focus": {
       "$type": "color",
-      "$value": "{color.orange.500}"
+      "$value": "{color.sage.300}"
     }
   },
   "brand": {
     "primary": {
       "$type": "color",
-      "$value": "{color.orange.500}"
+      "$value": "{color.sage.300}",
+      "$description": "Di navy, aksen harus terang: teal.700 tenggelam."
     },
     "hover": {
       "$type": "color",
-      "$value": "{color.orange.300}"
+      "$value": "{color.sage.500}"
     },
     "active": {
       "$type": "color",
-      "$value": "{color.orange.600}"
+      "$value": "{color.teal.700}"
     },
     "subtle": {
       "$type": "color",
-      "$value": "#3A1D0C"
+      "$value": "{color.teal.900}"
     },
     "calm": {
       "$type": "color",
-      "$value": "{color.sage.300}"
+      "$value": "{color.olive.300}",
+      "$description": "Aksen kedua untuk chart."
     },
     "accent-text": {
       "$type": "color",
-      "$value": "{color.orange.300}",
-      "$description": "orange.500 hanya 3.8:1 di navy \u2014 gagal untuk teks kecil."
+      "$value": "{color.sage.300}"
     }
   },
   "status": {
     "success": {
       "$type": "color",
-      "$value": "{color.sage.300}"
+      "$value": "{color.green.300}"
     },
     "success-subtle": {
       "$type": "color",
-      "$value": "#1A2C2A"
+      "$value": "{color.green.100}"
     },
     "warning": {
       "$type": "color",
-      "$value": "#D9A94E"
+      "$value": "{color.amber.300}"
     },
     "warning-subtle": {
       "$type": "color",
-      "$value": "#2C2415"
+      "$value": "{color.amber.100}"
     },
     "danger": {
       "$type": "color",
-      "$value": "#D9705F"
+      "$value": "{color.red.300}"
     },
     "danger-subtle": {
       "$type": "color",
-      "$value": "#2E1815"
+      "$value": "{color.red.100}"
     }
   },
   "overlay": {
     "scrim": {
       "$type": "color",
-      "$value": "#0D1E25CC"
+      "$value": "#0D1E25B3"
     }
   }
 }
