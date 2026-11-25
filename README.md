@@ -4,6 +4,12 @@ Satu sumber kebenaran untuk **deck, dokumen, web, dan app**.
 Dua bahasa digabung: disiplin deck pitch (satu ide per slide, display besar) dan bahasa
 infografik (garis hairline, label small-caps, modul bernomor, blok statistik).
 
+## Struktur
+
+**Isi:** [Struktur](#struktur) · [Pakai](#pakai) · [Dua palet](#dua-palet) · [Tipografi](#tipografi) ·
+[Layout & radius](#layout--radius) · [Modul](#modul) · [Aturan](#aturan) · [Dokumentasi](#dokumentasi) ·
+[Lisensi](#lisensi) · [Versioning](#versioning)
+
 ```
 tokens/
   core/        color · type · space · misc (+ layout slide)      <- primitif
@@ -113,6 +119,23 @@ di kolom kiri. Placeholder diberi label `PHOTO` supaya kelihatan belum diisi.
 5. **`dist/` tidak pernah diedit tangan.**
 6. **Sudut membulat, bukan kotak.** Permukaan pakai `radius.lg` (18) atau `radius.xl` (28); garis tetap 0.
 7. **Kontras dijaga CI** — `build.py --check` memeriksa keempat kombinasi palet × mode.
+
+## Dokumentasi
+
+- `README.md` (ini) — aturan pakai dan keputusan desain.
+- `CHANGELOG.md` — riwayat versi dan alasan perubahannya.
+- `dist/docs/index.html` dan `dist/docs/index-adventurous.html` — referensi token per palet,
+  di-generate dari tokens; buka langsung di browser.
+- `examples/preview-<palette>.html` — sembilan slide yang sama dengan pptx, untuk verifikasi visual
+  tanpa PowerPoint.
+- `examples/pitch-deck-<palette>.pptx` — deck jadi, chart-nya masih bisa diedit di PowerPoint.
+
+`dist/` ikut di-commit supaya repo bisa dipakai tanpa build. Kalau ragu, jalankan
+`python3 build/build.py` — isinya deterministik, jadi diff akan kosong kalau tidak ada perubahan token.
+
+## Lisensi
+
+MIT — lihat `LICENSE`.
 
 ## Versioning
 

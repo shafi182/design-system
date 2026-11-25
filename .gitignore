@@ -1,6 +1,14 @@
-dist/
-examples/*.pptx
-examples/*.docx
+# build cache, not source
+examples/photos/rounded/
 __pycache__/
-*.pyc
+*.py[cod]
+
+# editors / OS
 .DS_Store
+.idea/
+.vscode/
+*.swp
+
+# local scratch
+*.log
+.cache/

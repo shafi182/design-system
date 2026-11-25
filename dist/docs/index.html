@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><title>Signal — pitch deck system</title>
+<link rel="stylesheet" href="../css/tokens.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--ds-surface-base);color:var(--ds-text-primary);
+  font-family:var(--ds-type-family-body);font-size:var(--ds-type-size-body);line-height:var(--ds-type-leading-relaxed);
+  max-width:1000px;margin:0 auto;padding:var(--ds-space-11) var(--ds-space-8)}
+h1{font-family:var(--ds-type-family-heading);font-size:var(--ds-type-size-h1);line-height:var(--ds-type-leading-tight);
+  letter-spacing:var(--ds-type-tracking-tight);margin-bottom:var(--ds-space-3)}
+h2{font-family:var(--ds-type-family-heading);font-size:var(--ds-type-size-h2);margin:var(--ds-space-10) 0 var(--ds-space-5);
+  padding-top:var(--ds-space-5);border-top:1px solid var(--ds-border-subtle)}
+h3{font-size:var(--ds-type-size-h4);margin:var(--ds-space-7) 0 var(--ds-space-3)}
+p.lead{color:var(--ds-text-secondary);max-width:640px;margin-bottom:var(--ds-space-8)}
+.kicker{font-family:var(--ds-type-family-mono);font-size:var(--ds-type-size-label);letter-spacing:var(--ds-type-tracking-caps);
+  text-transform:uppercase;color:var(--ds-text-secondary);margin-bottom:var(--ds-space-4)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:var(--ds-space-3)}
+.chip{border:1px solid var(--ds-border-subtle);border-radius:var(--ds-radius-md);padding:var(--ds-space-4);
+  display:flex;flex-direction:column;gap:2px;font-family:var(--ds-type-family-mono);font-size:10.5px;min-height:74px;justify-content:flex-end}
+.tr{display:flex;align-items:baseline;gap:var(--ds-space-5);padding:var(--ds-space-3) 0;border-bottom:1px solid var(--ds-border-subtle)}
+.tr code{font-family:var(--ds-type-family-mono);font-size:11px;color:var(--ds-text-secondary);width:180px;flex:none}
+.tr em{font-family:var(--ds-type-family-mono);font-size:11px;color:var(--ds-text-secondary);margin-left:auto;font-style:normal}
+.demo{display:flex;gap:var(--ds-space-4);align-items:center;flex-wrap:wrap;margin:var(--ds-space-4) 0}
+.btn{font-family:var(--ds-type-family-body);font-size:var(--ds-type-size-body-sm);font-weight:600;
+  padding:var(--ds-space-4) var(--ds-space-6);border-radius:var(--ds-radius-md);border:1px solid transparent;cursor:pointer}
+.btn.p{background:var(--ds-brand-primary);color:var(--ds-text-on-brand)}
+.btn.p:hover{background:var(--ds-brand-hover)}
+.btn.s{background:transparent;color:var(--ds-text-primary);border-color:var(--ds-border-default)}
+.card{background:var(--ds-surface-raised);border:1px solid var(--ds-border-subtle);border-radius:var(--ds-radius-md);
+  padding:var(--ds-space-7);box-shadow:var(--ds-shadow-sm);flex:1;min-width:240px}
+.card h4{font-family:var(--ds-type-family-heading);font-size:var(--ds-type-size-h4);margin-bottom:var(--ds-space-2)}
+.card p{font-size:var(--ds-type-size-body-sm);color:var(--ds-text-secondary);line-height:var(--ds-type-leading-normal)}
+.tag{display:inline-block;font-family:var(--ds-type-family-mono);font-size:10px;letter-spacing:var(--ds-type-tracking-wide);
+  text-transform:uppercase;padding:3px var(--ds-space-3);border-radius:var(--ds-radius-sm);
+  background:var(--ds-brand-subtle);color:var(--ds-brand-primary);margin-top:var(--ds-space-4)}
+table{width:100%;border-collapse:collapse;font-size:var(--ds-type-size-body-sm);margin-top:var(--ds-space-4)}
+th{text-align:left;font-family:var(--ds-type-family-mono);font-size:10px;letter-spacing:var(--ds-type-tracking-wide);
+  text-transform:uppercase;color:var(--ds-table-header-fg);padding:var(--ds-space-3) 0;border-bottom:1px solid var(--ds-table-row-border);font-weight:500}
+td{padding:var(--ds-space-4) 0;border-bottom:1px solid var(--ds-table-row-border)}
+tbody tr:hover{background:var(--ds-table-row-hover-bg)}
+.meta{font-family:var(--ds-type-family-mono);font-size:11px;color:var(--ds-text-secondary);margin-top:var(--ds-space-11)}
+</style></head><body>
+<div class="kicker">Signal · v0.7.0 · navy / teal / sage / olive / ivory</div>
+<h1>Signal</h1>
+<p class="lead">Gabungan dua bahasa: disiplin deck pitch (satu ide per slide, display besar) dan bahasa infografik (garis hairline, label small-caps, modul bernomor). Nilai mentah hanya hidup di lapis core.</p>
+
+<h2>Surface &amp; text</h2>
+<div class="grid">
+<div class="sw"><div class="chip" style="background:#E8E9DF;color:#12304F"><span>surface.band</span><span>#E8E9DF</span></div></div>
+<div class="sw"><div class="chip" style="background:#E9E5D9;color:#12304F"><span>surface.base</span><span>#E9E5D9</span></div></div>
+<div class="sw"><div class="chip" style="background:#142C36;color:#FFFFFF"><span>surface.inverse</span><span>#142C36</span></div></div>
+<div class="sw"><div class="chip" style="background:#F7F5EF;color:#12304F"><span>surface.raised</span><span>#F7F5EF</span></div></div>
+<div class="sw"><div class="chip" style="background:#E8E9DF;color:#12304F"><span>surface.sunken</span><span>#E8E9DF</span></div></div>
+<div class="sw"><div class="chip" style="background:#E9E5D9;color:#12304F"><span>text.inverse</span><span>#E9E5D9</span></div></div>
+<div class="sw"><div class="chip" style="background:#24545A;color:#FFFFFF"><span>text.link</span><span>#24545A</span></div></div>
+<div class="sw"><div class="chip" style="background:#466B67;color:#FFFFFF"><span>text.muted</span><span>#466B67</span></div></div>
+<div class="sw"><div class="chip" style="background:#E9E5D9;color:#12304F"><span>text.on-brand</span><span>#E9E5D9</span></div></div>
+<div class="sw"><div class="chip" style="background:#142C36;color:#FFFFFF"><span>text.primary</span><span>#142C36</span></div></div>
+<div class="sw"><div class="chip" style="background:#24545A;color:#FFFFFF"><span>text.secondary</span><span>#24545A</span></div></div>
+</div>
+
+<h2>Brand</h2>
+<div class="grid">
+<div class="sw"><div class="chip" style="background:#24545A;color:#FFFFFF"><span>brand.accent-text</span><span>#24545A</span></div></div>
+<div class="sw"><div class="chip" style="background:#1B4045;color:#FFFFFF"><span>brand.active</span><span>#1B4045</span></div></div>
+<div class="sw"><div class="chip" style="background:#8F937F;color:#FFFFFF"><span>brand.calm</span><span>#8F937F</span></div></div>
+<div class="sw"><div class="chip" style="background:#2D656C;color:#FFFFFF"><span>brand.hover</span><span>#2D656C</span></div></div>
+<div class="sw"><div class="chip" style="background:#24545A;color:#FFFFFF"><span>brand.primary</span><span>#24545A</span></div></div>
+<div class="sw"><div class="chip" style="background:#DCE6E2;color:#12304F"><span>brand.subtle</span><span>#DCE6E2</span></div></div>
+</div>
+
+<h2>Status</h2>
+<div class="grid">
+<div class="sw"><div class="chip" style="background:#A63A2C;color:#FFFFFF"><span>status.danger</span><span>#A63A2C</span></div></div>
+<div class="sw"><div class="chip" style="background:#F6E1DC;color:#12304F"><span>status.danger-subtle</span><span>#F6E1DC</span></div></div>
+<div class="sw"><div class="chip" style="background:#2C6E52;color:#FFFFFF"><span>status.success</span><span>#2C6E52</span></div></div>
+<div class="sw"><div class="chip" style="background:#E0EDE5;color:#12304F"><span>status.success-subtle</span><span>#E0EDE5</span></div></div>
+<div class="sw"><div class="chip" style="background:#8A6212;color:#FFFFFF"><span>status.warning</span><span>#8A6212</span></div></div>
+<div class="sw"><div class="chip" style="background:#F7EBD3;color:#12304F"><span>status.warning-subtle</span><span>#F7EBD3</span></div></div>
+</div>
+
+<h2>Type scale</h2>
+<div class="tr"><code>type.size.display</code><span style="font-family:Manrope, Inter, 'Helvetica Neue', Arial, sans-serif;font-size:68px;line-height:1.25">Commissioning Report</span><em>68px</em></div>
+<div class="tr"><code>type.size.h1</code><span style="font-family:Manrope, Inter, 'Helvetica Neue', Arial, sans-serif;font-size:44px;line-height:1.25">Commissioning Report</span><em>44px</em></div>
+<div class="tr"><code>type.size.h2</code><span style="font-family:Manrope, Inter, 'Helvetica Neue', Arial, sans-serif;font-size:32px;line-height:1.25">Commissioning Report</span><em>32px</em></div>
+<div class="tr"><code>type.size.h3</code><span style="font-family:Manrope, Inter, 'Helvetica Neue', Arial, sans-serif;font-size:24px;line-height:1.25">Commissioning Report</span><em>24px</em></div>
+<div class="tr"><code>type.size.h4</code><span style="font-family:Manrope, Inter, 'Helvetica Neue', Arial, sans-serif;font-size:20px;line-height:1.25">Commissioning Report</span><em>20px</em></div>
+<div class="tr"><code>type.size.body-lg</code><span style="font-family:Manrope, Inter, 'Helvetica Neue', Arial, sans-serif;font-size:18px;line-height:1.25">Commissioning Report</span><em>18px</em></div>
+<div class="tr"><code>type.size.body</code><span style="font-family:Manrope, Inter, 'Helvetica Neue', Arial, sans-serif;font-size:15px;line-height:1.25">Commissioning Report</span><em>15px</em></div>
+<div class="tr"><code>type.size.body-sm</code><span style="font-family:Manrope, Inter, 'Helvetica Neue', Arial, sans-serif;font-size:13px;line-height:1.25">Commissioning Report</span><em>13px</em></div>
+<div class="tr"><code>type.size.caption</code><span style="font-family:Manrope, Inter, 'Helvetica Neue', Arial, sans-serif;font-size:12px;line-height:1.25">Commissioning Report</span><em>12px</em></div>
+<div class="tr"><code>type.size.label</code><span style="font-family:Manrope, Inter, 'Helvetica Neue', Arial, sans-serif;font-size:11px;line-height:1.25">Commissioning Report</span><em>11px</em></div>
+
+<h2>Components</h2>
+<div class="demo">
+  <button class="btn p">Primary action</button>
+  <button class="btn s">Secondary</button>
+  <div class="card"><h4>Card title</h4><p>Surface, border, radius, dan shadow semuanya dari token — tidak ada nilai hardcoded.</p><span class="tag">status · active</span></div>
+</div>
+
+<h2>Data table</h2>
+<table><thead><tr><th>Equipment</th><th>Status</th><th>Verified</th></tr></thead>
+<tbody>
+<tr><td>Chiller CH-01</td><td>Passed</td><td>24 Nov 2026</td></tr>
+<tr><td>AHU-03</td><td>Pending</td><td>—</td></tr>
+</tbody></table>
+
+<p class="meta">Generated by build/build.py — jangan edit dist/ secara manual.</p>
+</body></html>
