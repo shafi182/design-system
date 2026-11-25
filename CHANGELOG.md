@@ -4,6 +4,28 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id/1.1.0/).
 Versi mengikuti [SemVer](https://semver.org/lang/id/): rename token = major, tambah modul = minor,
 perbaikan visual/kontras = patch.
 
+## [0.14.0] — 2026-11-25
+
+### Atlas diperluas ke dua puluh layout referensi
+
+Sepuluh referensi gelombang kedua ditranskrip menjadi slide 11–20. Palet tidak
+disentuh sama sekali — hanya bentuk, komposisi, dan tipografi.
+
+- Shape baru di `build/refs.py`: `stat_octet` (8 metrik 4×2, McKinsey 32),
+  `stat_trio` (3 panel; varian bertumpuk saat panel ketiga membawa seri),
+  `hbar_paired` (Gen AI vs potensi otomasi, MGI 255), `steps_ranked` (prioritas CHRO),
+  `waterfall_rows` (1,7 juta pekerjaan otomotif, BCG 253),
+  `hbar_split` (Fortune 500 keluar Rusia), `attribution_bars` (TSR M&A, 276),
+  `strategy_trio` (arah strategi, 170), `waterfall_bridge` (jalur emisi 2023–2030, 275),
+  `hex_framework` ($750 Bn keuangan berkelanjutan, Goldman 194).
+- `build/atlas.py` kini 20 slide; slide 1–10 tidak diubah.
+- Perbaikan hasil audit: lebar bar dijaga `max(1, …)` agar tidak ada
+  `ZeroDivisionError` pada nilai nol; skala waterfall memakai total sebagai
+  batas; label industri di `hbar_split` diberi gutter; bar awal
+  `waterfall_bridge` digambar dari garis dasar ke atas, bukan ke bawah.
+- Legenda, tick sumbu, dan nilai kedua seri ditambahkan agar tiap diagram
+  bisa dibaca tanpa teks pendamping.
+
 ## [0.13.0] — 2026-11-25
 
 ### Reset bentuk: atlas mengikuti sepuluh referensi
