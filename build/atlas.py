@@ -637,6 +637,57 @@ A.add("light", "Batang berkelompok, batang bercabang, dekomposisi driver, pilar 
 ], A.FOOT, 15)
 
 
+# ------------- 16 loop, kolom now-next-hasil, kolom persen, peluang-cek-progres
+A.add("light", "Loop tertutup, kolom now-next-hasil, kolom persen, peluang dan progres", None, [
+    *box(0, 0, "loop_columns", "Loop tertutup + hub kiri, poin nilai tengah, checklist kanan",
+         lambda x, y, w, h: S.loop_columns(
+             x, y, w, h,
+             [("Treasury services", ""), ("Merchant acquiring", ""),
+              ("Trade finance", ""), ("Commercial card", "")],
+             [("Bayar dan terima", "Kapan pun, di mana pun, metode apa pun"),
+              ("Rapikan operasi", "Model operasi pembayaran disederhanakan"),
+              ("Aman dan patuh", "Kontrol kuat, kepatuhan terjaga")],
+             ["Platform teknologi inti", "Konektivitas klien: platform, API, ERP/TMS",
+              "Onboarding dan layanan", "Analitik dan data ML",
+              "Interoperabilitas produk"], "light")),
+    *box(1, 0, "shift_columns", "Kolom sekarang / nanti / hasil dengan garis atas aksen",
+         lambda x, y, w, h: S.shift_columns(
+             x, y, w, h,
+             [("Bank korporat hari ini", "Posisi awal", [
+                 "Kumpulan ahli investment banking lebih kecil dari pesaing",
+                 "Trade 360 sudah diluncurkan", "Fokus mendalami klien yang ada",
+                 "Rata-rata 4 dari 11 solusi per klien"], "plain"),
+              ("Bank korporat besok", "Titik berat baru", [
+                 "Tutup celah geografi dan industri", "Buka lini digital, lestari, inovatif",
+                 "Dorong adopsi virtual account", "Perkuat data industri"], "accent"),
+              ("Hasil", "Apa yang berubah", [
+                 "Keahlian strategis dan solusi bermutu",
+                 "Penjualan tambahan ke klien yang ada",
+                 "Pertumbuhan bermutu dari banyak sumber"], "accent")], "light")),
+    *box(0, 1, "percent_columns", "Lima kolom persen + pita penutup di kaki",
+         lambda x, y, w, h: S.percent_columns(
+             x, y, w, h,
+             [("63%", "Personalisasi", "Mau berbagi data pribadi untuk pengalaman yang pas"),
+              ("65%", "Kemudahan", "Dewasa AS punya langganan Prime"),
+              ("79%", "Pengalaman", "Menuntut produk punya nilai emosi"),
+              ("45%", "Komunitas", "Konsumen China terpengaruh KOL"),
+              ("78%", "Keberlanjutan", "Pindah merek karena sikap iklim")],
+             "Harapan ini lintas segmen — Gen Z dan milenial paling menonjol", "light")),
+    *box(1, 1, "opportunity_track", "Angka peluang, checklist proposisi, blok progres",
+         lambda x, y, w, h: S.opportunity_track(
+             x, y, w, h,
+             [("$50bn", "Peluang saldo deposito dalam 5 tahun lebih"),
+              ("$1bn", "Peluang pendapatan pada periode yang sama")],
+             ["Analitik dan wawasan yang bisa dieksekusi",
+              "Onboarding cepat dan mudah", "Alat modern, proses sederhana",
+              "Kustomisasi klien yang bisa diskalakan"],
+             [("Tim", "350 orang dibentuk"),
+              ("Volume", ">$3tn diproses dalam 5 mata uang"),
+              ("Klien", "Rekening deposito dibuka dengan 25+ klien"),
+              ("Platform", "Peluncuran penuh semester I 2025")], "light")),
+], A.FOOT, 16)
+
+
 if __name__ == "__main__":
     out = ROOT / "examples" / f"atlas-{A.PALETTE}.pptx"
     A.render_pptx(out)

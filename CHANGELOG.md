@@ -4,6 +4,22 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id/1.1.0/).
 Versi mengikuti [SemVer](https://semver.org/lang/id/): rename token = major, tambah modul = minor,
 perbaikan visual/kontras = patch.
 
+## [0.11.0] — 2026-11-25
+
+### Bentuk gelombang kelima (52 → 56)
+
+- `loop_columns` — loop tertutup empat simpul + hub merek di kiri, poin nilai bernomor di tengah, checklist infrastruktur di kanan (wholesale payments).
+- `shift_columns` — kolom sekarang / nanti / hasil dengan garis atas aksen pada kolom target (corporate bank roadmap).
+- `percent_columns` — lima kolom persen besar + judul caps + catatan, pita penutup penuh di kaki (customer expectations).
+- `opportunity_track` — angka peluang | checklist proposisi nilai | blok progres bertag (transaction banking).
+
+Atlas 15 → 16 slide. Slide 16 keempat bentuk di atas.
+
+### Perbaikan
+
+- `loop_columns`: orbit 1,95r → 2,55r, radius simpul 0,19 → 0,13, lebar kotak 2,5r → 2,1r; kotak kiri/kanan tidak lagi menabrak hub tengah.
+- Footer analyst, kicker `dist/`, dan `package.json` naik ke v0.11.
+
 ## [0.10.0] — 2026-11-25
 
 ### Bentuk gelombang keempat (44 → 52)

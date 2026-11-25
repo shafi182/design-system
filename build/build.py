@@ -363,7 +363,7 @@ td{{padding:var(--ds-space-4) 0;border-bottom:1px solid var(--ds-table-row-borde
 tbody tr:hover{{background:var(--ds-table-row-hover-bg)}}
 .meta{{font-family:var(--ds-type-family-mono);font-size:11px;color:var(--ds-text-secondary);margin-top:var(--ds-space-11)}}
 </style></head><body>
-<div class="kicker">Signal · v0.10.0 · {label}</div>
+<div class="kicker">Signal · v0.11.0 · {label}</div>
 <h1>Signal</h1>
 <p class="lead">Gabungan dua bahasa: disiplin deck pitch (satu ide per slide, display besar) dan bahasa infografik (garis hairline, label small-caps, modul bernomor). Nilai mentah hanya hidup di lapis core.</p>
 

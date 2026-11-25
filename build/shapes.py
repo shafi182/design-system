@@ -1310,3 +1310,125 @@ def pillar_targets(x, y, w, h, pillars, theme="light", pill_h=30):
         out.append(t(bx + 14, ty + 5, cw - 28, pill_h - 8, target, "text.primary", theme,
                      size=7, bold=True, leading=1.2))
     return out
+
+
+# ------------- loop + columns, shift columns, percent columns, opportunity track
+def loop_columns(x, y, w, h, loop, mid, infra, theme="light"):
+    """Left: closed-loop hub. Middle: value points. Right: shared infrastructure checks."""
+    out = []
+    lw = w * 0.34
+    mw = w * 0.31
+    iw = w - lw - mw - 20
+    cx, cy = x + lw / 2, y + h / 2 - 6
+    rad = min(lw, h) * 0.13
+    for i, (name, note) in enumerate(loop):
+        ang = -math.pi / 2 + i * (2 * math.pi / len(loop))
+        nx, ny = cx + math.cos(ang) * rad * 2.55, cy + math.sin(ang) * rad * 2.55
+        out.append(r(nx - rad * 1.05, ny - rad * 0.5, rad * 2.1, rad * 1.0, "surface.raised",
+                     theme, radius=3, stroke="border.strong"))
+        out.append(t(nx - rad * 1.0, ny - rad * 0.36, rad * 2.0, rad * 0.72, name,
+                     "text.primary", theme, size=6.4, bold=True, align="center", leading=1.1))
+    out.append(r(cx - rad * 1.2, cy - rad * 0.55, rad * 2.4, rad * 1.1, "brand.primary",
+                 theme, radius=3))
+    out.append(t(cx - rad * 1.12, cy - rad * 0.34, rad * 2.24, rad * 0.68, "Wholesale payments",
+                 "text.on-brand", theme, size=6.6, bold=True, align="center", leading=1.1))
+    mx = x + lw + 10
+    out.append(r(mx - 6, y, 1, h, "border.subtle", theme))
+    for i, (name, note) in enumerate(mid):
+        yy = y + i * (h / len(mid))
+        out.append(r(mx + 4, yy + 4, 14, 14, "brand.primary", theme, radius=7))
+        out.append(t(mx + 4, yy + 7, 14, 10, str(i + 1), "text.on-brand", theme, size=6.4,
+                     bold=True, align="center"))
+        out.append(t(mx + 24, yy + 2, mw - 34, 12, name, "text.primary", theme, size=7,
+                     bold=True))
+        out.append(t(mx + 24, yy + 16, mw - 34, h / len(mid) - 20, note, "text.muted",
+                     theme, size=6.2, leading=1.2))
+    ix = mx + mw + 10
+    out.append(r(ix - 6, y, 1, h, "border.subtle", theme))
+    out.append(t(ix + 4, y - 12, iw, 10, "Infrastruktur bersama", "text.muted", theme,
+                 size=6.2, caps=True, spacing=0.08))
+    for i, it in enumerate(infra):
+        yy = y + i * ((h - 6) / len(infra))
+        out.append(r(ix + 4, yy + 5, 8, 8, "brand.primary", theme, radius=2))
+        out.append(t(ix + 18, yy, iw - 20, 12, it, "text.secondary", theme, size=6.6,
+                     leading=1.2))
+    return out
+
+
+def shift_columns(x, y, w, h, cols, theme="light"):
+    """Columns of before/after/result: (head, note, items, tone) with hairline separators."""
+    out = []
+    gap = 12
+    cw = (w - gap * (len(cols) - 1)) / len(cols)
+    for i, (head, note, items, tone) in enumerate(cols):
+        bx = x + i * (cw + gap)
+        out.append(r(bx, y, cw, 3, "brand.primary" if tone == "accent" else "border.strong",
+                     theme))
+        out.append(t(bx, y + 10, cw, 14, head, "text.primary", theme, size=8.2, bold=True))
+        out.append(t(bx, y + 26, cw, 24, note, "text.muted", theme, size=6.4, leading=1.2))
+        for j, it in enumerate(items):
+            yy = y + 54 + j * ((h - 60) / len(items))
+            out.append(r(bx, yy + 4, 4, 4, "brand.primary", theme, radius=1))
+            out.append(t(bx + 10, yy, cw - 14, (h - 60) / len(items) - 4, it,
+                         "text.secondary", theme, size=6.6, leading=1.2))
+    return out
+
+
+def percent_columns(x, y, w, h, cols, band, theme="light"):
+    """Five columns: big percent, caps title, note; closing band at the foot."""
+    out = []
+    bh = 24 if band else 0
+    body = h - bh - (6 if band else 0)
+    cw = w / len(cols)
+    for i, (pct, name, note) in enumerate(cols):
+        bx = x + i * cw
+        if i:
+            out.append(r(bx - 4, y, 1, body, "border.subtle", theme))
+        out.append(t(bx + 8, y, cw - 16, 24, pct, "brand.primary", theme, size=17, bold=True))
+        out.append(t(bx + 8, y + 30, cw - 16, 24, name, "text.primary", theme, size=6.8,
+                     bold=True, caps=True, spacing=0.06, leading=1.15))
+        out.append(t(bx + 8, y + 58, cw - 16, body - 60, note, "text.secondary", theme,
+                     size=6.4, leading=1.25))
+    if band:
+        by = y + h - bh
+        out.append(r(x, by, w, bh, "brand.primary", theme, radius=3))
+        out.append(t(x + 10, by + 6, w - 20, bh - 10, band, "text.on-brand", theme, size=6.8,
+                     bold=True, leading=1.15))
+    return out
+
+
+def opportunity_track(x, y, w, h, opp, checks, progress, theme="light"):
+    """Opportunity numbers | value checks | progress blocks — three tracks side by side."""
+    out = []
+    lw = w * 0.22
+    mw = w * 0.38
+    pw = w - lw - mw - 20
+    for i, (val, cap) in enumerate(opp):
+        yy = y + i * (h / len(opp))
+        out.append(t(x, yy + 6, lw - 8, 24, val, "brand.primary", theme, size=17, bold=True))
+        out.append(t(x, yy + 34, lw - 8, h / len(opp) - 38, cap, "text.muted", theme,
+                     size=6.4, leading=1.2))
+        if i:
+            out.append(r(x, yy, lw - 8, 1, "border.subtle", theme))
+    mx = x + lw + 6
+    out.append(r(mx - 6, y, 1, h, "border.subtle", theme))
+    out.append(t(mx + 6, y - 12, mw, 10, "PROPOSISI NILAI", "text.muted", theme, size=6.2,
+                 caps=True, spacing=0.08))
+    for i, it in enumerate(checks):
+        yy = y + i * ((h - 4) / len(checks))
+        out.append(r(mx + 6, yy + 5, 8, 8, "brand.primary", theme, radius=2))
+        out.append(t(mx + 20, yy, mw - 26, (h - 4) / len(checks) - 2, it, "text.secondary",
+                     theme, size=6.8, leading=1.2))
+    px = mx + mw + 8
+    out.append(r(px - 6, y, 1, h, "border.subtle", theme))
+    out.append(t(px + 4, y - 12, pw, 10, "PROGRES", "text.muted", theme, size=6.2, caps=True,
+                 spacing=0.08))
+    for i, (tag, line) in enumerate(progress):
+        yy = y + i * ((h - 4) / len(progress))
+        out.append(r(px + 4, yy, pw - 8, (h - 4) / len(progress) - 4, "surface.band", theme,
+                     radius=3))
+        out.append(t(px + 10, yy + 4, pw - 20, 10, tag, "brand.primary", theme, size=6,
+                     bold=True, caps=True, spacing=0.06))
+        out.append(t(px + 10, yy + 16, pw - 20, (h - 4) / len(progress) - 22, line,
+                     "text.primary", theme, size=6.4, leading=1.15))
+    return out
