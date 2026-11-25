@@ -394,7 +394,7 @@ def add(theme, title, active, elements, footer_note, page):
     SLIDES.append({"theme": theme, "elements": els})
 
 
-FOOT = f"Signal v0.11 · analyst layout · palet {PALETTE}"
+FOOT = f"Signal v0.12 · analyst layout · palet {PALETTE}"
 
 # 01 — TABLE
 bx0, by0, bw, bh = body(0, 0)

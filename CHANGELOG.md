@@ -4,6 +4,20 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id/1.1.0/).
 Versi mengikuti [SemVer](https://semver.org/lang/id/): rename token = major, tambah modul = minor,
 perbaikan visual/kontras = patch.
 
+## [0.12.0] — 2026-11-25
+
+### Bentuk gelombang keenam (56 → 57)
+
+- `orbit_compare` — dua orbit berdampingan dengan cincin simpul identik, pusat berbeda (peran kecil + kata utama), tiga catatan per sisi, banner opsional di atas. Untuk perbandingan model: produsen vs interaksi.
+
+Atlas 16 → 17 slide, panel penuh selebar kanvas.
+
+### Perbaikan
+
+- `orbit_compare`: label peran di hub tadinya menabrak kata utama (tumpang 4,6 px) — kotak hub dinaikkan ke 1,24r, peran 0,42r di atas, kata utama 0,46r di bawah. Orbit 2,35r → 2,45r untuk jarak simpul ke hub.
+- Peran hub tidak lagi pakai caps 5,6 px (huruf S terbaca seperti 5); kini 6,2 px normal case.
+- Footer analyst, kicker `dist/`, dan `package.json` naik ke v0.12.
+
 ## [0.11.0] — 2026-11-25
 
 ### Bentuk gelombang kelima (52 → 56)

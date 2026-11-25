@@ -688,6 +688,25 @@ A.add("light", "Loop tertutup, kolom now-next-hasil, kolom persen, peluang dan p
 ], A.FOOT, 16)
 
 
+# ------------- 17 orbit ganda: produsen vs interaksi
+A.add("light", "Peran merek bergeser dari produsen ke interaksi, produknya sama", None,
+      [*full("orbit_compare",
+             "Cincin yang sama, pusat yang berbeda: produsen menyalurkan, penyiar mengelola bersama",
+             [*S.orbit_compare(
+                 M + 24, GRID_TOP + 56, W - 2 * M - 48, GRID_BOT - GRID_TOP - 74,
+                 "Produk sama, konten diperkaya, siaran luas",
+                 ("Product", "Produsen",
+                  ["Media", "Content", "Inspiration", "Service", "Experience"],
+                  ["Merek adalah produsen", "Semua layanan untuk produk",
+                   "Satu suara merek, platform tertutup"]),
+                 ("Interaction", "Penyiar",
+                  ["Media", "Content", "Inspiration", "Service", "Experience"],
+                  ["Merek adalah penyiar", "Semua pihak ikut ambil bagian",
+                   "Konten dikelola bersama, platform terbuka"]), "light")],
+             src="shapes.py")],
+      A.FOOT, 17)
+
+
 if __name__ == "__main__":
     out = ROOT / "examples" / f"atlas-{A.PALETTE}.pptx"
     A.render_pptx(out)

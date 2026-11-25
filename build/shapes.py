@@ -1432,3 +1432,47 @@ def opportunity_track(x, y, w, h, opp, checks, progress, theme="light"):
         out.append(t(px + 10, yy + 16, pw - 20, (h - 4) / len(progress) - 22, line,
                      "text.primary", theme, size=6.4, leading=1.15))
     return out
+
+
+def orbit_compare(x, y, w, h, banner, left, right, theme="light"):
+    """Two radial hubs side by side, same outer ring, three notes each; optional banner.
+
+    left/right = (centre, role, nodes, notes)
+    """
+    out = []
+    bh = 20 if banner else 0
+    if banner:
+        out.append(r(x, y, w, bh, "brand.primary", theme, radius=3))
+        out.append(t(x + 10, y + 5, w - 20, bh - 8, banner, "text.on-brand", theme, size=7.2,
+                     bold=True, caps=True, spacing=0.03))
+    by = y + bh + (8 if banner else 0)
+    body = h - bh - (8 if banner else 0)
+    note_h = 34
+    orbit_h = body - note_h - 6
+    half = w / 2
+    for i, (centre, role, nodes, notes) in enumerate((left, right)):
+        hx = x + i * half
+        if i:
+            out.append(r(hx - 3, by, 1, body, "border.subtle", theme))
+        cx, cy = hx + half / 2, by + orbit_h / 2
+        rad = min(half, orbit_h) * 0.155
+        for j, name in enumerate(nodes):
+            ang = -math.pi / 2 + j * (2 * math.pi / len(nodes))
+            nx, ny = cx + math.cos(ang) * rad * 2.45, cy + math.sin(ang) * rad * 2.45
+            out.append(r(nx - rad, ny - rad * 0.4, rad * 2, rad * 0.8, "surface.raised", theme,
+                         radius=2, stroke="border.strong"))
+            out.append(t(nx - rad * 0.94, ny - rad * 0.3, rad * 1.88, rad * 0.6, name,
+                         "text.secondary", theme, size=5.8, align="center", leading=1.05))
+        out.append(r(cx - rad * 1.15, cy - rad * 0.62, rad * 2.3, rad * 1.24, "brand.primary",
+                     theme, radius=3))
+        out.append(t(cx - rad * 1.1, cy - rad * 0.52, rad * 2.2, rad * 0.42, role,
+                     "text.on-brand", theme, size=6.2, align="center", spacing=0.02))
+        out.append(t(cx - rad * 1.08, cy - rad * 0.02, rad * 2.16, rad * 0.46, centre,
+                     "text.on-brand", theme, size=7.2, bold=True, align="center"))
+        ny0 = by + orbit_h + 6
+        for k, note in enumerate(notes):
+            yy = ny0 + k * (note_h / len(notes))
+            out.append(r(hx + 8, yy + 3, 3, 3, "brand.primary", theme, radius=1))
+            out.append(t(hx + 16, yy, half - 26, note_h / len(notes) - 2, note,
+                         "text.secondary", theme, size=6.2, leading=1.15))
+    return out
