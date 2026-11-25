@@ -1,6 +1,21 @@
 /* Signal — adventurous (generated) */
 
 [data-palette="adventurous"] {
+  /* analyst */
+  --ds-analyst-layout-gutter: 14px;
+  --ds-analyst-layout-margin: 32px;
+  --ds-analyst-layout-nav-gap: 6px;
+  --ds-analyst-layout-nav-height: 34px;
+  --ds-analyst-layout-panel-pad: 12px;
+  --ds-analyst-layout-panel-radius: 6px;
+  --ds-analyst-layout-source-gap: 6px;
+  --ds-analyst-type-axis: 8px;
+  --ds-analyst-type-body: 9.5px;
+  --ds-analyst-type-kpi: 26px;
+  --ds-analyst-type-micro: 8px;
+  --ds-analyst-type-panel-title: 12.5px;
+  --ds-analyst-type-row: 18px;
+
   /* border */
   --ds-border-default: #B6B9A5;
   --ds-border-focus: #FF6D1F;
@@ -41,6 +56,12 @@
   --ds-card-padding: 24px;
   --ds-card-radius: 18px;
   --ds-card-shadow: 0px 1px 3px 0px #142C3614;
+
+  /* chart */
+  --ds-chart-series-1: #FF6D1F;
+  --ds-chart-series-2: #222222;
+  --ds-chart-series-3: #FF9C63;
+  --ds-chart-series-4: #565656;
 
   /* color */
   --ds-color-amber-100: #F7EBD3;
@@ -217,6 +238,21 @@
 /* Signal — adventurous dark (generated) */
 
 [data-palette="adventurous"][data-theme="dark"] {
+  /* analyst */
+  --ds-analyst-layout-gutter: 14px;
+  --ds-analyst-layout-margin: 32px;
+  --ds-analyst-layout-nav-gap: 6px;
+  --ds-analyst-layout-nav-height: 34px;
+  --ds-analyst-layout-panel-pad: 12px;
+  --ds-analyst-layout-panel-radius: 6px;
+  --ds-analyst-layout-source-gap: 6px;
+  --ds-analyst-type-axis: 8px;
+  --ds-analyst-type-body: 9.5px;
+  --ds-analyst-type-kpi: 26px;
+  --ds-analyst-type-micro: 8px;
+  --ds-analyst-type-panel-title: 12.5px;
+  --ds-analyst-type-row: 18px;
+
   /* border */
   --ds-border-default: #565656;
   --ds-border-focus: #FF6D1F;
@@ -257,6 +293,12 @@
   --ds-card-padding: 24px;
   --ds-card-radius: 18px;
   --ds-card-shadow: 0px 1px 3px 0px #142C3614;
+
+  /* chart */
+  --ds-chart-series-1: #FF6D1F;
+  --ds-chart-series-2: #FFB489;
+  --ds-chart-series-3: #F5E7C6;
+  --ds-chart-series-4: #565656;
 
   /* color */
   --ds-color-amber-100: #F7EBD3;

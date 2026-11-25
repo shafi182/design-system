@@ -40,13 +40,15 @@ jobs:
           for palette in professional adventurous; do
             python build/deck.py "$palette"
             python build/preview.py "$palette"
+            python build/analyst.py "$palette"
           done
-      - name: Assert nine slides per palette
+      - name: Assert slide counts per palette
         run: |
           python - <<'PY'
           from pptx import Presentation
           for palette in ("professional", "adventurous"):
-              prs = Presentation(f"examples/pitch-deck-{palette}.pptx")
-              assert len(prs.slides) == 9, f"{palette}: {len(prs.slides)} slides"
-              print(palette, len(prs.slides), "slides ok")
+              for name, want in ((f"pitch-deck-{palette}", 9), (f"analyst-{palette}", 5)):
+                  prs = Presentation(f"examples/{name}.pptx")
+                  assert len(prs.slides) == want, f"{name}: {len(prs.slides)} slides"
+                  print(name, len(prs.slides), "slides ok")
           PY

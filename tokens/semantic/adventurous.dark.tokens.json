@@ -3,7 +3,7 @@
     "base": {
       "$type": "color",
       "$value": "{color.charcoal.900}",
-      "$description": "Hitam hangat, bukan navy \u2014 ini pembeda palet."
+      "$description": "Hitam hangat, bukan navy — ini pembeda palet."
     },
     "raised": {
       "$type": "color",
@@ -127,6 +127,27 @@
     "scrim": {
       "$type": "color",
       "$value": "#1A1A1AB3"
+    }
+  },
+  "chart": {
+    "series": {
+      "1": {
+        "$type": "color",
+        "$value": "{color.orange.500}",
+        "$description": "Seri utama chart. Urutan = peringkat visual, bukan hue baru."
+      },
+      "2": {
+        "$type": "color",
+        "$value": "{color.orange.200}"
+      },
+      "3": {
+        "$type": "color",
+        "$value": "{color.sand.500}"
+      },
+      "4": {
+        "$type": "color",
+        "$value": "{color.charcoal.500}"
+      }
     }
   }
 }

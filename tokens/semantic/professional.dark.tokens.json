@@ -34,7 +34,7 @@
     "muted": {
       "$type": "color",
       "$value": "{color.olive.500}",
-      "$description": "7.26:1 \u2014 cukup untuk footer 10px."
+      "$description": "7.26:1 — cukup untuk footer 10px."
     },
     "inverse": {
       "$type": "color",
@@ -126,6 +126,27 @@
     "scrim": {
       "$type": "color",
       "$value": "#0D1E25B3"
+    }
+  },
+  "chart": {
+    "series": {
+      "1": {
+        "$type": "color",
+        "$value": "{color.sage.300}",
+        "$description": "Seri utama chart. Urutan = peringkat visual, bukan hue baru."
+      },
+      "2": {
+        "$type": "color",
+        "$value": "{color.teal.300}"
+      },
+      "3": {
+        "$type": "color",
+        "$value": "{color.olive.500}"
+      },
+      "4": {
+        "$type": "color",
+        "$value": "{color.ivory.300}"
+      }
     }
   }
 }

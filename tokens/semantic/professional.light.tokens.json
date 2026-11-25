@@ -46,7 +46,7 @@
     "link": {
       "$type": "color",
       "$value": "{color.teal.700}",
-      "$description": "6.69:1 \u2014 satu-satunya hue selain navy yang aman untuk tautan."
+      "$description": "6.69:1 — satu-satunya hue selain navy yang aman untuk tautan."
     },
     "on-brand": {
       "$type": "color",
@@ -131,6 +131,27 @@
     "scrim": {
       "$type": "color",
       "$value": "#142C36B3"
+    }
+  },
+  "chart": {
+    "series": {
+      "1": {
+        "$type": "color",
+        "$value": "{color.teal.700}",
+        "$description": "Seri utama chart. Urutan = peringkat visual, bukan hue baru."
+      },
+      "2": {
+        "$type": "color",
+        "$value": "{color.sage.500}"
+      },
+      "3": {
+        "$type": "color",
+        "$value": "{color.olive.700}"
+      },
+      "4": {
+        "$type": "color",
+        "$value": "{color.navy.700}"
+      }
     }
   }
 }

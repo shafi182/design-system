@@ -4,6 +4,26 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id/1.1.0/).
 Versi mengikuti [SemVer](https://semver.org/lang/id/): rename token = major, tambah modul = minor,
 perbaikan visual/kontras = patch.
 
+## [0.8.0] — 2026-11-25
+
+### Added
+- **Lapisan visual `analyst`** — tata letak consulting padat, dirender dari token yang sama:
+  grid panel 2×3 dengan gutter 14px, tab bar 5 item (Table / Chart / Panel / Framework / Visual),
+  margin 32px, radius panel 6px, judul per panel + baris sumber per panel.
+- Primitif baru di `build/analyst.py`: `hbar`, `hstack`, `donut`, `pyramid`, `hub`, `flow`,
+  `stackbar`, `matrix`, `tbl` (header caps + hairline, tanpa zebra, angka rata kanan).
+- Token `chart.series.1…4` di keempat tema — tangga seri per palet, bukan warna baru.
+- `tokens/component/analyst.tokens.json` — `analyst.layout.*` dan `analyst.type.*` (9,5px body, 8px mikro).
+- `examples/analyst-<palette>.pptx` + `examples/preview-analyst-<palette>.html` (5 slide per palet).
+
+### Changed
+- Tab aktif memakai `brand.primary` dengan `text.on-brand`; tab pasif `surface.raised` + `border.subtle`.
+- Chart consulting memakai label langsung di ujung bar dan sumbu nilai yang disembunyikan.
+
+### Unchanged
+- **Palet tidak disentuh.** Professional tetap lima warna, adventurous tetap cream/sand/orange/charcoal;
+  semua kombinasi masih lulus gate kontras `build.py --check`.
+
 ## [0.7.0] — 2026-11-25
 
 ### Changed

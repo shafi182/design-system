@@ -3,7 +3,7 @@
     "base": {
       "$type": "color",
       "$value": "{color.cream.500}",
-      "$description": "Kanvas krem hangat \u2014 bukan kertas putih."
+      "$description": "Kanvas krem hangat — bukan kertas putih."
     },
     "raised": {
       "$type": "color",
@@ -51,7 +51,7 @@
     "on-brand": {
       "$type": "color",
       "$value": "{color.charcoal.900}",
-      "$description": "Charcoal di atas oranye \u2014 putih hanya 3.13:1."
+      "$description": "Charcoal di atas oranye — putih hanya 3.13:1."
     }
   },
   "border": {
@@ -130,6 +130,27 @@
     "scrim": {
       "$type": "color",
       "$value": "#222222B3"
+    }
+  },
+  "chart": {
+    "series": {
+      "1": {
+        "$type": "color",
+        "$value": "{color.orange.500}",
+        "$description": "Seri utama chart. Urutan = peringkat visual, bukan hue baru."
+      },
+      "2": {
+        "$type": "color",
+        "$value": "{color.charcoal.900}"
+      },
+      "3": {
+        "$type": "color",
+        "$value": "{color.orange.300}"
+      },
+      "4": {
+        "$type": "color",
+        "$value": "{color.charcoal.500}"
+      }
     }
   }
 }

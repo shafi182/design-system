@@ -1,0 +1,62 @@
+{
+  "analyst": {
+    "layout": {
+      "margin": {
+        "$type": "dimension",
+        "$value": "32px",
+        "$description": "Bleed deck consulting: 32, bukan 72. Kepadatan adalah fiturnya."
+      },
+      "gutter": {
+        "$type": "dimension",
+        "$value": "14px"
+      },
+      "nav-height": {
+        "$type": "dimension",
+        "$value": "34px"
+      },
+      "nav-gap": {
+        "$type": "dimension",
+        "$value": "6px"
+      },
+      "panel-radius": {
+        "$type": "dimension",
+        "$value": "6px",
+        "$description": "Panel dense lebih tajam dari card marketing (18)."
+      },
+      "panel-pad": {
+        "$type": "dimension",
+        "$value": "12px"
+      },
+      "source-gap": {
+        "$type": "dimension",
+        "$value": "6px"
+      }
+    },
+    "type": {
+      "panel-title": {
+        "$type": "dimension",
+        "$value": "12.5px"
+      },
+      "body": {
+        "$type": "dimension",
+        "$value": "9.5px"
+      },
+      "micro": {
+        "$type": "dimension",
+        "$value": "8px"
+      },
+      "kpi": {
+        "$type": "dimension",
+        "$value": "26px"
+      },
+      "axis": {
+        "$type": "dimension",
+        "$value": "8px"
+      },
+      "row": {
+        "$type": "dimension",
+        "$value": "18px"
+      }
+    }
+  }
+}

@@ -120,6 +120,20 @@ di kolom kiri. Placeholder diberi label `PHOTO` supaya kelihatan belum diisi.
 6. **Sudut membulat, bukan kotak.** Permukaan pakai `radius.lg` (18) atau `radius.xl` (28); garis tetap 0.
 7. **Kontras dijaga CI** — `build.py --check` memeriksa keempat kombinasi palet × mode.
 
+## Lapisan analyst
+
+Deck marketing (`pitch-deck`) menjual ide; lapisan `analyst` melaporkan bukti. Aturannya beda dan
+sengaja beda:
+
+1. **Grid dulu, cerita kemudian.** Enam panel 2×3, satu pesan per panel, tidak ada panel yang melebar.
+2. **Tiap panel punya judul dan sumber sendiri** — klaim tanpa baris sumber tidak masuk.
+3. **Margin 32px, bukan 72px.** Kepadatan adalah fiturnya; jarak napas dipindah ke gutter 14px.
+4. **Tabel tanpa zebra.** Header caps + rule 1px, hairline antar baris, angka rata kanan, tabular.
+5. **Chart bicara langsung.** Label di ujung bar, sumbu nilai disembunyikan, maksimal empat seri dari
+   `chart.series.*` — tangga peringkat, bukan pelangi.
+6. **Satu blok warna penuh per slide** untuk memecah kepadatan; sisanya permukaan tenang.
+7. **Palet tidak berubah** — lapisan ini mengubah komposisi, bukan warna.
+
 ## Dokumentasi
 
 - `README.md` (ini) — aturan pakai dan keputusan desain.
@@ -129,6 +143,9 @@ di kolom kiri. Placeholder diberi label `PHOTO` supaya kelihatan belum diisi.
 - `examples/preview-<palette>.html` — sembilan slide yang sama dengan pptx, untuk verifikasi visual
   tanpa PowerPoint.
 - `examples/pitch-deck-<palette>.pptx` — deck jadi, chart-nya masih bisa diedit di PowerPoint.
+- `examples/analyst-<palette>.pptx` + `examples/preview-analyst-<palette>.html` — lapisan **analyst**:
+  grid 2×3, tab bar, tabel padat, chart consulting, framework, visual. Dibangun dengan
+  `python3 build/analyst.py <palette>`.
 
 `dist/` ikut di-commit supaya repo bisa dipakai tanpa build. Kalau ragu, jalankan
 `python3 build/build.py` — isinya deterministik, jadi diff akan kosong kalau tidak ada perubahan token.
@@ -139,6 +156,7 @@ MIT — lihat `LICENSE`.
 
 ## Versioning
 
+- `v0.8.0` — lapisan visual `analyst` (grid 2×3, tab bar, tabel padat, chart consulting, framework), palet tidak berubah.
 - `v0.7.0` — professional dikunci ke lima warna (tanpa oranye), band callout ikut palet lewat `surface.band`.
 - `v0.6.0` — dua palet (professional / adventurous), font tunggal Manrope, generator multi-palet.
 - `v0.5.0` — sudut membulat: kartu 18px, foto 28px, outline 1px untuk kartu netral.

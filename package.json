@@ -1,6 +1,6 @@
 {
   "name": "@shafi/signal-deck-system",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "private": true,
   "description": "Signal v0.7 \u2014 deck system. Professional (5 colours, no orange) and adventurous (cream/sand/orange/charcoal) palettes, Manrope only, rounded surfaces.",
   "main": "dist/tailwind/preset.js",
