@@ -1058,3 +1058,255 @@ def three_col_progress(x, y, w, h, headers, rows, band, theme="light", band_h=26
     out.append(t(x + 12, by + band_h / 2 - 6, w - 24, 12, band, "text.on-brand", theme,
                  size=8, bold=True))
     return out
+
+
+# ------------------------------- wealth bands, levers, paired bars, meters
+def wealth_bands(x, y, w, h, bands, axis, theme="light"):
+    """Stacked client bands: name + note, two market sizes, share badge, service axis."""
+    out = []
+    ah = 20
+    bh = (h - ah - 4) / len(bands)
+    for i, (name, note, size_a, size_b, share) in enumerate(bands):
+        by = y + i * bh
+        if i:
+            out.append(r(x, by, w, 1, "border.subtle", theme))
+        out.append(t(x, by + 8, w * 0.32, 12, name, "text.primary", theme, size=8.4,
+                     bold=True))
+        out.append(t(x, by + 22, w * 0.32, bh - 26, note, "text.muted", theme, size=6.6,
+                     leading=1.2))
+        mx = x + w * 0.34
+        for j, (val, cap) in enumerate(((size_a, "pasar total"), (size_b, "pasar sasaran"))):
+            out.append(t(mx + j * (w * 0.16), by + 10, w * 0.15, 14, val, "brand.primary",
+                         theme, size=9.5, bold=True))
+            out.append(t(mx + j * (w * 0.16), by + 26, w * 0.15, 10, cap, "text.muted",
+                         theme, size=6, caps=True, spacing=0.06))
+        sw = w * 0.10
+        out.append(r(x + w - sw, by + bh / 2 - 11, sw, 22, "surface.band", theme, radius=11))
+        out.append(t(x + w - sw, by + bh / 2 - 6, sw, 12, share, "text.primary", theme,
+                     size=8, bold=True, align="center"))
+    ay = y + h - ah
+    out.append(r(x, ay, w, 1, "border.strong", theme))
+    out.append(t(x, ay + 5, w * 0.3, 10, axis[0], "text.muted", theme, size=6.2, caps=True,
+                 spacing=0.08))
+    out.append(t(x + w * 0.35, ay + 5, w * 0.3, 10, axis[1], "text.muted", theme, size=6.2,
+                 caps=True, spacing=0.08, align="center"))
+    out.append(t(x + w * 0.7, ay + 5, w * 0.3, 10, axis[2], "text.muted", theme, size=6.2,
+                 caps=True, spacing=0.08, align="right"))
+    return out
+
+
+def levers_rows(x, y, w, h, rows, theme="light", reason_w=0.30):
+    """Numbered lever rows: title + actions on the left, why-it-matters on the right."""
+    out = []
+    rw = w * reason_w
+    lw = w - rw - 16
+    rowh = h / len(rows)
+    out.append(t(x, y - 12, lw, 10, "LEVER", "text.muted", theme, size=6.2, caps=True,
+                 spacing=0.1))
+    out.append(t(x + w - rw, y - 12, rw, 10, "ALASAN", "text.muted", theme, size=6.2,
+                 caps=True, spacing=0.1))
+    for i, (name, actions, reason) in enumerate(rows):
+        yy = y + i * rowh
+        if i:
+            out.append(r(x, yy, w, 1, "border.subtle", theme))
+        out.append(r(x, yy + 10, 18, 18, "brand.primary", theme, radius=9))
+        out.append(t(x, yy + 14, 18, 12, str(i + 1), "text.on-brand", theme, size=7.5,
+                     bold=True, align="center"))
+        out.append(t(x + 26, yy + 8, lw - 26, 13, name, "text.primary", theme, size=7.8,
+                     bold=True))
+        out.append(t(x + 26, yy + 22, lw - 26, rowh - 26, actions, "text.secondary", theme,
+                     size=6.6, leading=1.25))
+        out.append(t(x + w - rw, yy + 8, rw, rowh - 12, reason, "text.secondary", theme,
+                     size=6.6, leading=1.25))
+    return out
+
+
+def paired_bars(x, y, w, h, groups, legend, theme="light", label_w=0.30):
+    """Grouped horizontal bars: baseline series in series.4, accent series in brand."""
+    out = []
+    lx, bw = x, w * label_w
+    out.append(r(lx, y + 4, 7, 7, "chart.series.4", theme, radius=1))
+    out.append(t(lx + 11, y + 1, 90, 10, legend[0], "text.muted", theme, size=6.4))
+    out.append(r(lx + 110, y + 4, 7, 7, "brand.primary", theme, radius=1))
+    out.append(t(lx + 121, y + 1, 90, 10, legend[1], "text.muted", theme, size=6.4))
+    gy = y + 20
+    blocks = len(groups)
+    rows_total = sum(len(g[1]) for g in groups)
+    avail = h - 20 - blocks * 14
+    rh = avail / rows_total
+    barh = min(7, rh * 0.30)
+    cx = lx + bw
+    cw = w - bw
+    for gname, items in groups:
+        out.append(t(lx, gy, w, 12, gname, "brand.primary", theme, size=6.6, bold=True,
+                     caps=True, spacing=0.1))
+        gy += 14
+        for name, without, withgen in items:
+            out.append(t(lx, gy + 2, bw - 10, 12, name, "text.secondary", theme, size=6.6))
+            out.append(r(cx, gy + 1, max(2, cw * without / 100), barh, "chart.series.4",
+                         theme, radius=2))
+            out.append(r(cx, gy + 1 + barh + 2, max(2, cw * withgen / 100), barh,
+                         "brand.primary", theme, radius=2))
+            out.append(t(cx + cw * withgen / 100 + 4, gy + 1 + barh + 1, 26, 10,
+                         f"{withgen}", "text.primary", theme, size=6, bold=True))
+            gy += rh
+    return out
+
+
+def meter_grid(x, y, w, h, items, theme="light", cols=3):
+    """Big percentage + track meter + caption, in a grid. items: (pct, title, note)."""
+    out = []
+    rows = math.ceil(len(items) / cols)
+    cw = w / cols
+    ch = h / rows
+    for i, (pct, title, note) in enumerate(items):
+        bx = x + (i % cols) * cw
+        by = y + (i // cols) * ch
+        col = SERIES[i % 3]
+        out.append(t(bx, by, cw - 14, 26, f"{pct}%", col, theme, size=20, bold=True))
+        out.append(t(bx, by + 28, cw - 14, 12, title, "text.primary", theme, size=7.2,
+                     bold=True))
+        out.append(r(bx, by + 44, cw - 16, 5, "surface.band", theme, radius=2))
+        out.append(r(bx, by + 44, max(2, (cw - 16) * pct / 100), 5, col, theme, radius=2))
+        out.append(t(bx, by + 54, cw - 14, ch - 56, note, "text.muted", theme, size=6.2,
+                     leading=1.2))
+    return out
+
+
+def grouped_hbar(x, y, w, h, groups, theme="light", total=None, label_w=0.34):
+    """Horizontal bars grouped under subheads, value at the bar end, optional total."""
+    out = []
+    lx, bw = x, w * label_w
+    cw = w - bw
+    blocks = len(groups)
+    rows = sum(len(g[1]) for g in groups)
+    avail = h - (14 * blocks) - (22 if total else 0)
+    rh = avail / rows
+    barh = min(9, rh * 0.42)
+    peak = max(v for _, items in groups for _, v in items) or 1
+    gy = y
+    for gname, items in groups:
+        out.append(t(lx, gy, w, 12, gname, "brand.primary", theme, size=6.6, bold=True,
+                     caps=True, spacing=0.1))
+        gy += 14
+        for name, val in items:
+            out.append(t(lx, gy + (rh - 12) / 2, bw - 12, 12, name, "text.secondary",
+                         theme, size=6.6))
+            out.append(r(lx + bw, gy + (rh - barh) / 2, max(2, cw * 0.86 * val / peak),
+                         barh, SERIES[0], theme, radius=2))
+            out.append(t(lx + bw + cw * 0.86 * val / peak + 4, gy + (rh - 10) / 2, 40, 10,
+                         f"{val:,}".replace(",", "."), "text.primary", theme, size=6.4,
+                         bold=True))
+            gy += rh
+    if total:
+        ty = y + h - 20
+        out.append(r(x, ty - 6, w, 1, "border.strong", theme))
+        out.append(t(lx, ty, bw, 12, total[0], "text.primary", theme, size=7.2, bold=True))
+        out.append(t(lx + bw, ty, cw, 12, total[1], "text.primary", theme, size=7.2,
+                     bold=True))
+    return out
+
+
+def diverging_bars(x, y, w, h, rows, heads, theme="light"):
+    """Back-to-back bars from a centre axis: left = exit, right = stay."""
+    out = []
+    lw = w * 0.30
+    cx = x + lw + (w - lw) / 2
+    half = (w - lw) / 2 - 12
+    out.append(t(x, y, lw, 10, heads[2], "text.muted", theme, size=6.2, caps=True,
+                 spacing=0.1))
+    out.append(t(cx - half, y, half, 10, heads[0], "text.muted", theme, size=6.2, caps=True,
+                 spacing=0.1, align="right"))
+    out.append(t(cx, y, half, 10, heads[1], "text.muted", theme, size=6.2, caps=True,
+                 spacing=0.1))
+    out.append(r(x, y + 12, w, 1, "border.strong", theme))
+    ry = y + 18
+    rowh = (h - (ry - y)) / len(rows)
+    peak = max(max(a, b) for _, a, b, _ in rows) or 1
+    barh = min(14, rowh * 0.46)
+    for i, (name, left, right, note) in enumerate(rows):
+        yy = ry + i * rowh
+        if i:
+            out.append(r(x, yy, w, 1, "border.subtle", theme))
+        out.append(t(x, yy + (rowh - 12) / 2, lw - 10, 12, name, "text.primary", theme,
+                     size=7, bold=True))
+        lb = max(2, half * left / peak)
+        rb = max(2, half * right / peak)
+        by = yy + (rowh - barh) / 2
+        out.append(r(cx - lb, by, lb, barh, "brand.primary", theme, radius=2))
+        out.append(r(cx, by, rb, barh, "chart.series.4", theme, radius=2))
+        out.append(t(cx - lb - 30, by + barh / 2 - 5, 26, 10, str(left), "text.primary",
+                     theme, size=6.6, bold=True, align="right"))
+        out.append(t(cx + rb + 4, by + barh / 2 - 5, 30, 10, str(right), "text.primary",
+                     theme, size=6.6, bold=True))
+        if note:
+            out.append(t(cx + rb + 34, by + barh / 2 - 5, 60, 10, note, "text.muted", theme,
+                         size=6))
+    return out
+
+
+def driver_bars(x, y, w, h, drivers, totals, theme="light"):
+    """Driver decomposition: winners above the baseline, laggards below."""
+    out = []
+    top_max = max(v for _, v, _ in drivers if v > 0) or 1
+    bot_max = max(abs(v) for _, _, v in drivers if v < 0) or 1
+    peak = max(top_max, bot_max)
+    cw = w / (len(drivers) + 1)
+    bw = cw * 0.58
+    plot = h - 18
+    mid = y + plot / 2
+    out.append(r(x, mid, w, 1, "border.strong", theme))
+    for i, (name, up, down) in enumerate(drivers):
+        bx = x + i * cw + (cw - bw) / 2
+        if up:
+            bh = (up / peak) * (plot / 2 - 30)
+            out.append(r(bx, mid - bh, bw, bh, "brand.primary", theme, radius=2))
+            out.append(t(bx - 4, mid - bh - 13, bw + 8, 11, f"+{up}", "text.primary", theme,
+                         size=7, bold=True, align="center"))
+        if down:
+            bh = (abs(down) / peak) * (plot / 2 - 30)
+            out.append(r(bx, mid, bw, bh, "chart.series.4", theme, radius=2))
+            out.append(t(bx - 4, mid + bh + 2, bw + 8, 11, f"{down}", "text.primary",
+                         theme, size=7, bold=True, align="center"))
+        out.append(t(bx - 10, y + plot + 2, bw + 20, 12, name, "text.muted", theme,
+                     size=6.2, align="center", leading=1.1))
+    tx = x + len(drivers) * cw + (cw - bw) / 2
+    for val, col in ((totals[0], "brand.primary"), (totals[1], "chart.series.4")):
+        bh = (abs(val) / peak) * (plot / 2 - 30)
+        if val > 0:
+            out.append(r(tx, mid - bh, bw, bh, col, theme, radius=2))
+            out.append(t(tx - 4, mid - bh - 13, bw + 8, 11, f"+{val}", "text.primary",
+                         theme, size=7.5, bold=True, align="center"))
+        else:
+            out.append(r(tx, mid, bw, bh, col, theme, radius=2))
+            out.append(t(tx - 4, mid + bh + 2, bw + 8, 11, f"{val}", "text.primary", theme,
+                         size=7.5, bold=True, align="center"))
+    out.append(t(tx - 10, y + plot + 2, bw + 20, 12, "TOTAL", "text.primary", theme,
+                 size=6.6, bold=True, align="center"))
+    return out
+
+
+def pillar_targets(x, y, w, h, pillars, theme="light", pill_h=30):
+    """Three (or more) pillars: header, bullet list, target pill at the foot."""
+    out = []
+    gap = 10
+    cw = (w - gap * (len(pillars) - 1)) / len(pillars)
+    for i, (name, note, items, target) in enumerate(pillars):
+        bx = x + i * (cw + gap)
+        out.append(r(bx, y, cw, h, "surface.raised", theme, radius=4,
+                     stroke="border.subtle"))
+        out.append(r(bx, y, cw, 26, "brand.primary", theme, radius=4))
+        out.append(t(bx + 8, y + 7, cw - 16, 13, name, "text.on-brand", theme, size=8,
+                     bold=True))
+        out.append(t(bx + 10, y + 34, cw - 20, 24, note, "text.muted", theme, size=6.4,
+                     leading=1.2))
+        for j, it in enumerate(items):
+            yy = y + 62 + j * 15
+            out.append(r(bx + 10, yy + 4, 4, 4, "brand.primary", theme, radius=1))
+            out.append(t(bx + 18, yy, cw - 28, 14, it, "text.secondary", theme, size=6.6,
+                         leading=1.15))
+        ty = y + h - pill_h - 8
+        out.append(r(bx + 10, ty, cw - 20, pill_h, "surface.band", theme, radius=3))
+        out.append(t(bx + 14, ty + 5, cw - 28, pill_h - 8, target, "text.primary", theme,
+                     size=7, bold=True, leading=1.2))
+    return out

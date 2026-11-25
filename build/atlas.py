@@ -548,6 +548,95 @@ A.add("light", "Diamond segmen, baris platform, tahap vs contoh, tiga kolom prog
 ], A.FOOT, 13)
 
 
+# ------------------------- 14 wealth bands + levers + paired bars + meters
+A.add("light", "Pita segmen, tuas biaya, batang berpasangan, meter prioritas", None, [
+    *box(0, 0, "wealth_bands", "Pita klien bertumpuk: dua ukuran pasar, pangsa, sumbu layanan",
+         lambda x, y, w, h: S.wealth_bands(
+             x, y, w, h,
+             [("Ultra-high net worth", "Aset di atas $10 juta", "$10tn", "$1,5tn", "~7%"),
+              ("High net worth", "Aset $1-10 juta", "$18tn", "$3,1tn", "<1%"),
+              ("Mass affluent", "Aset di bawah $1 juta", "$13tn", "$3,5tn", "n/a")],
+             ("Dipandu advisor", "Hibrida", "Digital penuh"), "light")),
+    *box(1, 0, "levers_rows", "Baris tuas bernomor + aksi, alasan di kolom kanan",
+         lambda x, y, w, h: S.levers_rows(
+             x, y, w, h,
+             [("Pengadaan langsung dan tidak langsung",
+               "Kapabilitas beli yang lincah, relasi pemasok lebih luas, substitusi bahan baku",
+               "Biaya bahan adalah komponen terbesar, jadi perubahan kecil berdampak besar"),
+              ("Manufaktur ramping digital",
+               "Investasi digitalisasi lini, digital twin untuk menemukan bottleneck",
+               "Mengurangi waktu henti tanpa belanja kapasitas baru"),
+              ("Keunggulan perencanaan terpadu",
+               "Hubungkan pasokan dan permintaan, ramalan lebih baik, skenario digital",
+               "Perencanaan buruk memaksa stok penyangga mahal"),
+              ("Optimasi jaringan logistik",
+               "Ukuran jaringan sesuai permintaan, antisipasi pergeseran konsumsi",
+               "Jaringan yang salah ukuran membebani biaya tetap"),
+              ("Distribusi dan pergudangan",
+               "Kecepatan kirim, digitalisasi gudang, pelacakan lokasi, otomasi",
+               "Sentuhan terakhir sering jadi biaya tersembunyi")], "light")),
+    *box(0, 1, "paired_bars", "Batang horizontal berpasangan, dikelompokkan per tema",
+         lambda x, y, w, h: S.paired_bars(
+             x, y, w, h,
+             [("Keahlian dan kolaborasi",
+               [("Menerapkan keahlian", 18, 46), ("Mengelola orang", 9, 38),
+                ("Berinteraksi dengan pemangku", 20, 44)]),
+              ("Pengolahan data",
+               [("Memproses data", 65, 90), ("Mengumpulkan data", 60, 76)]),
+              ("Kerja fisik",
+               [("Fisik tak terduga", 12, 40), ("Fisik terduga", 82, 85)])],
+             ("Tanpa AI generatif", "Dengan AI generatif"), "light")),
+    *box(1, 1, "meter_grid", "Angka besar + meter trek + catatan, grid tiga kolom",
+         lambda x, y, w, h: S.meter_grid(
+             x, y, w, h,
+             [(95, "Digitalisasi HR", "RPA dan layanan mandiri memangkas administrasi"),
+              (93, "Agile dan mobilitas", "Tim lintas fungsi, rotasi peran internal"),
+              (85, "Peran mitra bisnis", "Dari administrasi ke penasihat talenta"),
+              (70, "Praktik HR terpusat", "Pusat keahlian menggantikan generalis"),
+              (67, "Pengalaman karyawan", "Perjalanan karyawan ujung ke ujung"),
+              (60, "Pusat keunggulan virtual", "Keahlian jarak jauh, biaya lebih rendah")],
+             "light")),
+], A.FOOT, 14)
+
+# ------------------- 15 grouped bars + diverging + driver bars + pillars
+A.add("light", "Batang berkelompok, batang bercabang, dekomposisi driver, pilar target", None, [
+    *box(0, 0, "grouped_hbar", "Batang horizontal berkelompok, nilai di ujung, total di kaki",
+         lambda x, y, w, h: S.grouped_hbar(
+             x, y, w, h,
+             [("Inti otomotif", [("Produsen kendaraan", 470), ("Pemasok fokus mesin bakar", 250),
+                                 ("Pemasok non-mesin bakar", 125), ("Perawatan dan reparasi", 215)]),
+              ("Industri bersebelahan", [("Peralatan dan jasa", 210), ("Produksi energi", 6),
+                                         ("Infrastruktur energi", 4), ("Daur ulang", 12)])],
+             "light", total=("Total lapangan kerja 2019", "1.090 ribu"))),
+    *box(1, 0, "diverging_bars", "Batang dua arah dari poros tengah: keluar vs tetap",
+         lambda x, y, w, h: S.diverging_bars(
+             x, y, w, h,
+             [("Industri", 48, 24, ""), ("Konsumen", 30, 15, ""),
+              ("Telekomunikasi dan teknologi", 29, 14, ""),
+              ("Energi dan material", 30, 23, ""), ("Keuangan dan properti", 34, 18, ""),
+              ("Kesehatan", 18, 8, "")],
+             ("Keluar atau kurangi", "Tetap", "Sektor"), "light")),
+    *box(0, 1, "driver_bars", "Dekomposisi driver di atas dan di bawah garis dasar",
+         lambda x, y, w, h: S.driver_bars(
+             x, y, w, h,
+             [("Pertumbuhan pendapatan", 3.6, 0), ("Perubahan margin", 1.0, -3.4),
+              ("Perubahan P/E", 0.6, -1.7), ("Dividen", 0.4, -0.2)],
+             (5.6, -5.3), "light")),
+    *box(1, 1, "pillar_targets", "Pilar: header, butir, pil target di kaki",
+         lambda x, y, w, h: S.pillar_targets(
+             x, y, w, h,
+             [("People", "Kapasitas dan keterlibatan",
+               ["Lebih banyak jalur karier", "Model kepemimpinan humanis",
+                "Manajemen keahlian diperkuat"], "Keterlibatan di kuartil teratas"),
+              ("Profit", "Pertumbuhan dan arus kas",
+               ["Pendapatan material maju ~20%", "Margin EBIT menebal",
+                "Arus kas bebas positif"], "EPS naik sejak tahun pertama"),
+              ("Planet", "Jejak dan bahan",
+               ["R&D dipercepat", "Porsi bio-based dan daur ulang naik",
+                "VOC dan pelarut turun"], "Intensitas emisi turun dua digit")], "light")),
+], A.FOOT, 15)
+
+
 if __name__ == "__main__":
     out = ROOT / "examples" / f"atlas-{A.PALETTE}.pptx"
     A.render_pptx(out)

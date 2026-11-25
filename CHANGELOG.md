@@ -4,6 +4,28 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id/1.1.0/).
 Versi mengikuti [SemVer](https://semver.org/lang/id/): rename token = major, tambah modul = minor,
 perbaikan visual/kontras = patch.
 
+## [0.10.0] — 2026-11-25
+
+### Bentuk gelombang keempat (44 → 52)
+
+Delapan bentuk baru dari referensi wealth spectrum, cost levers, McKinsey AI, CHRO priorities, BCG automotive, Yale/McKinsey Russia exits, M&A TSR, dan pilar People/Profit/Planet:
+
+- `wealth_bands` — pita klien bertumpuk: nama + catatan aset, dua ukuran pasar, badge pangsa, sumbu layanan advisor→digital.
+- `levers_rows` — baris tuas bernomor + aksi di kiri, alasan di kolom kanan.
+- `paired_bars` — batang horizontal berpasangan dikelompokkan per tema, legenda dua seri.
+- `meter_grid` — angka persen besar + meter trek + catatan, grid tiga kolom.
+- `grouped_hbar` — batang horizontal berkelompok dengan nilai di ujung dan baris total.
+- `diverging_bars` — batang dua arah dari poros tengah: keluar vs tetap.
+- `driver_bars` — dekomposisi driver di atas dan di bawah garis dasar, kolom total di kanan.
+- `pillar_targets` — pilar: header berwarna, butir, pil target di kaki.
+
+Atlas 13 → 15 slide. Slide 14 pita segmen / tuas / batang berpasangan / meter; slide 15 batang berkelompok / bercabang / driver / pilar.
+
+### Perbaikan
+
+- `driver_bars`: area plot disisakan 18 px untuk nama kategori; tinggi batang dihitung dari area plot sehingga label tidak menyentuh tepi kartu.
+- Footer analyst, kicker `dist/`, dan `package.json` naik ke v0.10.
+
 ## [0.9.0] — 2026-11-25
 
 ### Added
