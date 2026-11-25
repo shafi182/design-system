@@ -4,6 +4,35 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id/1.1.0/).
 Versi mengikuti [SemVer](https://semver.org/lang/id/): rename token = major, tambah modul = minor,
 perbaikan visual/kontras = patch.
 
+## [0.9.0] — 2026-11-25
+
+### Added
+- **`build/shapes.py`** — 28 bentuk siap pakai yang hanya memakai token (tidak ada hex):
+  blok angka (`kpi_strip`, `kpi_grid`, `stat_cards`, `stat_row`), teks
+  (`headline`, `body_text`, `bullets`, `ticks`, `quote_block`, `banner`),
+  tabel (`compare_table` dua periode + kolom delta, `delta_rows`, `icon_grid`, `list_rows`,
+  `agenda`), grafik (`chart` batang/garis, `waterfall`, `donut_row`),
+  diagram (`pyramid`, `twin_pyramid`, `band_stack`, `pillar_framework`, `concentric`,
+  `ring_blocks`, `team_circle`, `flow_chain`, `journey_lane`, `branch`, `before_after`),
+  peta (`map_bubbles`, `map_regions`).
+- **`build/atlas.py`** — deck katalog 9 slide, satu keluarga bentuk per slide, setiap panel
+  diberi nama fungsi + aturan pakai. `examples/atlas-<palette>.pptx` dan
+  `examples/preview-atlas-<palette>.html`.
+- `compare_table` menerima baris 3- atau 4-tuple `(nama, sebelum, sesudah[, delta])`;
+  baris yang disorot memakai band `brand.subtle`.
+
+### Changed
+- `label`, `headline`, `kicker` mengembalikan **list** primitif, bukan dict, supaya bisa
+  displat (`*S.kicker(...)`) saat menyusun panel.
+- Bentuk yang menerima `h` sekarang benar-benar memakai tinggi panel penuh
+  (`compare_table`, `delta_rows`, `list_rows` menambah hairline antar baris;
+  `flow_chain` 88% tinggi; `branch` menyebar 0,24–0,76; chip `radial` ikut tinggi baris).
+- Footer analyst dan kicker `dist/` naik ke v0.9.
+
+### Not changed
+- Palet. Nol warna baru, nol hex baru. `build.py --check` lulus di keempat kombinasi
+  palet × mode.
+
 ## [0.8.0] — 2026-11-25
 
 ### Added

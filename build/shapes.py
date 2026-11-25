@@ -24,12 +24,12 @@ SERIES = ["chart.series.1", "chart.series.2", "chart.series.3", "chart.series.4"
 
 
 # --------------------------------------------------------------------- text blocks
-def label(x, y, w, text, theme="light", color="text.muted", size=7):
+def label(x, y, w, text, theme="light", color="text.muted", size: float = 7):
     """Micro caption — used under every component in the atlas."""
     return [t(x, y, w, 10, text, color, theme, size=size, leading=1.15)]
 
 
-def headline(x, y, w, h, text, theme="light", size=15, color="text.primary"):
+def headline(x, y, w, h, text, theme="light", size: float = 15, color="text.primary"):
     """The one claim a slide makes. Sentence case, no full stop."""
     return [t(x, y, w, h, text, color, theme, size=size, bold=True, leading=1.15)]
 
@@ -39,11 +39,11 @@ def kicker(x, y, w, text, theme="light"):
               spacing=0.14)]
 
 
-def body_text(x, y, w, h, text, theme="light", size=9):
+def body_text(x, y, w, h, text, theme="light", size: float = 9):
     return [t(x, y, w, h, text, "text.secondary", theme, size=size, leading=1.35)]
 
 
-def bullets(x, y, w, h, items, theme="light", size=9, gap=15, color="text.secondary"):
+def bullets(x, y, w, h, items, theme="light", size: float = 9, gap: float = 15, color="text.secondary"):
     """Square marker + one line of text. No bullets glyphs, no indents."""
     out = []
     for i, item in enumerate(items):
@@ -53,7 +53,7 @@ def bullets(x, y, w, h, items, theme="light", size=9, gap=15, color="text.second
     return out
 
 
-def ticks(x, y, w, h, items, theme="light", size=8.5, gap=17, cols=1):
+def ticks(x, y, w, h, items, theme="light", size: float = 8.5, gap: float = 17, cols=1):
     """Hollow box + text, one or two columns — the checklist form."""
     out = []
     cw = w / cols
@@ -157,12 +157,14 @@ def stat_row(x, y, w, h, items, theme="light"):
     return out
 
 
-def delta_rows(x, y, w, h, rows, theme="light", rowh=20, label_w=150):
+def delta_rows(x, y, w, h, rows, theme="light", rowh: float = 20, label_w=150):
     """Label + track bar + signed delta. Use for 'X% of tasks are exposed'."""
     out = []
     peak = max(abs(v) for _, v, _ in rows) or 1
     for i, (name, value, sign) in enumerate(rows):
         yy = y + i * rowh
+        if i:
+            out.append(r(x, yy - 4, w, 1, "border.subtle", theme))
         out.append(t(x, yy + 3, label_w, 14, name, "text.primary", theme, size=7.5))
         bx, bw = x + label_w + 6, w - label_w - 46
         out.append(r(bx, yy + 6, bw, 7, "surface.band", theme, radius=2))
@@ -191,6 +193,8 @@ def compare_table(x, y, w, h, head, rows, theme="light", rowh=18, value_w=58,
         name, before, after = row[0], row[1], row[2]
         delta = row[3] if len(row) > 3 else ""
         yy = y + 18 + i * rowh
+        if i:
+            out.append(r(x, yy - 4, w, 1, "border.subtle", theme))
         if highlight == i:
             out.append(r(x - 4, yy - 2, w + 8, rowh, "brand.subtle", theme, radius=3))
         out.append(t(x, yy + 3, w - 2 * value_w - delta_w, 13, name, "text.primary",
@@ -222,7 +226,7 @@ def icon_grid(x, y, w, h, items, theme="light", cols=4, gap=8):
     return out
 
 
-def list_rows(x, y, w, h, rows, theme="light", rowh=24, num=True):
+def list_rows(x, y, w, h, rows, theme="light", rowh: float = 24, num=True):
     """Numbered rows, one claim each — for 'five disruptions' style slides."""
     out = []
     for i, (name, note) in enumerate(rows):
@@ -466,15 +470,16 @@ def flow_chain(x, y, w, h, steps, theme="light"):
     bw = (w - gap * (n - 1)) / n
     for i, (name, note) in enumerate(steps):
         bx = x + i * (bw + gap)
-        out.append(r(bx, y, bw, h * 0.62, "surface.raised", theme, radius=4,
+        bh = h * 0.88
+        out.append(r(bx, y, bw, bh, "surface.raised", theme, radius=4,
                      stroke="border.subtle"))
-        out.append(r(bx, y, 2, h * 0.62, "brand.primary", theme))
-        out.append(t(bx + 10, y + 8, bw - 18, 14, name, "text.primary", theme, size=8.5,
+        out.append(r(bx, y, 2, bh, "brand.primary", theme))
+        out.append(t(bx + 10, y + 10, bw - 18, 16, name, "text.primary", theme, size=8.5,
                      bold=True))
-        out.append(t(bx + 10, y + 24, bw - 18, h * 0.62 - 28, note, "text.secondary",
-                     theme, size=7, leading=1.2))
+        out.append(t(bx + 10, y + 30, bw - 18, bh - 40, note, "text.secondary",
+                     theme, size=7, leading=1.25))
         if i < n - 1:
-            out.append(t(bx + bw + 2, y + h * 0.31 - 8, gap - 2, 14, "\u203a",
+            out.append(t(bx + bw + 2, y + bh / 2 - 8, gap - 2, 14, "\u203a",
                          "brand.primary", theme, size=12, bold=True, align="center"))
     return out
 
@@ -524,16 +529,16 @@ def branch(x, y, w, h, left, right, branches, theme="light"):
     cx = x + w * 0.18
     out.append(r(cx, y + h / 2 - 3, w * 0.10, 6, "brand.primary", theme, radius=3))
     for bi, (head, nodes) in enumerate(branches):
-        sy = y + h * (0.26 + 0.48 * bi)
+        sy = y + 12 + h * (0.24 + 0.52 * bi)
         out.append(r(cx + w * 0.10, sy, w * 0.14, 2, "brand.primary", theme))
         out.append(t(x + w * 0.26, sy - 8, 110, 12, head, "text.primary", theme, size=7.5,
                      bold=True, caps=True, spacing=0.08))
         for ni, node in enumerate(nodes):
             nx = x + w * 0.44 + ni * (w * 0.28)
-            out.append(r(nx, sy - 16, w * 0.26, 34, "surface.band", theme, radius=3,
+            out.append(r(nx, sy - 26, w * 0.26, 52, "surface.band", theme, radius=3,
                          stroke="border.subtle"))
-            out.append(t(nx + 8, sy - 10, w * 0.26 - 16, 24, node, "text.secondary",
-                         theme, size=7, leading=1.2))
+            out.append(t(nx + 8, sy - 18, w * 0.26 - 16, 40, node, "text.secondary",
+                         theme, size=7.2, leading=1.25))
             if ni == 0:
                 out.append(r(nx - w * 0.02, sy - 1, w * 0.02, 2, "brand.primary", theme))
     out.append(t(x, y, 90, 10, left, "text.muted", theme, size=6.5, caps=True,

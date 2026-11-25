@@ -63,7 +63,7 @@ def hx(theme, name):
 
 
 # ------------------------------------------------------------------ primitives
-def t(x, y, w, h, text, color, theme="light", size=9.5, bold=False, leading=1.3,
+def t(x, y, w, h, text, color, theme="light", size: float = 9.5, bold=False, leading=1.3,
       spacing=0.0, caps=False, align="left", font="body"):
     return {"kind": "text", "x": x, "y": y, "w": w, "h": h, "text": text, "theme": theme,
             "color": color, "font": font, "size": size, "bold": bold, "leading": leading,
@@ -155,7 +155,7 @@ def panel(col, row, title, body, src, theme="light", kicker=None):
     return out
 
 
-def tbl(x, y, w, header, rows, theme="light", rowh=17, value_w=64, badge=False,
+def tbl(x, y, w, header, rows, theme="light", rowh: float = 17, value_w=64, badge=False,
         rule=True):
     """Hairline table: caps header, one hairline under it, 18px rows, numbers right."""
     out = []
@@ -261,11 +261,13 @@ def radial(x, y, w, h, center, items, theme="light", radius=26):
     for i, label in enumerate(items[:6]):
         c, rw = slots[i]
         bx = x + c * cw + 6
-        by = y + rw * ch + (ch - 15) / 2
+        chip = min(28, ch * 0.42)
+        by = y + rw * ch + (ch - chip) / 2
         bw = cw - 12
-        out.append(r(bx, by, bw, 15, "surface.base", theme, radius=3, stroke="border.strong"))
-        out.append(t(bx, by + 3, bw, 11, label, "text.primary", theme, size=6.8,
-                     align="center"))
+        out.append(r(bx, by, bw, chip, "surface.base", theme, radius=3,
+                     stroke="border.strong"))
+        out.append(t(bx, by + chip / 2 - 5, bw, 12, label, "text.primary", theme,
+                     size=6.8, align="center"))
     return out
 
 
@@ -392,7 +394,7 @@ def add(theme, title, active, elements, footer_note, page):
     SLIDES.append({"theme": theme, "elements": els})
 
 
-FOOT = f"Signal v0.8 · analyst layout · palet {PALETTE}"
+FOOT = f"Signal v0.9 · analyst layout · palet {PALETTE}"
 
 # 01 — TABLE
 bx0, by0, bw, bh = body(0, 0)
