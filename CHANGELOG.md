@@ -4,6 +4,32 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id/1.1.0/).
 Versi mengikuti [SemVer](https://semver.org/lang/id/): rename token = major, tambah modul = minor,
 perbaikan visual/kontras = patch.
 
+## [0.13.0] — 2026-11-25
+
+### Reset bentuk: atlas mengikuti sepuluh referensi
+
+Bukan penambahan shape — katalog atlas diganti total. Sepuluh layout klien
+ditranskrip ulang, satu slide per layout. 57 shape lama tetap ada di
+`build/shapes.py` dan atlas lamanya diarsipkan di `build/atlas_v0.py`.
+
+- `build/refs.py` baru — `twin_pyramid_flow` (SCT 590), `matrix_grid` (ESG 562),
+  `ring_list` (588 + premier franchise), `ring_stats` (fortress risk),
+  `channel_columns` (B2B/B2C), `example_grid` (Ford IP 195), `split_stats_story` (BCG 69),
+  `two_group_bullets` (2nd-hand 66), `orbit_stats` (MGI).
+- `build/atlas.py` ditulis ulang: 10 slide, satu shape per slide, panel penuh.
+- Palet tidak disentuh — token, semantic, dan `--check` sama persis.
+
+### Perbaikan dari audit
+
+- `ring_list`: label segmen kini duduk di 1,05r dengan kotak 0,96r; tidak lagi
+  menabrak hub maupun label tetangga (tumpang 13 × 47 px hilang).
+- `ring_stats`: radius cincin dibatasi 0,25 lebar / 0,235 tinggi; simpul bawah
+  tidak lagi menyentuh band merah.
+- `orbit_stats`: pusat digeser ke 0,235 lebar, radius 0,165 lebar / 0,215 tinggi;
+  label simpul tidak lagi menabrak kolom statistik kanan.
+- `channel_columns`: tinggi blok statistik dikurangi 26 px supaya baris penutup
+  tidak bertumpang dengan catatan terakhir.
+
 ## [0.12.0] — 2026-11-25
 
 ### Bentuk gelombang keenam (56 → 57)
