@@ -1,0 +1,25 @@
+name: validate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  tokens:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate tokens (aliases + WCAG contrast)
+        run: python build/build.py --check
+      - name: Build
+        run: python build/build.py
+      - name: Fail if dist is stale
+        run: |
+          git diff --exit-code dist/ || {
+            echo "dist/ tidak sinkron dengan tokens/ — jalankan python build/build.py lalu commit."
+            exit 1
+          }

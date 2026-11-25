@@ -1,0 +1,15 @@
+{
+  "name": "@shafi/corporate-calm",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Corporate Calm design system — one token source for deck, document, web and app.",
+  "main": "dist/tailwind/preset.js",
+  "files": ["dist"],
+  "scripts": {
+    "build": "python3 build/build.py",
+    "check": "python3 build/build.py --check",
+    "examples": "python3 build/examples.py",
+    "verify": "npm run check && npm run build && npm run examples"
+  },
+  "license": "UNLICENSED"
+}

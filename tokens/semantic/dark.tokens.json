@@ -1,0 +1,114 @@
+{
+  "surface": {
+    "base": {
+      "$type": "color",
+      "$value": "{color.navy.950}"
+    },
+    "raised": {
+      "$type": "color",
+      "$value": "{color.navy.900}"
+    },
+    "sunken": {
+      "$type": "color",
+      "$value": "#081726"
+    },
+    "inverse": {
+      "$type": "color",
+      "$value": "{color.sand.100}"
+    }
+  },
+  "text": {
+    "primary": {
+      "$type": "color",
+      "$value": "#E8EDF4"
+    },
+    "secondary": {
+      "$type": "color",
+      "$value": "{color.navy.300}"
+    },
+    "muted": {
+      "$type": "color",
+      "$value": "{color.navy.400}"
+    },
+    "inverse": {
+      "$type": "color",
+      "$value": "{color.navy.900}"
+    },
+    "link": {
+      "$type": "color",
+      "$value": "{color.navy.300}"
+    },
+    "on-brand": {
+      "$type": "color",
+      "$value": "{color.white}"
+    }
+  },
+  "border": {
+    "subtle": {
+      "$type": "color",
+      "$value": "{color.navy.800}"
+    },
+    "default": {
+      "$type": "color",
+      "$value": "{color.navy.700}"
+    },
+    "strong": {
+      "$type": "color",
+      "$value": "{color.navy.400}"
+    },
+    "focus": {
+      "$type": "color",
+      "$value": "{color.navy.300}"
+    }
+  },
+  "brand": {
+    "primary": {
+      "$type": "color",
+      "$value": "{color.navy.500}"
+    },
+    "hover": {
+      "$type": "color",
+      "$value": "{color.navy.400}"
+    },
+    "active": {
+      "$type": "color",
+      "$value": "{color.navy.300}"
+    },
+    "subtle": {
+      "$type": "color",
+      "$value": "{color.navy.900}"
+    }
+  },
+  "status": {
+    "success": {
+      "$type": "color",
+      "$value": "#3E9E76"
+    },
+    "success-subtle": {
+      "$type": "color",
+      "$value": "#12291F"
+    },
+    "warning": {
+      "$type": "color",
+      "$value": "#D9A03C"
+    },
+    "warning-subtle": {
+      "$type": "color",
+      "$value": "#2A2113"
+    },
+    "danger": {
+      "$type": "color",
+      "$value": "#D26054"
+    },
+    "danger-subtle": {
+      "$type": "color",
+      "$value": "#2A1614"
+    }
+  },
+  "overlay": {
+    "scrim": {
+      "$type": "color",
+      "$value": "#000000A6"
+    }
+  }
+}

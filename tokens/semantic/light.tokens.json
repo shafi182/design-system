@@ -1,0 +1,126 @@
+{
+  "surface": {
+    "base": {
+      "$type": "color",
+      "$value": "{color.sand.100}",
+      "$description": "Kanvas halaman. Hangat, bukan putih."
+    },
+    "raised": {
+      "$type": "color",
+      "$value": "{color.white}",
+      "$description": "Kartu, panel, tabel di atas kanvas."
+    },
+    "sunken": {
+      "$type": "color",
+      "$value": "{color.sand.200}",
+      "$description": "Area terbenam: code block, well, strip."
+    },
+    "inverse": {
+      "$type": "color",
+      "$value": "{color.navy.900}",
+      "$description": "Permukaan gelap di dalam halaman terang."
+    }
+  },
+  "text": {
+    "primary": {
+      "$type": "color",
+      "$value": "{color.navy.900}",
+      "$description": "Isi utama. Kontras 12.4:1 di surface.base."
+    },
+    "secondary": {
+      "$type": "color",
+      "$value": "{color.slate.500}",
+      "$description": "Metadata, caption, label. 4.8:1."
+    },
+    "muted": {
+      "$type": "color",
+      "$value": "{color.slate.400}",
+      "$description": "Placeholder, teks non-esensial. Jangan untuk isi."
+    },
+    "inverse": {
+      "$type": "color",
+      "$value": "{color.sand.100}"
+    },
+    "link": {
+      "$type": "color",
+      "$value": "{color.navy.700}"
+    },
+    "on-brand": {
+      "$type": "color",
+      "$value": "{color.white}"
+    }
+  },
+  "border": {
+    "subtle": {
+      "$type": "color",
+      "$value": "{color.sand.300}",
+      "$description": "Pemisah halus, garis tabel."
+    },
+    "default": {
+      "$type": "color",
+      "$value": "{color.sand.400}",
+      "$description": "Border komponen: input, tombol sekunder."
+    },
+    "strong": {
+      "$type": "color",
+      "$value": "{color.slate.500}"
+    },
+    "focus": {
+      "$type": "color",
+      "$value": "{color.navy.500}",
+      "$description": "Ring fokus 2px. Wajib untuk aksesibilitas."
+    }
+  },
+  "brand": {
+    "primary": {
+      "$type": "color",
+      "$value": "{color.navy.700}"
+    },
+    "hover": {
+      "$type": "color",
+      "$value": "{color.navy.800}"
+    },
+    "active": {
+      "$type": "color",
+      "$value": "{color.navy.900}"
+    },
+    "subtle": {
+      "$type": "color",
+      "$value": "{color.navy.50}",
+      "$description": "Latar chip, tag, selected row."
+    }
+  },
+  "status": {
+    "success": {
+      "$type": "color",
+      "$value": "{color.green.500}"
+    },
+    "success-subtle": {
+      "$type": "color",
+      "$value": "{color.green.100}"
+    },
+    "warning": {
+      "$type": "color",
+      "$value": "{color.amber.500}"
+    },
+    "warning-subtle": {
+      "$type": "color",
+      "$value": "{color.amber.100}"
+    },
+    "danger": {
+      "$type": "color",
+      "$value": "{color.red.500}"
+    },
+    "danger-subtle": {
+      "$type": "color",
+      "$value": "{color.red.100}"
+    }
+  },
+  "overlay": {
+    "scrim": {
+      "$type": "color",
+      "$value": "#12304F66",
+      "$description": "Latar modal 40%."
+    }
+  }
+}

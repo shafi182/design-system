@@ -1,0 +1,115 @@
+{
+  "color": {
+    "$type": "color",
+    "navy": {
+      "50": {
+        "$value": "#F2F6FA",
+        "$description": "Permukaan paling terang, latar kartu di atas base."
+      },
+      "100": {
+        "$value": "#E2EAF2"
+      },
+      "200": {
+        "$value": "#C5D5E4"
+      },
+      "300": {
+        "$value": "#9DB7CE"
+      },
+      "400": {
+        "$value": "#6E90AE"
+      },
+      "500": {
+        "$value": "#456B8E"
+      },
+      "600": {
+        "$value": "#2C527A"
+      },
+      "700": {
+        "$value": "#1E4B7A",
+        "$description": "Brand utama. Dipakai untuk aksi primer dan heading."
+      },
+      "800": {
+        "$value": "#16395C"
+      },
+      "900": {
+        "$value": "#12304F",
+        "$description": "Teks utama di permukaan terang."
+      },
+      "950": {
+        "$value": "#0B1F33"
+      }
+    },
+    "sand": {
+      "50": {
+        "$value": "#FDFCFA"
+      },
+      "100": {
+        "$value": "#FAFAF7",
+        "$description": "Kanvas utama. Hangat, bukan putih murni."
+      },
+      "200": {
+        "$value": "#F2F1EC"
+      },
+      "300": {
+        "$value": "#E7E5DE"
+      },
+      "400": {
+        "$value": "#D5D2C8"
+      }
+    },
+    "slate": {
+      "400": {
+        "$value": "#8A9BAB"
+      },
+      "500": {
+        "$value": "#5C7085",
+        "$description": "Teks sekunder, label, metadata."
+      },
+      "600": {
+        "$value": "#47596B"
+      },
+      "700": {
+        "$value": "#33424F"
+      }
+    },
+    "green": {
+      "100": {
+        "$value": "#E4F1E9"
+      },
+      "500": {
+        "$value": "#2E7D5B"
+      },
+      "700": {
+        "$value": "#1F5A41"
+      }
+    },
+    "amber": {
+      "100": {
+        "$value": "#FBF0DC"
+      },
+      "500": {
+        "$value": "#B8791A"
+      },
+      "700": {
+        "$value": "#8A5A12"
+      }
+    },
+    "red": {
+      "100": {
+        "$value": "#F9E4E2"
+      },
+      "500": {
+        "$value": "#B23B32"
+      },
+      "700": {
+        "$value": "#8A2B24"
+      }
+    },
+    "white": {
+      "$value": "#FFFFFF"
+    },
+    "black": {
+      "$value": "#0A0A0A"
+    }
+  }
+}
