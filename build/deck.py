@@ -11,6 +11,8 @@ photo slots on top of the v0.3 language. Coordinates are slide pixels (1280x720)
 from __future__ import annotations
 
 import json
+import os
+import sys
 from pathlib import Path
 
 from pptx import Presentation
@@ -23,7 +25,19 @@ from pptx.util import Emu, Pt
 
 ROOT = Path(__file__).resolve().parent.parent
 TOK = json.loads((ROOT / "dist" / "json" / "tokens.resolved.json").read_text())
-LIGHT, DARK = TOK["light"], TOK["dark"]
+
+# Two palettes, each with a light and a dark side. Pick with
+#   python build/deck.py adventurous
+PALETTE = os.environ.get("SIGNAL_PALETTE", "professional")
+
+
+def load_palette(name: str) -> None:
+    global PALETTE, LIGHT, DARK
+    PALETTE = name
+    LIGHT, DARK = TOK[f"{name}.light"], TOK[f"{name}.dark"]
+
+
+LIGHT, DARK = TOK[f"{PALETTE}.light"], TOK[f"{PALETTE}.dark"]
 
 PX = 9525
 W, H = 1280, 720
@@ -208,7 +222,7 @@ SLIDES = [
         t(M, 168, 900, 60, "Dua cara masuk.", "text.primary",
           font="heading", size=42, bold=True, leading=1.05, spacing=-0.02),
 
-        r(M, 280, 520, 300, "surface.raised", radius=18, stroke="border.default", stroke_w=1),
+        r(M, 280, 520, 300, "surface.raised", radius=18, stroke="border.strong", stroke_w=1),
         t(M + 28, 304, 300, 22, "PILOT · SATU GEDUNG", "text.secondary", size=10, caps=True,
           spacing=0.14, font="mono"),
         t(M + 28, 336, 300, 60, "Rp 0", "text.primary", size=44, bold=True, font="mono", leading=1.0),
@@ -316,6 +330,14 @@ SLIDES = [
 ]
 
 
+def photo_src(name: str) -> str:
+    """Warm palette gets its own stand-in art; real photos can be dropped per palette."""
+    if PALETTE == "professional":
+        return name
+    alt = f"{Path(name).stem}-{PALETTE}.png"
+    return alt if (PHOTOS / alt).exists() else name
+
+
 # ------------------------------------------------------------------ rounding
 ROUNDED = PHOTOS / "rounded"
 
@@ -415,8 +437,8 @@ def render_pptx(path: Path) -> None:
 
             if el["kind"] == "image":
                 rad = int(el.get("radius") or 0)
-                src = (rounded_photo(el["src"], int(el["w"]), int(el["h"]), rad)
-                       if rad > 0 else PHOTOS / el["src"])
+                src = (rounded_photo(photo_src(el["src"]), int(el["w"]), int(el["h"]), rad)
+                       if rad > 0 else PHOTOS / photo_src(el["src"]))
                 slide.shapes.add_picture(str(src), x, y, w, h)
                 continue
 
@@ -447,7 +469,8 @@ def render_pptx(path: Path) -> None:
 
 
 if __name__ == "__main__":
-    out = ROOT / "examples" / "pitch-deck.pptx"
+    load_palette(sys.argv[1] if len(sys.argv) > 1 else PALETTE)
+    out = ROOT / "examples" / f"pitch-deck-{PALETTE}.pptx"
     out.parent.mkdir(exist_ok=True)
     render_pptx(out)
     print("wrote", out, len(SLIDES), "slides")

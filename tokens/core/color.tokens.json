@@ -46,7 +46,7 @@
       },
       "500": {
         "$value": "#527C78",
-        "$description": "Garis, chart, blok. Bukan teks kecil — 3.69:1 di ivory."
+        "$description": "Garis, chart, blok. Bukan teks kecil \u2014 3.69:1 di ivory."
       },
       "300": {
         "$value": "#8FADA9"
@@ -129,6 +129,10 @@
       },
       "500": {
         "$value": "#565656"
+      },
+      "950": {
+        "$type": "color",
+        "$value": "#1A1A1A"
       }
     },
     "green": {
@@ -140,6 +144,10 @@
       },
       "700": {
         "$value": "#1F4F3B"
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#5FBF92"
       }
     },
     "amber": {
@@ -151,6 +159,10 @@
       },
       "700": {
         "$value": "#6B4B0C"
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#D9A94F"
       }
     },
     "red": {
@@ -162,6 +174,10 @@
       },
       "700": {
         "$value": "#7C2A20"
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#E08573"
       }
     },
     "white": {

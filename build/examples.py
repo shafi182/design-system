@@ -18,7 +18,7 @@ from pptx.dml.color import RGBColor as PPColor
 from pptx.util import Emu, Inches, Pt as PPPt
 
 ROOT = Path(__file__).resolve().parent.parent
-TOK = json.loads((ROOT / "dist" / "json" / "tokens.resolved.json").read_text())["light"]
+TOK = json.loads((ROOT / "dist" / "json" / "tokens.resolved.json").read_text())["professional.light"]
 
 
 def c(name: str) -> str:

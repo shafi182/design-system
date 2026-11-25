@@ -10,25 +10,29 @@
           "Arial",
           "sans-serif"
         ],
-        "$description": "Display. Grotesk humanis — hangat, tetap presisi. Diambil dari Style 2."
+        "$description": "Display. Grotesk humanis \u2014 hangat, tetap presisi. Diambil dari Style 2."
       },
       "body": {
         "$type": "fontFamily",
         "$value": [
+          "Manrope",
           "Inter",
           "Helvetica Neue",
           "Arial",
           "sans-serif"
-        ]
+        ],
+        "$description": "Body juga Manrope. Satu keluarga untuk semua peran."
       },
       "mono": {
         "$type": "fontFamily",
         "$value": [
-          "IBM Plex Mono",
-          "SFMono-Regular",
-          "Consolas",
-          "monospace"
-        ]
+          "Manrope",
+          "Inter",
+          "Helvetica Neue",
+          "Arial",
+          "sans-serif"
+        ],
+        "$description": "Peran mono dipertahankan sebagai slot, tapi sekarang alias ke Manrope \u2014 pakai font-variant-numeric: tabular-nums untuk angka."
       }
     },
     "weight": {

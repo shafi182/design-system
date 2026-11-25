@@ -1,0 +1,121 @@
+{
+  "surface": {
+    "base": {
+      "$type": "color",
+      "$value": "{color.charcoal.900}",
+      "$description": "Hitam hangat, bukan navy \u2014 ini pembeda palet."
+    },
+    "raised": {
+      "$type": "color",
+      "$value": "{color.charcoal.700}"
+    },
+    "sunken": {
+      "$type": "color",
+      "$value": "{color.charcoal.950}"
+    },
+    "inverse": {
+      "$type": "color",
+      "$value": "{color.cream.500}"
+    }
+  },
+  "text": {
+    "primary": {
+      "$type": "color",
+      "$value": "{color.cream.500}"
+    },
+    "secondary": {
+      "$type": "color",
+      "$value": "{color.sand.500}"
+    },
+    "muted": {
+      "$type": "color",
+      "$value": "{color.olive.500}"
+    },
+    "inverse": {
+      "$type": "color",
+      "$value": "{color.charcoal.900}"
+    },
+    "link": {
+      "$type": "color",
+      "$value": "{color.orange.300}"
+    },
+    "on-brand": {
+      "$type": "color",
+      "$value": "{color.charcoal.900}"
+    }
+  },
+  "border": {
+    "subtle": {
+      "$type": "color",
+      "$value": "{color.charcoal.700}"
+    },
+    "default": {
+      "$type": "color",
+      "$value": "{color.charcoal.500}"
+    },
+    "strong": {
+      "$type": "color",
+      "$value": "{color.olive.500}"
+    },
+    "focus": {
+      "$type": "color",
+      "$value": "{color.orange.500}"
+    }
+  },
+  "brand": {
+    "primary": {
+      "$type": "color",
+      "$value": "{color.orange.500}"
+    },
+    "hover": {
+      "$type": "color",
+      "$value": "{color.orange.600}"
+    },
+    "active": {
+      "$type": "color",
+      "$value": "{color.orange.700}"
+    },
+    "subtle": {
+      "$type": "color",
+      "$value": "{color.orange.100}"
+    },
+    "calm": {
+      "$type": "color",
+      "$value": "{color.olive.500}"
+    }
+  },
+  "status": {
+    "success": {
+      "$type": "color",
+      "$value": "{color.green.300}",
+      "$description": "green.500 terlalu gelap di kanvas charcoal."
+    },
+    "success-subtle": {
+      "$type": "color",
+      "$value": "{color.green.100}"
+    },
+    "warning": {
+      "$type": "color",
+      "$value": "{color.amber.300}"
+    },
+    "warning-subtle": {
+      "$type": "color",
+      "$value": "{color.amber.100}"
+    },
+    "danger": {
+      "$type": "color",
+      "$value": "{color.red.300}",
+      "$description": "red.500 terlalu gelap di kanvas charcoal."
+    },
+    "danger-subtle": {
+      "$type": "color",
+      "$value": "{color.red.100}"
+    }
+  },
+  "overlay": {
+    "scrim": {
+      "$type": "color",
+      "$value": "#1A1A1AB3"
+    }
+  }
+}

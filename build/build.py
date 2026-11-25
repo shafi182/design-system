@@ -286,7 +286,7 @@ def run_contrast(tokens: dict[str, dict], theme: str = "light") -> list[str]:
 
 # ---------------------------------------------------------------- docs
 
-def emit_docs(light: dict, dark: dict) -> str:
+def emit_docs(light: dict, dark: dict, label: str = "navy / ivory / orange") -> str:
     def swatches(tokens, prefix):
         rows = []
         for name in sorted(tokens):
@@ -359,7 +359,7 @@ td{{padding:var(--ds-space-4) 0;border-bottom:1px solid var(--ds-table-row-borde
 tbody tr:hover{{background:var(--ds-table-row-hover-bg)}}
 .meta{{font-family:var(--ds-type-family-mono);font-size:11px;color:var(--ds-text-secondary);margin-top:var(--ds-space-11)}}
 </style></head><body>
-<div class="kicker">Signal · v0.5.0 · navy / ivory / orange</div>
+<div class="kicker">Signal · v0.6.0 · {label}</div>
 <h1>Signal</h1>
 <p class="lead">Gabungan dua bahasa: disiplin deck pitch (satu ide per slide, display besar) dan bahasa infografik (garis hairline, label small-caps, modul bernomor). Nilai mentah hanya hidup di lapis core.</p>
 
@@ -410,8 +410,9 @@ def main() -> int:
 
     core_paths = list((TOKENS / "core").glob("*.json"))
     comp_paths = list((TOKENS / "component").glob("*.json"))
-    theme_paths = {"light": TOKENS / "semantic" / "light.tokens.json",
-                   "dark": TOKENS / "semantic" / "dark.tokens.json"}
+    # semantic files are named <palette>.<mode>.tokens.json -> key "professional.light"
+    theme_paths = {p.stem.replace(".tokens", ""): p
+                   for p in sorted((TOKENS / "semantic").glob("*.tokens.json"))}
 
     core = flatten(load_tree(core_paths))
     comp_raw = flatten(load_tree(comp_paths))
@@ -429,7 +430,7 @@ def main() -> int:
     problems = []
     for theme in built:
         print(f" [{theme}]")
-        problems += run_contrast(built[theme], theme)
+        problems += run_contrast(built[theme], theme.split(".")[-1])
 
     if args.check:
         if problems:
@@ -441,20 +442,48 @@ def main() -> int:
     for sub in ["css", "tailwind", "ts", "json", "office", "docs"]:
         (DIST / sub).mkdir(parents=True, exist_ok=True)
 
-    (DIST / "css" / "tokens.css").write_text(
-        emit_css(built["light"], ":root", "/* Signal — tokens (generated) */\n"),
-        encoding="utf-8")
-    if "dark" in built:
-        (DIST / "css" / "tokens-dark.css").write_text(
-            emit_css(built["dark"], '[data-theme="dark"]', "/* Signal — dark theme (generated) */\n"),
-            encoding="utf-8")
-    (DIST / "tailwind" / "preset.js").write_text(emit_tailwind(built["light"]), encoding="utf-8")
-    (DIST / "ts" / "tokens.ts").write_text(emit_ts(built["light"]), encoding="utf-8")
+    palettes = sorted({k.split(".")[0] for k in built})
+    default = "professional" if "professional" in palettes else palettes[0]
+
+    def key(palette, mode):
+        return f"{palette}.{mode}"
+
+    # one CSS file per palette; the default palette also owns :root
+    for palette in palettes:
+        light_k, dark_k = key(palette, "light"), key(palette, "dark")
+        if palette == default:
+            name, root_sel = "tokens.css", ":root"
+        else:
+            name, root_sel = f"tokens-{palette}.css", f'[data-palette="{palette}"]'
+        if light_k not in built:
+            continue
+        blocks = [emit_css(built[light_k], root_sel,
+                           f"/* Signal — {palette} (generated) */\n")]
+        if dark_k in built:
+            sel = '[data-theme="dark"]' if palette == default else \
+                  f'[data-palette="{palette}"][data-theme="dark"]'
+            blocks.append(emit_css(built[dark_k], sel,
+                                   f"/* Signal — {palette} dark (generated) */\n"))
+        (DIST / "css" / name).write_text("\n".join(blocks), encoding="utf-8")
+
+    for palette in palettes:
+        k = key(palette, "light")
+        if k not in built:
+            continue
+        suffix = "" if palette == default else f"-{palette}"
+        (DIST / "tailwind" / f"preset{suffix}.js").write_text(
+            emit_tailwind(built[k]), encoding="utf-8")
+        (DIST / "ts" / f"tokens{suffix}.ts").write_text(emit_ts(built[k]), encoding="utf-8")
+        (DIST / "office" / f"theme-scheme{suffix}.xml").write_text(
+            emit_office_theme(built[k]), encoding="utf-8")
+        label = "navy / ivory / orange" if palette == "professional" \
+                else "cream / sand / orange / charcoal"
+        (DIST / "docs" / f"index{suffix}.html").write_text(
+            emit_docs(built[k], built.get(key(palette, "dark"), {}), label), encoding="utf-8")
+
     (DIST / "json" / "tokens.resolved.json").write_text(
         json.dumps({k: {n: v.get("$value") for n, v in t.items()} for k, t in built.items()},
                    indent=2, ensure_ascii=False), encoding="utf-8")
-    (DIST / "office" / "theme-scheme.xml").write_text(emit_office_theme(built["light"]), encoding="utf-8")
-    (DIST / "docs" / "index.html").write_text(emit_docs(built["light"], built.get("dark", {})), encoding="utf-8")
 
     count = sum(len(p.read_text(encoding="utf-8")) for p in DIST.rglob("*") if p.is_file())
     print(f"\nwrote {len(list(DIST.rglob('*.*')))} files, {count:,} bytes into dist/")

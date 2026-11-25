@@ -1,82 +1,100 @@
-# Signal v0.5 — deck system (navy · ivory · orange)
+# Signal v0.6 — deck system, dua palet
 
 Satu sumber kebenaran untuk **deck, dokumen, web, dan app**.
-Dua bahasa digabung: disiplin deck pitch (satu ide per slide, display besar, angka mono) dan bahasa
+Dua bahasa digabung: disiplin deck pitch (satu ide per slide, display besar) dan bahasa
 infografik (garis hairline, label small-caps, modul bernomor, blok statistik).
 
 ```
 tokens/
-  core/        color · type · space · misc (+ layout slide)   <- primitif
-  semantic/    light (kanvas ivory) · dark (kanvas navy)      <- alias, dipakai komponen
+  core/        color · type · space · misc (+ layout slide)      <- primitif
+  semantic/    professional.{light,dark} · adventurous.{light,dark}
   component/   button · card · table · slide
 build/
   build.py     resolver alias + generator (css/tailwind/ts/json/office/docs)
   deck.py      spec slide 1280x720 -> pptx (rect · text · chart · image)
   preview.py   spec yang sama -> HTML (chart jadi SVG, foto file yang sama)
-  photos.py    placeholder foto (ganti PNG-nya, layout tidak bergeser)
+  photos.py    placeholder foto, dua tone (cool / warm)
   examples.py  laporan contoh
 dist/          hasil generate, jangan diedit manual
-examples/      pitch-deck.pptx · sample-report.docx · preview.html
+examples/      pitch-deck-professional.pptx · pitch-deck-adventurous.pptx · preview-*.html
 ```
 
 ## Pakai
 
 ```bash
-python3 build/build.py          # generate dist/
-python3 build/build.py --check  # validasi alias + kontras WCAG (terang & gelap)
-python3 build/photos.py         # placeholder foto (sekali saja)
-python3 build/deck.py           # examples/pitch-deck.pptx
-python3 build/preview.py        # examples/preview.html
+python3 build/build.py               # generate dist/ (semua palet)
+python3 build/build.py --check       # validasi alias + kontras WCAG (4 kombinasi)
+python3 build/photos.py              # placeholder foto
+python3 build/deck.py professional   # examples/pitch-deck-professional.pptx
+python3 build/deck.py adventurous    # examples/pitch-deck-adventurous.pptx
+python3 build/preview.py adventurous # examples/preview-adventurous.html
 ```
 
-## Palet
+Di web/app, palet dipilih lewat atribut, bukan file berbeda:
 
-Dua kelompok, satu sistem:
+```html
+<html data-palette="adventurous" data-theme="dark">
+```
 
-**Profesional · Sophisticated · Intellectual**
-- Deep Navy `#142C36` — kanvas gelap + teks utama di kanvas terang (11.55:1)
-- Deep Teal `#24545A` — teks sekunder di kanvas terang (6.69:1)
-- Muted Sage `#527C78` — garis, chart, blok; **bukan** teks kecil (3.69:1)
+`dist/css/tokens.css` memuat palet default di `:root`; `tokens-adventurous.css` memuat
+`[data-palette="adventurous"]` plus varian dark-nya. Tailwind: `preset.js` dan
+`preset-adventurous.js`. Office: `theme-scheme.xml` dan `theme-scheme-adventurous.xml`.
+
+## Dua palet
+
+**Professional · Sophisticated · Intellectual** — kanvas ivory, oranye sebagai aksen tunggal.
+
+- Deep Navy `#142C36` — kanvas gelap, teks utama di terang (11.55:1)
+- Deep Teal `#24545A` — teks sekunder (6.69:1), outline kartu netral
+- Muted Sage `#527C78` — garis, chart, blok; **bukan** teks kecil
 - Soft Olive `#B6B9A5` — teks sekunder di navy (7.26:1), hairline di terang
 - Warm Ivory `#E9E5D9` — kanvas terang
 
-**Adventurous · Creative · Approachable**
-- Cream `#FAF3E1` — panel dan kartu
-- Sand `#F5E7C6` — band callout
-- Vibrant Orange `#FF6D1F` — aksen tunggal, maksimal satu per slide
-- Charcoal `#222222` — teks isi di cream, dan teks di atas oranye (5.65:1)
+**Adventurous · Creative · Approachable** — kanvas krem, charcoal sebagai tinta, oranye sebagai brand.
 
-Aturan keras: **teks di atas oranye selalu charcoal**. Putih di atas `#FF6D1F` hanya 3.13:1 — gagal WCAG
-dan itu kesalahan paling umum di deck "berani". Link di kanvas terang pakai orange.800 `#A8430B` (4.80:1);
-orange.700 cuma 3.64:1.
+- Cream `#FAF3E1` — kanvas terang
+- Sand `#F5E7C6` — surface naik, border halus
+- Vibrant Orange `#FF6D1F` — brand, aksen, panel harga
+- Charcoal `#222222` — tinta utama (14.37:1 di krem) dan kanvas gelap
+
+Aturan keras yang berlaku di kedua palet:
+
+1. **Teks di atas oranye selalu charcoal.** Putih di `#FF6D1F` hanya 3.13:1 — gagal WCAG.
+2. **Link di kanvas terang pakai orange.800 `#A8430B`**, bukan orange.500.
+3. **Status di kanvas charcoal pakai stop 300** (green/amber/red) — stop 500 terlalu gelap.
 
 ## Tipografi
 
-- **Display** — Manrope 68/44px, tracking −0.03em, leading 1.06
-- **Body** — Inter 13–18px, leading 1.45–1.65
-- **Mono** — IBM Plex Mono untuk angka statistik, kicker, footer, nomor halaman
+Satu keluarga untuk semua peran: **Manrope** (display, body, label, angka).
+Bobot 400–800; display 42–62px tracking −0.03em; body 13–18px leading 1.45–1.65.
 
-Manrope diambil dari Style 2: grotesk humanis, lebih hangat dari Space Grotesk tapi tetap presisi di 68px.
+Slot `type.family.mono` tetap ada tapi sudah alias ke Manrope — angka pakai
+`font-variant-numeric: tabular-nums` supaya kolom tetap rata. Kalau nanti butuh mono
+sungguhan (kode, ID), ubah satu token itu saja.
 
-## Layout slide
+## Layout & radius
 
-`layout.slide-width 1280` · `slide-height 720` · `margin-x 72`. Koordinat di `build/deck.py` memakai piksel
-slide; pptx mengonversi 1px = 9525 EMU, jadi preview HTML dan file PowerPoint identik.
+`layout.slide-width 1280` · `slide-height 720` · `margin-x 72`. Koordinat di `build/deck.py`
+memakai piksel slide; pptx mengonversi 1px = 9525 EMU, jadi preview HTML dan PowerPoint identik.
 
-## Radius
+Radius: `sm` 6 · `md` 12 · `lg` 18 (kartu, panel, callout) · `xl` 28 (foto) · `pill` 999.
+Hairline dan rule tetap 0 — yang membulat hanya permukaan. Tanpa shadow: pemisahan dari beda
+tone dan satu outline 1px (`border.strong`) di kartu netral.
 
-Skala membulat, satu sumbu:
+## Modul
 
-- `radius.sm` 6px — chip, tag, tombol kecil
-- `radius.md` 12px — input, tombol
-- `radius.lg` 18px — kartu, panel, band callout (`card.radius`, `slide.radius`)
-- `radius.xl` 28px — foto dan permukaan besar (`slide.photo-radius`)
-- `radius.pill` 999px
+- **KPI card** — angka besar, label, delta; surface `radius.lg`.
+- **Chart** — bar berkategori dan line dua seri. Di pptx chart native (bisa diedit di
+  PowerPoint); di preview digambar SVG dari angka yang sama.
+- **Pricing** — dua panel: netral (outline) dan penuh oranye dengan teks charcoal.
+- **Budget** — tabel tiga baris label/nilai/delta, dipisah hairline.
+- **Contact** — dua kolom label + value, plus baris langkah berikutnya.
+- **Photo slot** — rasio tetap `photo-cover.png` (780×1080) dan `photo-43.png` (1024×768),
+  dengan varian `-adventurous` bertone hangat. Foto asli menimpa file itu; dipotong membulat
+  sekali saat build ke `examples/photos/rounded/`, jadi koordinat slide tidak pernah bergeser.
 
-Hairline, rule, dan garis pemisah tetap **0** — yang membulat hanya permukaan, bukan garis.
-Foto dipotong membulat sekali saat build (`build/deck.py::rounded_photo`) ke
-`examples/photos/rounded/`, jadi foto pengganti otomatis ikut membulat tanpa mengubah koordinat.
-Tidak ada shadow: pemisahan datang dari beda tone dan satu outline 1px pada kartu netral.
+Foto **tidak pernah** menutupi teks: slot selalu di sisi kanan atau panel terpisah, teks tetap
+di kolom kiri. Placeholder diberi label `PHOTO` supaya kelihatan belum diisi.
 
 ## Aturan
 
@@ -86,28 +104,13 @@ Tidak ada shadow: pemisahan datang dari beda tone dan satu outline 1px pada kart
 4. **Token baru hanya kalau dipakai ≥2 komponen.**
 5. **`dist/` tidak pernah diedit tangan.**
 6. **Sudut membulat, bukan kotak.** Permukaan pakai `radius.lg` (18) atau `radius.xl` (28); garis tetap 0.
-7. **Kontras dijaga CI** — `build.py --check` memeriksa tema terang dan gelap.
-
-## Modul (v0.4)
-
-Diambil dari Style 1/2, tapi ditulis ulang dengan body 13–18px — bukan 6.4pt:
-
-- **KPI card** — angka mono 46px, label 13px, delta kecil; border atas oranye 2px.
-- **Chart** — bar berkategori dan line dua seri. Di pptx ini chart native (bisa diedit di
-  PowerPoint); di preview digambar SVG dari angka yang sama.
-- **Pricing** — dua panel: netral (ivory + hairline) dan penuh oranye dengan teks charcoal.
-- **Budget** — tiga baris label/angka/delta, dipisah hairline; baris terakhir pakai aksen.
-- **Contact** — 2 kolom label mono + value, garis tipis di atas.
-- **Photo slot** — dua rasio tetap: `photo-cover.png` (780×1080, panel kanan cover) dan
-  `photo-43.png` (1024×768). Foto asli menimpa file itu; koordinat slide tidak berubah.
-
-Foto **tidak pernah** menutupi teks: slot selalu di sisi kanan atau panel terpisah, teks tetap
-di kolom kiri. Placeholder sengaja diberi label `PHOTO` supaya kelihatan belum diisi.
+7. **Kontras dijaga CI** — `build.py --check` memeriksa keempat kombinasi palet × mode.
 
 ## Versioning
 
+- `v0.6.0` — dua palet (professional / adventurous), font tunggal Manrope, generator multi-palet.
 - `v0.5.0` — sudut membulat: kartu 18px, foto 28px, outline 1px untuk kartu netral.
-- `v0.4.0` — modul Style 1 (KPI card, chart bar/line, pricing, budget, contact) + slot foto. Deck 9 slide.
-- `v0.3.0` — palet navy/ivory/orange, Manrope, bahasa infografik Style 2. Deck 6 slide tanpa slot foto.
+- `v0.4.0` — modul Style 1 (KPI card, chart, pricing, budget, contact) + slot foto. Deck 9 slide.
+- `v0.3.0` — palet navy/ivory/orange, Manrope, bahasa infografik Style 2.
 - `v0.2.0` — Signal pitch: ink/bone/orange, Space Grotesk.
 - `v0.1.0` — Corporate Calm: navy/sand, Source Serif 4.

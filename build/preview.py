@@ -9,13 +9,17 @@ same PNG files, so the preview and the .pptx stay in step.
 from __future__ import annotations
 
 import json
+import os
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "build"))
 
-from deck import LIGHT, DARK, SLIDES, W, H  # noqa: E402
+PALETTE = sys.argv[1] if len(sys.argv) > 1 else "professional"
+os.environ["SIGNAL_PALETTE"] = PALETTE
+
+from deck import LIGHT, DARK, SLIDES, W, H, photo_src  # noqa: E402
 
 PHOTOS = ROOT / "examples" / "photos"
 
@@ -112,7 +116,7 @@ def el_html(el, theme) -> str:
                 f'border-radius:{rad}px;"></div>')
     if el["kind"] == "image":
         rad = el.get("radius") or 0
-        return (f'<img src="file://{PHOTOS / el["src"]}" style="{base}object-fit:cover;'
+        return (f'<img src="file://{PHOTOS / photo_src(el["src"])}" style="{base}object-fit:cover;'
                 f'border-radius:{rad}px;display:block;">')
     if el["kind"] == "chart":
         return svg_chart(el, theme)
@@ -134,10 +138,11 @@ def build(path: Path) -> None:
         slides.append(f'<section class="slide" id="s{i}" style="background:{bg};">{inner}</section>')
 
     html = f"""<!doctype html><html><head><meta charset="utf-8">
-<title>Pitch deck preview</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<title>Pitch deck preview — {PALETTE}</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{{margin:0;padding:0;box-sizing:border-box}}
+.num{{font-variant-numeric:tabular-nums}}
 body{{background:#333;display:flex;flex-direction:column;gap:24px;padding:24px;width:{W + 48}px}}
 .slide{{position:relative;width:{W}px;height:{H}px;overflow:hidden}}
 </style></head><body>
@@ -147,7 +152,7 @@ body{{background:#333;display:flex;flex-direction:column;gap:24px;padding:24px;w
 
 
 if __name__ == "__main__":
-    out = ROOT / "examples" / "preview.html"
+    out = ROOT / "examples" / f"preview-{PALETTE}.html"
     out.parent.mkdir(exist_ok=True)
     build(out)
     print("wrote", out, len(SLIDES), "slides")

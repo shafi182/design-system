@@ -2,16 +2,16 @@
   "surface": {
     "base": {
       "$type": "color",
-      "$value": "{color.ivory.500}",
-      "$description": "Kanvas terang. Kertas hangat, bukan putih."
+      "$value": "{color.cream.500}",
+      "$description": "Kanvas krem hangat \u2014 bukan kertas putih."
     },
     "raised": {
       "$type": "color",
-      "$value": "{color.cream.500}"
+      "$value": "{color.sand.300}"
     },
     "sunken": {
       "$type": "color",
-      "$value": "{color.ivory.300}"
+      "$value": "{color.sand.500}"
     },
     "inverse": {
       "$type": "color",
@@ -21,38 +21,37 @@
   "text": {
     "primary": {
       "$type": "color",
-      "$value": "{color.navy.900}",
-      "$description": "11.55:1 di ivory."
+      "$value": "{color.charcoal.900}",
+      "$description": "Charcoal di krem."
     },
     "secondary": {
       "$type": "color",
-      "$value": "{color.teal.700}",
-      "$description": "6.69:1."
+      "$value": "{color.charcoal.700}"
     },
     "muted": {
       "$type": "color",
-      "$value": "{color.sage.600}",
-      "$description": "4.6:1 — batas bawah untuk teks kecil."
+      "$value": "{color.charcoal.500}",
+      "$description": "Batas bawah untuk teks kecil."
     },
     "inverse": {
       "$type": "color",
-      "$value": "{color.ivory.500}"
+      "$value": "{color.cream.500}"
     },
     "link": {
       "$type": "color",
       "$value": "{color.orange.800}",
-      "$description": "4.8:1 di ivory. orange.700 hanya 3.64:1 — gagal."
+      "$description": "orange.500 gagal 4.5:1 di krem."
     },
     "on-brand": {
       "$type": "color",
       "$value": "{color.charcoal.900}",
-      "$description": "Charcoal di atas oranye 5.65:1. Putih hanya 3.13:1 — gagal."
+      "$description": "Charcoal di atas oranye \u2014 putih hanya 3.13:1."
     }
   },
   "border": {
     "subtle": {
       "$type": "color",
-      "$value": "{color.olive.300}"
+      "$value": "{color.sand.500}"
     },
     "default": {
       "$type": "color",
@@ -86,8 +85,8 @@
     },
     "calm": {
       "$type": "color",
-      "$value": "{color.teal.700}",
-      "$description": "Aksen kedua: teal. Untuk garis dan label, bukan tombol."
+      "$value": "{color.sage.500}",
+      "$description": "Aksen kedua di krem: sage. Teal.700 terlalu dekat dengan charcoal."
     }
   },
   "status": {
@@ -119,7 +118,7 @@
   "overlay": {
     "scrim": {
       "$type": "color",
-      "$value": "#142C36B3"
+      "$value": "#222222B3"
     }
   }
 }
