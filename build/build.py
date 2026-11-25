@@ -448,6 +448,7 @@ def main() -> int:
 
     palettes = sorted({k.split(".")[0] for k in built})
     default = "professional" if "professional" in palettes else palettes[0]
+    written: set[pathlib.Path] = set()
 
     def key(palette, mode):
         return f"{palette}.{mode}"
@@ -468,26 +469,43 @@ def main() -> int:
                   f'[data-palette="{palette}"][data-theme="dark"]'
             blocks.append(emit_css(built[dark_k], sel,
                                    f"/* Signal — {palette} dark (generated) */\n"))
-        (DIST / "css" / name).write_text("\n".join(blocks), encoding="utf-8")
+        path = DIST / "css" / name
+        path.write_text("\n".join(blocks), encoding="utf-8")
+        written.add(path)
 
     for palette in palettes:
         k = key(palette, "light")
         if k not in built:
             continue
         suffix = "" if palette == default else f"-{palette}"
-        (DIST / "tailwind" / f"preset{suffix}.js").write_text(
-            emit_tailwind(built[k]), encoding="utf-8")
-        (DIST / "ts" / f"tokens{suffix}.ts").write_text(emit_ts(built[k]), encoding="utf-8")
-        (DIST / "office" / f"theme-scheme{suffix}.xml").write_text(
-            emit_office_theme(built[k]), encoding="utf-8")
+        for rel, text in (
+            (f"tailwind/preset{suffix}.js", emit_tailwind(built[k])),
+            (f"ts/tokens{suffix}.ts", emit_ts(built[k])),
+            (f"office/theme-scheme{suffix}.xml", emit_office_theme(built[k])),
+        ):
+            path = DIST / rel
+            path.write_text(text, encoding="utf-8")
+            written.add(path)
         label = "navy / teal / sage / olive / ivory" if palette == "professional" \
                 else "cream / sand / orange / charcoal"
-        (DIST / "docs" / f"index{suffix}.html").write_text(
-            emit_docs(built[k], built.get(key(palette, "dark"), {}), label), encoding="utf-8")
+        path = DIST / "docs" / f"index{suffix}.html"
+        path.write_text(emit_docs(built[k], built.get(key(palette, "dark"), {}), label),
+                        encoding="utf-8")
+        written.add(path)
 
-    (DIST / "json" / "tokens.resolved.json").write_text(
+    json_path = DIST / "json" / "tokens.resolved.json"
+    json_path.write_text(
         json.dumps({k: {n: v.get("$value") for n, v in t.items()} for k, t in built.items()},
                    indent=2, ensure_ascii=False), encoding="utf-8")
+    written.add(json_path)
+
+    # dist/ must contain exactly what this run generated; anything else is stale
+    # from an older emitter (e.g. the retired tokens-dark.css) and would ship
+    # wrong values that no contrast check ever sees.
+    for stale in sorted(set(DIST.rglob("*")) - written):
+        if stale.is_file():
+            stale.unlink()
+            print(f"removed stale {stale.relative_to(DIST)}")
 
     count = sum(len(p.read_text(encoding="utf-8")) for p in DIST.rglob("*") if p.is_file())
     print(f"\nwrote {len(list(DIST.rglob('*.*')))} files, {count:,} bytes into dist/")
