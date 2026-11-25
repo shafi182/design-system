@@ -84,6 +84,11 @@
     "calm": {
       "$type": "color",
       "$value": "{color.sage.300}"
+    },
+    "accent-text": {
+      "$type": "color",
+      "$value": "{color.orange.300}",
+      "$description": "orange.500 hanya 3.8:1 di navy \u2014 gagal untuk teks kecil."
     }
   },
   "status": {

@@ -117,6 +117,10 @@
       "800": {
         "$value": "#A8430B",
         "$description": "Oranye tergelap. Satu-satunya oranye yang boleh jadi teks di kanvas terang (4.8:1)."
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#FFB489"
       }
     },
     "charcoal": {
@@ -133,6 +137,10 @@
       "950": {
         "$type": "color",
         "$value": "#1A1A1A"
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#4A4A4A"
       }
     },
     "green": {

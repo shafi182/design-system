@@ -101,7 +101,7 @@ def stat(x, y, w, number, label, theme="light", accent="brand.primary"):
             t(x, y + 76, w, 44, label, "text.secondary", theme, size=13, leading=1.4)]
 
 
-def card(x, y, w, h, number, label, delta, theme="dark", delta_color="brand.primary"):
+def card(x, y, w, h, number, label, delta, theme="dark", delta_color="brand.accent-text"):
     return [r(x, y, w, h, "surface.raised", theme, radius=18),
             t(x + 24, y + 28, w - 48, 64, number, "text.primary", theme,
               size=46, bold=True, font="mono", leading=1.0),
@@ -170,7 +170,7 @@ SLIDES = [
           "text.primary", font="heading", size=17, bold=True),
         t(M + 28, 556, 700, 24, "Yang tidak punya ketiganya, tidak masuk laporan serah terima.",
           "text.secondary", size=13),
-        t(M + 860, 534, 250, 40, "0 sengketa", "brand.primary", size=20, bold=True,
+        t(M + 860, 534, 250, 40, "0 sengketa", "brand.accent-text", size=20, bold=True,
           font="mono", align="right"),
         *footer(3),
     ]},
@@ -222,7 +222,7 @@ SLIDES = [
         t(M, 168, 900, 60, "Dua cara masuk.", "text.primary",
           font="heading", size=42, bold=True, leading=1.05, spacing=-0.02),
 
-        r(M, 280, 520, 300, "surface.raised", radius=18, stroke="border.strong", stroke_w=1),
+        r(M, 280, 520, 300, "surface.raised", radius=18, stroke="border.strong", stroke_w=1.5),
         t(M + 28, 304, 300, 22, "PILOT · SATU GEDUNG", "text.secondary", size=10, caps=True,
           spacing=0.14, font="mono"),
         t(M + 28, 336, 300, 60, "Rp 0", "text.primary", size=44, bold=True, font="mono", leading=1.0),
@@ -255,14 +255,14 @@ SLIDES = [
         t(M, 306, 460, 22, "Nilai proyek per gedung", "text.secondary", "dark", size=12),
         t(M + 480, 300, 400, 44, "Rp 1,2 M", "text.primary", "dark", size=36, bold=True,
           font="mono", leading=1.0, align="right"),
-        t(M + 900, 312, 236, 30, "+12%", "brand.primary", "dark", size=15, bold=True,
+        t(M + 900, 312, 236, 30, "+12%", "brand.accent-text", "dark", size=15, bold=True,
           font="mono", align="right"),
         r(M, 372, 1136, 1, "border.subtle", "dark"),
 
         t(M, 396, 460, 22, "Biaya serah terima", "text.secondary", "dark", size=12),
         t(M + 480, 390, 400, 44, "Rp 96 jt", "text.primary", "dark", size=36, bold=True,
           font="mono", leading=1.0, align="right"),
-        t(M + 900, 402, 236, 30, "−11 hari", "brand.primary", "dark", size=15, bold=True,
+        t(M + 900, 402, 236, 30, "−11 hari", "brand.accent-text", "dark", size=15, bold=True,
           font="mono", align="right"),
         r(M, 462, 1136, 1, "border.subtle", "dark"),
 

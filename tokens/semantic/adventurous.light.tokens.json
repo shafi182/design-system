@@ -7,11 +7,12 @@
     },
     "raised": {
       "$type": "color",
-      "$value": "{color.sand.300}"
+      "$value": "{color.sand.500}",
+      "$description": "Kartu di atas krem. sand.300 terlalu dekat dengan kanvas."
     },
     "sunken": {
       "$type": "color",
-      "$value": "{color.sand.500}"
+      "$value": "{color.olive.100}"
     },
     "inverse": {
       "$type": "color",
@@ -87,6 +88,11 @@
       "$type": "color",
       "$value": "{color.sage.500}",
       "$description": "Aksen kedua di krem: sage. Teal.700 terlalu dekat dengan charcoal."
+    },
+    "accent-text": {
+      "$type": "color",
+      "$value": "{color.orange.800}",
+      "$description": "orange.500 gagal 4.5:1 di krem."
     }
   },
   "status": {

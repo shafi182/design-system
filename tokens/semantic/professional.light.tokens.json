@@ -88,6 +88,11 @@
       "$type": "color",
       "$value": "{color.teal.700}",
       "$description": "Aksen kedua: teal. Untuk garis dan label, bukan tombol."
+    },
+    "accent-text": {
+      "$type": "color",
+      "$value": "{color.orange.800}",
+      "$description": "Aksen sebagai teks kecil. orange.500 gagal 4.5:1."
     }
   },
   "status": {

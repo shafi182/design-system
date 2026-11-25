@@ -7,7 +7,8 @@
     },
     "raised": {
       "$type": "color",
-      "$value": "{color.charcoal.700}"
+      "$value": "{color.charcoal.600}",
+      "$description": "charcoal.700 terlalu dekat dengan kanvas."
     },
     "sunken": {
       "$type": "color",
@@ -82,6 +83,11 @@
     "calm": {
       "$type": "color",
       "$value": "{color.olive.500}"
+    },
+    "accent-text": {
+      "$type": "color",
+      "$value": "{color.orange.200}",
+      "$description": "orange.300 hanya 4.3:1 di kartu charcoal.600."
     }
   },
   "status": {
