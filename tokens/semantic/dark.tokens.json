@@ -2,91 +2,92 @@
   "surface": {
     "base": {
       "$type": "color",
-      "$value": "{color.navy.950}"
+      "$value": "{color.ink.950}",
+      "$description": "Slide gelap: cover, traction, penutup."
     },
     "raised": {
       "$type": "color",
-      "$value": "{color.navy.900}"
+      "$value": "{color.ink.900}"
     },
     "sunken": {
       "$type": "color",
-      "$value": "#081726"
+      "$value": "#050608"
     },
     "inverse": {
       "$type": "color",
-      "$value": "{color.sand.100}"
+      "$value": "{color.bone.100}"
     }
   },
   "text": {
     "primary": {
       "$type": "color",
-      "$value": "#E8EDF4"
+      "$value": "{color.bone.50}"
     },
     "secondary": {
       "$type": "color",
-      "$value": "{color.navy.300}"
+      "$value": "{color.ink.300}"
     },
     "muted": {
       "$type": "color",
-      "$value": "{color.navy.400}"
+      "$value": "{color.ink.400}"
     },
     "inverse": {
       "$type": "color",
-      "$value": "{color.navy.900}"
+      "$value": "{color.ink.950}"
     },
     "link": {
       "$type": "color",
-      "$value": "{color.navy.300}"
+      "$value": "{color.signal.400}"
     },
     "on-brand": {
       "$type": "color",
-      "$value": "{color.white}"
+      "$value": "{color.ink.950}"
     }
   },
   "border": {
     "subtle": {
       "$type": "color",
-      "$value": "{color.navy.800}"
+      "$value": "{color.ink.800}"
     },
     "default": {
       "$type": "color",
-      "$value": "{color.navy.700}"
+      "$value": "{color.ink.700}"
     },
     "strong": {
       "$type": "color",
-      "$value": "{color.navy.400}"
+      "$value": "{color.ink.500}"
     },
     "focus": {
       "$type": "color",
-      "$value": "{color.navy.300}"
+      "$value": "{color.signal.500}"
     }
   },
   "brand": {
     "primary": {
       "$type": "color",
-      "$value": "{color.navy.500}"
+      "$value": "{color.signal.500}"
     },
     "hover": {
       "$type": "color",
-      "$value": "{color.navy.400}"
+      "$value": "{color.signal.400}"
     },
     "active": {
       "$type": "color",
-      "$value": "{color.navy.300}"
+      "$value": "{color.signal.300}"
     },
     "subtle": {
       "$type": "color",
-      "$value": "{color.navy.900}"
+      "$value": "#2A1108"
     }
   },
   "status": {
     "success": {
       "$type": "color",
-      "$value": "#3E9E76"
+      "$value": "#3FBF8C"
     },
     "success-subtle": {
       "$type": "color",
-      "$value": "#12291F"
+      "$value": "#0C2319"
     },
     "warning": {
       "$type": "color",
@@ -94,21 +95,21 @@
     },
     "warning-subtle": {
       "$type": "color",
-      "$value": "#2A2113"
+      "$value": "#241A08"
     },
     "danger": {
       "$type": "color",
-      "$value": "#D26054"
+      "$value": "#E4675C"
     },
     "danger-subtle": {
       "$type": "color",
-      "$value": "#2A1614"
+      "$value": "#2A1210"
     }
   },
   "overlay": {
     "scrim": {
       "$type": "color",
-      "$value": "#000000A6"
+      "$value": "#000000CC"
     }
   }
 }

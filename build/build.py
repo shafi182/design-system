@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the Corporate Calm design system from DTCG tokens.
+"""Build the Signal design system from DTCG tokens.
 
 Single source of truth: tokens/**/*.tokens.json
 Outputs (never edit by hand): dist/**
@@ -169,7 +169,7 @@ def emit_tailwind(tokens: dict[str, dict]) -> str:
     }
     body = json.dumps(theme, indent=2)
     return (
-        "/** Corporate Calm — Tailwind preset (generated, do not edit) */\n"
+        "/** Signal — Tailwind preset (generated, do not edit) */\n"
         "module.exports = {\n"
         "  theme: {\n"
         "    extend: " + body.replace("\n", "\n    ") + "\n"
@@ -179,7 +179,7 @@ def emit_tailwind(tokens: dict[str, dict]) -> str:
 
 
 def emit_ts(tokens: dict[str, dict]) -> str:
-    lines = ["/** Corporate Calm — token names (generated, do not edit) */", ""]
+    lines = ["/** Signal — token names (generated, do not edit) */", ""]
     lines.append("export const tokens = {")
     for name in sorted(tokens):
         lines.append(f"  '{name}': 'var({var_name(name)})',")
@@ -205,20 +205,20 @@ def emit_office_theme(tokens: dict[str, dict]) -> str:
         ("accent3", "status.success"),
         ("accent4", "status.warning"),
         ("accent5", "status.danger"),
-        ("accent6", "color.slate.500"),
+        ("accent6", "color.ink.500"),
         ("hlink", "text.link"),
-        ("folHlink", "color.navy.400"),
+        ("folHlink", "color.ink.400"),
     ]
     clr = "\n".join(
         f'      <a:{slot}><a:srgbClr val="{hexof(tok)}"/></a:{slot}>' for slot, tok in mapping
     )
     heading = css_value(tokens["type.family.heading"]).split(",")[0].strip("'")
     body = css_value(tokens["type.family.body"]).split(",")[0].strip("'")
-    return f"""<!-- Corporate Calm — paste into ppt/theme/theme1.xml (generated) -->
-<a:clrScheme name="Corporate Calm">
+    return f"""<!-- Signal — paste into ppt/theme/theme1.xml (generated) -->
+<a:clrScheme name="Signal">
 {clr}
 </a:clrScheme>
-<a:fontScheme name="Corporate Calm">
+<a:fontScheme name="Signal">
   <a:majorFont>
     <a:latin typeface="{heading}"/>
     <a:ea typeface=""/>
@@ -251,26 +251,36 @@ def contrast(a: str, b: str) -> float:
     return (hi + 0.05) / (lo + 0.05)
 
 
-CHECKS = [
-    ("text.primary on surface.base", "text.primary", "surface.base", 7.0),
-    ("text.secondary on surface.base", "text.secondary", "surface.base", 4.5),
-    ("text.on-brand on brand.primary", "text.on-brand", "brand.primary", 4.5),
-    ("text.link on surface.base", "text.link", "surface.base", 4.5),
-    ("status.success on surface.raised", "status.success", "surface.raised", 3.0),
-    ("status.danger on surface.raised", "status.danger", "surface.raised", 3.0),
-]
+CHECKS = {
+    "light": [
+        ("text.primary on surface.base", "text.primary", "surface.base", 7.0),
+        ("text.secondary on surface.base", "text.secondary", "surface.base", 4.5),
+        ("text.on-brand on brand.primary", "text.on-brand", "brand.primary", 4.5),
+        ("text.link on surface.base", "text.link", "surface.base", 4.5),
+        ("status.success on surface.base", "status.success", "surface.base", 3.0),
+        ("status.danger on surface.base", "status.danger", "surface.base", 3.0),
+    ],
+    "dark": [
+        ("text.primary on surface.base", "text.primary", "surface.base", 7.0),
+        ("text.secondary on surface.base", "text.secondary", "surface.base", 4.5),
+        ("text.on-brand on brand.primary", "text.on-brand", "brand.primary", 4.5),
+        ("text.link on surface.base", "text.link", "surface.base", 4.5),
+        ("status.success on surface.base", "status.success", "surface.base", 3.0),
+        ("status.danger on surface.base", "status.danger", "surface.base", 3.0),
+    ],
+}
 
 
-def run_contrast(tokens: dict[str, dict]) -> list[str]:
+def run_contrast(tokens: dict[str, dict], theme: str = "light") -> list[str]:
     problems = []
-    for label, fg, bg, minimum in CHECKS:
+    for label, fg, bg, minimum in CHECKS.get(theme, CHECKS["light"]):
         if fg not in tokens or bg not in tokens:
             continue
         ratio = contrast(css_value(tokens[fg]), css_value(tokens[bg]))
         status = "ok" if ratio >= minimum else "FAIL"
         print(f"  {status:4} {label:42} {ratio:5.2f}:1  (min {minimum})")
         if ratio < minimum:
-            problems.append(f"{label}: {ratio:.2f}:1 < {minimum}:1")
+            problems.append(f"{theme}: {label}: {ratio:.2f}:1 < {minimum}:1")
     return problems
 
 
@@ -307,9 +317,9 @@ def emit_docs(light: dict, dark: dict) -> str:
         return "\n".join(rows)
 
     return f"""<!doctype html>
-<html lang="id"><head><meta charset="utf-8"><title>Corporate Calm — Design System</title>
+<html lang="id"><head><meta charset="utf-8"><title>Signal — pitch deck system</title>
 <link rel="stylesheet" href="../css/tokens.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{{box-sizing:border-box;margin:0;padding:0}}
 body{{background:var(--ds-surface-base);color:var(--ds-text-primary);
@@ -349,10 +359,9 @@ td{{padding:var(--ds-space-4) 0;border-bottom:1px solid var(--ds-table-row-borde
 tbody tr:hover{{background:var(--ds-table-row-hover-bg)}}
 .meta{{font-family:var(--ds-type-family-mono);font-size:11px;color:var(--ds-text-secondary);margin-top:var(--ds-space-11)}}
 </style></head><body>
-<div class="kicker">Design System · Corporate Calm · v0.1.0</div>
-<h1>Corporate Calm</h1>
-<p class="lead">Satu sumber kebenaran untuk deck, dokumen, dan web. Nilai mentah hanya hidup di lapis core;
-semua yang dipakai sehari-hari merujuk lewat token semantic.</p>
+<div class="kicker">Signal · pitch deck system · v0.2.0</div>
+<h1>Signal</h1>
+<p class="lead">Sistem untuk deck yang harus meyakinkan dalam tiga detik pertama: display besar, satu aksen oranye, kanvas terang dan gelap bergantian. Nilai mentah hanya hidup di lapis core.</p>
 
 <h2>Surface &amp; text</h2>
 <div class="grid">
@@ -416,8 +425,11 @@ def main() -> int:
         merged = {**core, **sem, **comp_raw}
         built[theme] = resolve_aliases(merged)
 
-    print("\ncontrast checks (light):")
-    problems = run_contrast(built["light"])
+    print("\ncontrast checks:")
+    problems = []
+    for theme in built:
+        print(f" [{theme}]")
+        problems += run_contrast(built[theme], theme)
 
     if args.check:
         if problems:
@@ -430,11 +442,11 @@ def main() -> int:
         (DIST / sub).mkdir(parents=True, exist_ok=True)
 
     (DIST / "css" / "tokens.css").write_text(
-        emit_css(built["light"], ":root", "/* Corporate Calm — tokens (generated) */\n"),
+        emit_css(built["light"], ":root", "/* Signal — tokens (generated) */\n"),
         encoding="utf-8")
     if "dark" in built:
         (DIST / "css" / "tokens-dark.css").write_text(
-            emit_css(built["dark"], '[data-theme="dark"]', "/* Corporate Calm — dark theme (generated) */\n"),
+            emit_css(built["dark"], '[data-theme="dark"]', "/* Signal — dark theme (generated) */\n"),
             encoding="utf-8")
     (DIST / "tailwind" / "preset.js").write_text(emit_tailwind(built["light"]), encoding="utf-8")
     (DIST / "ts" / "tokens.ts").write_text(emit_ts(built["light"]), encoding="utf-8")

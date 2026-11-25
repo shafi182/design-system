@@ -10,22 +10,22 @@
     "sm": {
       "$type": "dimension",
       "$value": {
-        "value": 3,
+        "value": 2,
         "unit": "px"
       }
     },
     "md": {
       "$type": "dimension",
       "$value": {
-        "value": 6,
+        "value": 4,
         "unit": "px"
       },
-      "$description": "Default komponen."
+      "$description": "Sengaja tajam. Kartu membulat terasa produk, bukan pitch."
     },
     "lg": {
       "$type": "dimension",
       "$value": {
-        "value": 10,
+        "value": 8,
         "unit": "px"
       }
     },
@@ -52,6 +52,14 @@
           "value": 2,
           "unit": "px"
         }
+      },
+      "rule": {
+        "$type": "dimension",
+        "$value": {
+          "value": 4,
+          "unit": "px"
+        },
+        "$description": "Aturan aksen di bawah kicker."
       }
     }
   },
@@ -59,17 +67,17 @@
     "sm": {
       "$type": "shadow",
       "$value": {
-        "color": "#12304F14",
+        "color": "#0F11151A",
         "offsetX": {
           "value": 0,
           "unit": "px"
         },
         "offsetY": {
-          "value": 1,
+          "value": 2,
           "unit": "px"
         },
         "blur": {
-          "value": 2,
+          "value": 6,
           "unit": "px"
         },
         "spread": {
@@ -81,17 +89,17 @@
     "md": {
       "$type": "shadow",
       "$value": {
-        "color": "#12304F1F",
+        "color": "#0F111524",
         "offsetX": {
           "value": 0,
           "unit": "px"
         },
         "offsetY": {
-          "value": 4,
+          "value": 8,
           "unit": "px"
         },
         "blur": {
-          "value": 12,
+          "value": 24,
           "unit": "px"
         },
         "spread": {
@@ -103,17 +111,17 @@
     "lg": {
       "$type": "shadow",
       "$value": {
-        "color": "#12304F29",
+        "color": "#0F111533",
         "offsetX": {
           "value": 0,
           "unit": "px"
         },
         "offsetY": {
-          "value": 12,
+          "value": 20,
           "unit": "px"
         },
         "blur": {
-          "value": 32,
+          "value": 48,
           "unit": "px"
         },
         "spread": {
@@ -134,14 +142,14 @@
     "normal": {
       "$type": "duration",
       "$value": {
-        "value": 200,
+        "value": 220,
         "unit": "ms"
       }
     },
     "slow": {
       "$type": "duration",
       "$value": {
-        "value": 320,
+        "value": 360,
         "unit": "ms"
       }
     }
@@ -187,6 +195,37 @@
       "$type": "dimension",
       "$value": {
         "value": 1200,
+        "unit": "px"
+      }
+    }
+  },
+  "layout": {
+    "slide-width": {
+      "$type": "dimension",
+      "$value": {
+        "value": 1280,
+        "unit": "px"
+      }
+    },
+    "slide-height": {
+      "$type": "dimension",
+      "$value": {
+        "value": 720,
+        "unit": "px"
+      }
+    },
+    "margin-x": {
+      "$type": "dimension",
+      "$value": {
+        "value": 80,
+        "unit": "px"
+      },
+      "$description": "Margin kiri-kanan slide. 6.25% dari lebar."
+    },
+    "gutter": {
+      "$type": "dimension",
+      "$value": {
+        "value": 24,
         "unit": "px"
       }
     }

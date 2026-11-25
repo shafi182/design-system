@@ -1,15 +1,19 @@
 {
-  "name": "@shafi/corporate-calm",
-  "version": "0.1.0",
+  "name": "@shafi/signal-deck-system",
+  "version": "0.2.0",
   "private": true,
-  "description": "Corporate Calm design system — one token source for deck, document, web and app.",
+  "description": "Signal \u2014 pitch deck design system. One token source for deck, document, web and app.",
   "main": "dist/tailwind/preset.js",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "python3 build/build.py",
     "check": "python3 build/build.py --check",
+    "deck": "python3 build/deck.py",
+    "preview": "python3 build/preview.py",
     "examples": "python3 build/examples.py",
-    "verify": "npm run check && npm run build && npm run examples"
+    "verify": "npm run check && npm run build && npm run deck && npm run preview && npm run examples"
   },
   "license": "UNLICENSED"
 }

@@ -1,115 +1,118 @@
 {
   "color": {
     "$type": "color",
-    "navy": {
+    "ink": {
       "50": {
-        "$value": "#F2F6FA",
-        "$description": "Permukaan paling terang, latar kartu di atas base."
+        "$value": "#F7F8FA"
       },
       "100": {
-        "$value": "#E2EAF2"
+        "$value": "#EDF0F3"
       },
       "200": {
-        "$value": "#C5D5E4"
+        "$value": "#D8DDE3"
       },
       "300": {
-        "$value": "#9DB7CE"
+        "$value": "#B9C0CA"
       },
       "400": {
-        "$value": "#6E90AE"
+        "$value": "#8A93A1"
       },
       "500": {
-        "$value": "#456B8E"
+        "$value": "#5B6472",
+        "$description": "Teks sekunder di kanvas terang."
       },
       "600": {
-        "$value": "#2C527A"
+        "$value": "#3A414C"
       },
       "700": {
-        "$value": "#1E4B7A",
-        "$description": "Brand utama. Dipakai untuk aksi primer dan heading."
+        "$value": "#232830"
       },
       "800": {
-        "$value": "#16395C"
+        "$value": "#171A1F"
       },
       "900": {
-        "$value": "#12304F",
-        "$description": "Teks utama di permukaan terang."
+        "$value": "#0F1115",
+        "$description": "Teks utama, dan kanvas slide gelap."
       },
       "950": {
-        "$value": "#0B1F33"
+        "$value": "#08090B",
+        "$description": "Hitam sinyal. Latar cover."
       }
     },
-    "sand": {
+    "bone": {
       "50": {
-        "$value": "#FDFCFA"
+        "$value": "#FCFBF8"
       },
       "100": {
-        "$value": "#FAFAF7",
-        "$description": "Kanvas utama. Hangat, bukan putih murni."
+        "$value": "#F6F4EE",
+        "$description": "Kanvas slide terang. Hangat, bukan putih pabrik."
       },
       "200": {
-        "$value": "#F2F1EC"
+        "$value": "#EBE8DF"
       },
       "300": {
-        "$value": "#E7E5DE"
-      },
-      "400": {
-        "$value": "#D5D2C8"
+        "$value": "#DCD7CA"
       }
     },
-    "slate": {
+    "signal": {
+      "100": {
+        "$value": "#FFE7DC"
+      },
+      "300": {
+        "$value": "#FF9A73"
+      },
       "400": {
-        "$value": "#8A9BAB"
+        "$value": "#FF7A47"
       },
       "500": {
-        "$value": "#5C7085",
-        "$description": "Teks sekunder, label, metadata."
+        "$value": "#FF5A1F",
+        "$description": "Aksen tunggal. Satu per slide, tidak lebih."
       },
       "600": {
-        "$value": "#47596B"
+        "$value": "#E64510"
       },
       "700": {
-        "$value": "#33424F"
+        "$value": "#B93509"
       }
     },
     "green": {
       "100": {
-        "$value": "#E4F1E9"
+        "$value": "#E3F4EC"
       },
       "500": {
-        "$value": "#2E7D5B"
+        "$value": "#0F8A5F"
       },
       "700": {
-        "$value": "#1F5A41"
+        "$value": "#0A6344"
       }
     },
     "amber": {
       "100": {
-        "$value": "#FBF0DC"
+        "$value": "#FBF0D8"
       },
       "500": {
-        "$value": "#B8791A"
+        "$value": "#9A6B0A"
       },
       "700": {
-        "$value": "#8A5A12"
+        "$value": "#775208"
       }
     },
     "red": {
       "100": {
-        "$value": "#F9E4E2"
+        "$value": "#FAE3E0"
       },
       "500": {
-        "$value": "#B23B32"
+        "$value": "#C0322A"
       },
       "700": {
-        "$value": "#8A2B24"
+        "$value": "#8F231D"
       }
     },
     "white": {
       "$value": "#FFFFFF"
     },
     "black": {
-      "$value": "#0A0A0A"
+      "$value": "#000000"
     }
   }
 }

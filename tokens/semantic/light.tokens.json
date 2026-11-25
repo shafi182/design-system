@@ -2,92 +2,86 @@
   "surface": {
     "base": {
       "$type": "color",
-      "$value": "{color.sand.100}",
-      "$description": "Kanvas halaman. Hangat, bukan putih."
+      "$value": "{color.bone.100}",
+      "$description": "Kanvas slide terang."
     },
     "raised": {
       "$type": "color",
-      "$value": "{color.white}",
-      "$description": "Kartu, panel, tabel di atas kanvas."
+      "$value": "{color.white}"
     },
     "sunken": {
       "$type": "color",
-      "$value": "{color.sand.200}",
-      "$description": "Area terbenam: code block, well, strip."
+      "$value": "{color.bone.200}"
     },
     "inverse": {
       "$type": "color",
-      "$value": "{color.navy.900}",
-      "$description": "Permukaan gelap di dalam halaman terang."
+      "$value": "{color.ink.950}",
+      "$description": "Slide gelap di tengah deck terang."
     }
   },
   "text": {
     "primary": {
       "$type": "color",
-      "$value": "{color.navy.900}",
-      "$description": "Isi utama. Kontras 12.4:1 di surface.base."
+      "$value": "{color.ink.900}"
     },
     "secondary": {
       "$type": "color",
-      "$value": "{color.slate.500}",
-      "$description": "Metadata, caption, label. 4.8:1."
+      "$value": "{color.ink.500}"
     },
     "muted": {
       "$type": "color",
-      "$value": "{color.slate.400}",
-      "$description": "Placeholder, teks non-esensial. Jangan untuk isi."
+      "$value": "{color.ink.400}",
+      "$description": "Nomor slide, footer. Bukan untuk isi."
     },
     "inverse": {
       "$type": "color",
-      "$value": "{color.sand.100}"
+      "$value": "{color.bone.50}"
     },
     "link": {
       "$type": "color",
-      "$value": "{color.navy.700}"
+      "$value": "{color.signal.700}",
+      "$description": "Oranye 700 untuk teks di kanvas terang — 600 hanya 3.66:1, gagal."
     },
     "on-brand": {
       "$type": "color",
-      "$value": "{color.white}"
+      "$value": "{color.ink.950}",
+      "$description": "Hitam di atas oranye — 6.3:1. Putih di atas oranye hanya 3.1:1, gagal."
     }
   },
   "border": {
     "subtle": {
       "$type": "color",
-      "$value": "{color.sand.300}",
-      "$description": "Pemisah halus, garis tabel."
+      "$value": "{color.bone.300}"
     },
     "default": {
       "$type": "color",
-      "$value": "{color.sand.400}",
-      "$description": "Border komponen: input, tombol sekunder."
+      "$value": "{color.ink.200}"
     },
     "strong": {
       "$type": "color",
-      "$value": "{color.slate.500}"
+      "$value": "{color.ink.700}"
     },
     "focus": {
       "$type": "color",
-      "$value": "{color.navy.500}",
-      "$description": "Ring fokus 2px. Wajib untuk aksesibilitas."
+      "$value": "{color.signal.500}"
     }
   },
   "brand": {
     "primary": {
       "$type": "color",
-      "$value": "{color.navy.700}"
+      "$value": "{color.signal.500}"
     },
     "hover": {
       "$type": "color",
-      "$value": "{color.navy.800}"
+      "$value": "{color.signal.600}"
     },
     "active": {
       "$type": "color",
-      "$value": "{color.navy.900}"
+      "$value": "{color.signal.700}"
     },
     "subtle": {
       "$type": "color",
-      "$value": "{color.navy.50}",
-      "$description": "Latar chip, tag, selected row."
+      "$value": "{color.signal.100}"
     }
   },
   "status": {
@@ -119,8 +113,7 @@
   "overlay": {
     "scrim": {
       "$type": "color",
-      "$value": "#12304F66",
-      "$description": "Latar modal 40%."
+      "$value": "#08090BB3"
     }
   }
 }

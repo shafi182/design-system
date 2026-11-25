@@ -71,15 +71,15 @@ def build_deck(path: Path) -> None:
 
     rule = s.shapes.add_shape(1, Inches(1.1), Inches(3.05), Inches(1.4), Emu(28575 * 2))
     rule.fill.solid()
-    rule.fill.fore_color.rgb = rgb("color.sand.400")
+    rule.fill.fore_color.rgb = rgb("brand.primary")
     rule.line.fill.background()
 
-    text(s, "COMMISSIONING READINESS REVIEW", 1.1, 1.9, 9, 0.4,
-         size=11, color="color.navy.300", bold=False, serif=False, spacing=0.16)
-    text(s, "System handover\nfor Building B", 1.1, 3.35, 9.5, 2.2,
-         size=46, color="color.sand.100", bold=True)
-    text(s, "Prepared for NV5 · Cikarang\nNovember 2026", 1.1, 5.9, 7, 0.9,
-         size=13, color="color.navy.300", serif=False)
+    text(s, "NV5 · CIKARANG · 2026", 1.1, 1.9, 9, 0.4,
+         size=11, color="brand.primary", bold=True, serif=False, spacing=0.18)
+    text(s, "Commissioning,\nwithout the guesswork.", 1.1, 3.35, 9.5, 2.2,
+         size=54, color="color.bone.50", bold=True)
+    text(s, "Muhammad Shafiyuddin · November 2026", 1.1, 5.9, 7, 0.9,
+         size=12, color="color.ink.300", serif=False)
 
     # --- content: warm canvas, serif heading, table
     s = prs.slides.add_slide(blank)

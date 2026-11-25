@@ -19,7 +19,7 @@
       },
       "radius": {
         "$type": "dimension",
-        "$value": "{radius.md}"
+        "$value": "{radius.sm}"
       },
       "padding-x": {
         "$type": "dimension",
@@ -41,7 +41,7 @@
       },
       "border": {
         "$type": "color",
-        "$value": "{border.default}"
+        "$value": "{border.strong}"
       }
     }
   },
@@ -79,6 +79,24 @@
     "row-hover-bg": {
       "$type": "color",
       "$value": "{surface.sunken}"
+    }
+  },
+  "slide": {
+    "kicker-fg": {
+      "$type": "color",
+      "$value": "{brand.primary}"
+    },
+    "rule": {
+      "$type": "color",
+      "$value": "{brand.primary}"
+    },
+    "footer-fg": {
+      "$type": "color",
+      "$value": "{text.muted}"
+    },
+    "page-no-fg": {
+      "$type": "color",
+      "$value": "{text.secondary}"
     }
   }
 }
