@@ -248,6 +248,85 @@ def hub(cx, cy, radius, center, ring, theme="light"):
     return out
 
 
+def radial(x, y, w, h, center, items, theme="light", radius=26):
+    """Hub centred, satellites on the top and bottom rows only (no collision band)."""
+    out = []
+    cw, ch = w / 3, h / 3
+    cx, cy = x + cw * 1.5, y + ch * 1.5
+    out.append(r(cx - radius, cy - radius, radius * 2, radius * 2, "brand.primary", theme,
+                 radius=int(radius)))
+    out.append(t(cx - radius + 4, cy - 8, radius * 2 - 8, 16, center, "text.on-brand", theme,
+                 size=8.5, bold=True, align="center", leading=1.05))
+    slots = [(1, 0), (0, 0), (2, 0), (0, 2), (2, 2), (1, 2)]
+    for i, label in enumerate(items[:6]):
+        c, rw = slots[i]
+        bx = x + c * cw + 6
+        by = y + rw * ch + (ch - 15) / 2
+        bw = cw - 12
+        out.append(r(bx, by, bw, 15, "surface.base", theme, radius=3, stroke="border.strong"))
+        out.append(t(bx, by + 3, bw, 11, label, "text.primary", theme, size=6.8,
+                     align="center"))
+    return out
+
+
+def layers_matrix(x, y, w, h, row_labels, col_labels, cells, theme="light", label_w=64):
+    """Rows x columns grid with a label column and a header row (ESG-framework shape)."""
+    out = []
+    head = 17
+    gw = w - label_w
+    cw = gw / len(col_labels)
+    rh = (h - head) / len(row_labels)
+    for j, cl in enumerate(col_labels):
+        out.append(t(x + label_w + j * cw + 3, y + 1, cw - 6, head - 2, cl, "text.muted",
+                     theme, size=6.8, bold=True, align="center", leading=1.0))
+    for i, rl in enumerate(row_labels):
+        ry = y + head + i * rh
+        out.append(t(x + 1, ry + rh / 2 - 8, label_w - 8, 16, rl, "text.primary", theme,
+                     size=7.5, bold=True, leading=1.1))
+        for j in range(len(col_labels)):
+            cell_txt = cells[i][j] if i < len(cells) and j < len(cells[i]) else ""
+            bx = x + label_w + j * cw
+            out.append(r(bx + 1, ry + 1, cw - 2, rh - 2, "surface.band", theme, radius=3,
+                         stroke="border.subtle"))
+            out.append(t(bx + 8, ry + 6, cw - 16, rh - 10, cell_txt, "text.secondary", theme,
+                         size=6.8, leading=1.15))
+    return out
+
+
+def kpi_grid(x, y, w, h, items, theme="light", cols=3):
+    """n metrics in a hairline-separated grid; number first, label under."""
+    out = []
+    rows = (len(items) + cols - 1) // cols
+    cw, ch = w / cols, h / rows
+    size = 22 if cols >= 4 else 26
+    for i, (num, lab) in enumerate(items):
+        c, rw = i % cols, i // cols
+        bx, by = x + c * cw, y + rw * ch
+        if c:
+            out.append(r(bx, by + 4, 1, ch - 8, "border.subtle", theme))
+        if rw:
+            out.append(r(bx + 4, by, cw - 8, 1, "border.subtle", theme))
+        out.append(t(bx + 6, by + 4, cw - 12, size + 4, num, "text.primary", theme, size=size,
+                     bold=True, leading=1.0, font="mono"))
+        out.append(t(bx + 6, by + size + 8, cw - 12, 20, lab, "text.secondary", theme, size=7.5,
+                     leading=1.2))
+    return out
+
+
+def ticks(x, y, w, items, theme="light", cols=1, rowh=17, size=8.5):
+    """Checklist: hollow square + text, one or two columns."""
+    out = []
+    cw = w / cols
+    for i, item in enumerate(items):
+        c, rw = i % cols, i // cols
+        bx = x + c * cw
+        by = y + rw * rowh
+        out.append(r(bx, by + 4, 5, 5, "surface.base", theme, stroke="brand.primary"))
+        out.append(t(bx + 10, by, cw - 10, rowh, item, "text.primary", theme, size=size,
+                     leading=1.25))
+    return out
+
+
 def flow(x, y, w, steps, theme="light", h=34):
     out = []
     n = len(steps)
@@ -428,14 +507,18 @@ add("light", "Kerangka: dari temuan lapangan ke keputusan anggaran", "Framework"
         [("Keputusan", "owner: steering"), ("Validasi", "audit sampel"),
          ("Bukti", "foto, log, tanda tangan"), ("Temuan", "punch list")]),
         "Sumber: kerangka commissioning Signal", kicker="01 — LAPIS"),
-    *panel(1, 0, "Satu pusat, tiga tarikan", hub(
-        bx1 + bw / 2, by0 + bh / 2, 34, "Register", ["Kontraktor", "Owner", "Vendor"]),
+    *panel(1, 0, "Satu register, lima pihak membaca angka yang sama", radial(
+        bx1, by0, bw, bh, "Register",
+        ["Kontraktor", "Owner", "Vendor", "Konsultan", "Bank"]),
         "Sumber: model tata kelola", kicker="02 — PUSAT"),
-    *panel(0, 1, "Beban kerja bergeser ke hulu", stackbar(
-        bx0, body(0, 1)[1] + 4, bw,
-        [("Pre-functional", "62%", 0.62), ("Functional", "28%", 0.28),
-         ("Handover", "10%", 0.10)]),
-        "Sumber: distribusi jam, 2026", kicker="03 — BEBAN"),
+    *panel(0, 1, "Tiga lapis, tiga pilar: siapa mengerjakan apa", layers_matrix(
+        bx0, body(0, 1)[1] + 2, bw, bh - 4,
+        ["Orang", "Proses", "Sistem"],
+        ["Catat", "Verifikasi", "Putuskan"],
+        [["Teknisi", "Auditor", "Steering"],
+         ["Checklist", "Sampel 5%", "Rapat 15 mnt"],
+         ["Form + foto", "Log audit", "Dashboard"]]),
+        "Sumber: matriks peran, Nov 2026", kicker="03 — MATRIKS"),
     *panel(1, 1, "Empat langkah, satu pemilik per langkah", flow(
         bx1, body(1, 1)[1] + 22, bw,
         [("Catat", "lapangan"), ("Verifikasi", "audit"), ("Putuskan", "steering"),
@@ -446,11 +529,11 @@ add("light", "Kerangka: dari temuan lapangan ke keputusan anggaran", "Framework"
         [("Quick win", "Register + foto"), ("Proyek", "Integrasi BMS"),
          ("Isi ulang", "Template audit"), ("Tunda", "Dashboard vendor")]),
         "Sumber: workshop prioritisasi", kicker="05 — PRIORITAS"),
-    *panel(1, 2, "Hasil yang dijanjikan",
-           tbl(bx1, body(1, 2)[1], bw, None,
-               [("Siklus handover", "−12 pts"), ("Audit ulang", "3×"),
-                ("Waktu buka-tutup", "−50%")]),
-           "Sumber: target 2027", kicker="06 — HASIL"),
+    *panel(1, 2, "Hasil yang dijanjikan", kpi_grid(
+        bx1, body(1, 2)[1], bw, bh - 6,
+        [("−12 pts", "siklus handover"), ("3×", "frekuensi audit"),
+         ("−50%", "waktu buka-tutup")]),
+        "Sumber: target 2027", kicker="06 — HASIL"),
 ], FOOT, 4)
 
 # 05 — VISUAL
@@ -488,10 +571,10 @@ add("light", "Bukti lapangan: foto, blok warna, dan angka yang menahan mata", "V
         "Sumber: readiness register", kicker="05 — RINGKASAN"),
     *panel(1, 2, "Foto kecil, teks yang menjelaskan", [
         img(bx1, body(1, 2)[1] + 2, 92, bh - 14, "photo-cover.png", radius=4),
-        *bullets(bx1 + 104, body(1, 2)[1] + 6, bw - 104,
-                 ["Foto menempel ke temuan, bukan ke folder",
-                  "Nama pemilik terlihat di lapangan",
-                  "Riwayat perubahan tidak hilang"], rowh=19)],
+        *ticks(bx1 + 104, body(1, 2)[1] + 6, bw - 104,
+                ["Foto menempel ke temuan, bukan ke folder",
+                 "Nama pemilik terlihat di lapangan",
+                 "Riwayat perubahan tidak hilang"], rowh=19)],
         "Sumber: panduan lapangan", kicker="06 — CARA"),
 ], FOOT, 5)
 

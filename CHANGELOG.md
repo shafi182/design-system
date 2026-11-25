@@ -11,7 +11,9 @@ perbaikan visual/kontras = patch.
   grid panel 2×3 dengan gutter 14px, tab bar 5 item (Table / Chart / Panel / Framework / Visual),
   margin 32px, radius panel 6px, judul per panel + baris sumber per panel.
 - Primitif baru di `build/analyst.py`: `hbar`, `hstack`, `donut`, `pyramid`, `hub`, `flow`,
-  `stackbar`, `matrix`, `tbl` (header caps + hairline, tanpa zebra, angka rata kanan).
+  `stackbar`, `matrix`, `tbl` (header caps + hairline, tanpa zebra, angka rata kanan),
+  `radial` (hub + 5–6 satelit), `layers_matrix` (matriks lapis × pilar), `kpi_grid`
+  (angka + hairline pemisah), `ticks` (checklist).
 - Token `chart.series.1…4` di keempat tema — tangga seri per palet, bukan warna baru.
 - `tokens/component/analyst.tokens.json` — `analyst.layout.*` dan `analyst.type.*` (9,5px body, 8px mikro).
 - `examples/analyst-<palette>.pptx` + `examples/preview-analyst-<palette>.html` (5 slide per palet).
