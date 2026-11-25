@@ -374,6 +374,97 @@ A.add("light", "Peta dan media: gelembung proporsional, region, sebelum-sesudah,
 ], A.FOOT, 9)
 
 
+# ------------------------------------------------------- 10 matrices + cards + ranks
+A.add("light", "Matriks, kartu, peringkat: pernyataan di atas, sel di bawah", None, [
+    *box(0, 0, "matrix_header", "Pil pernyataan + kolom pilar x baris pemangku",
+         lambda x, y, w, h: S.matrix_header(
+             x, y, w, h, "Strategi: mempercepat pertumbuhan yang berkelanjutan dan inklusif",
+             ["Lingkungan", "Sosial", "Tata kelola"], ["Klien", "Perusahaan", "Pemangku"],
+             [["Produk hijau", "Literasi finansial", "Etika data"],
+              ["Emisi -50%", "Paritas upah", "Rapat dewan"],
+              ["Bahan baku", "Program desa", "Transparansi"]], "light")),
+    *box(1, 0, "benefit_panel", "Daftar manfaat di kiri, panel gelap kasus pakai di kanan",
+         lambda x, y, w, h: S.benefit_panel(
+             x, y, w, h,
+             [("Keamanan", "Kontrak terenkripsi di rantai blok"),
+              ("Kecepatan", "Kode mengeksekusi tanpa menunggu pihak ketiga"),
+              ("Akurasi", "Menghapus kesalahan entri manual"),
+              ("Otonomi", "Risiko pihak ketiga turun lewat disintermediasi"),
+              ("Biaya", "Tanpa perantara, tanpa rekonsiliasi"),
+              ("Cadangan", "Dokumen tersimpan dan pulih dari rantai")],
+             "KASUS PAKAI", ["Properti: escrow, sertifikat, hipotek", "Pembiayaan dagang",
+                             "Rantai pasok", "Pembayaran pemerintah", "Klaim asuransi",
+                             "Jasa keuangan"], "light")),
+    *box(0, 1, "country_cards", "Kartu per negara: klaim + metrik bertanda +/-",
+         lambda x, y, w, h: S.country_cards(
+             x, y, w, h,
+             [("Indonesia", "E-commerce menarik ekonomi", [("E-commerce", "+54%", "+54%"),
+                                                           ("GMV", "$8B", "+$6B"),
+                                                           ("Travel", "$4B", "-60%")]),
+              ("Filipina", "Kiriman makanan dan e-commerce", [("Food delivery", "+50%", "+50%"),
+                                                              ("E-commerce", "+40%", "+40%"),
+                                                              ("Travel", "-60%", "-60%")]),
+              ("Thailand", "E-commerce naik, travel jatuh", [("E-commerce", "+8%", "+8%"),
+                                                             ("Food delivery", "+4%", "+4%"),
+                                                             ("Transport", "-53%", "-53%")]),
+              ("Malaysia", "Food delivery dan e-commerce", [("E-commerce", "+8%", "+8%"),
+                                                            ("Food delivery", "+44%", "+44%"),
+                                                            ("Travel", "-39%", "-39%")]),
+              ("Singapura", "Kekuatan regional, paparan travel", [("E-commerce", "+87%", "+87%"),
+                                                                 ("Travel", "-70%", "-70%"),
+                                                                 ("GMV", "dataran", "0")]),
+              ("Vietnam", "Lonjakan di semua vertikal", [("Travel", "-28%", "-28%"),
+                                                         ("E-commerce", "+46%", "+46%"),
+                                                         ("Transport", "+32%", "+32%")])],
+             "light")),
+    *box(1, 1, "ranked_barriers", "Angka utama di kiri, peringkat berlatar di kanan",
+         lambda x, y, w, h: S.ranked_barriers(
+             x, y, w, h, ("67%", "Pedagang digital menaruh privasi dan keamanan sebagai "
+                                "penghalang utama adopsi pinjaman digital"),
+             [("Privasi dan keamanan", True), ("Pilihan bank dan asuransi lebih banyak", False),
+              ("Tidak memenuhi syarat minimum", False), ("Tidak percaya jasa keuangan digital", True),
+              ("Biaya penggunaan tinggi", False)], "light")),
+], A.FOOT, 10)
+
+# ---------------------------------------------------- 11 orbit + segments + hubs
+A.add("light", "Orbit, segmen, hub ganda, dan empat aksi", None, [
+    *box(0, 0, "orbit_ring", "Tujuh topik mengorbit satu pernyataan inti",
+         lambda x, y, w, h: S.orbit_ring(
+             x, y, w, h, "Pertumbuhan berkelanjutan dan inklusif",
+             [("Pertumbuhan", "Persaingan dan produktivitas"),
+              ("Pasar modal", "Investasi dan alokasi aset"),
+              ("Konsumen", "Perilaku dan kesehatan"),
+              ("Masyarakat", "Institusi dan kepercayaan"),
+              ("Sumber daya", "Transisi energi dan lahan"),
+              ("Tenaga kerja", "Keterampilan dan mobilitas"),
+              ("Teknologi", "Difusi AI dan inovasi")], "light")),
+    *box(1, 0, "segment_split", "Satu bar proporsional: pangsa di atas, nama di bawah",
+         lambda x, y, w, h: S.segment_split(
+             x, y, w, h,
+             [("Pengguna mapan", 18), ("Digital native muda", 17), ("Arus utama kota", 18),
+              ("Hemat", 12), ("Pinggiran kota", 41)], "light",
+             "Definisi pinggiran kota: populasi 300-500 ribu, daring minimal dua minggu sekali")),
+    *box(0, 1, "twin_hub", "Dua hub bersebelahan: peran sebelum dan sesudah",
+         lambda x, y, w, h: S.twin_hub(
+             x, y, w, h,
+             ("Produk", ["Media", "Inspirasi", "Konten", "Pengalaman", "Layanan"],
+              "MEREK SEBAGAI PRODUKSEN", "Semua lapis melayani produk"),
+             ("Interaksi", ["Produsen", "Media", "Kurasi", "Layanan", "Komunitas"],
+              "MEREK SEBAGAI KURATOR", "Semua lapis melayani interaksi"), "light")),
+    *box(1, 1, "quad_actions", "Empat aksi bernomor dalam blok 2x2",
+         lambda x, y, w, h: S.quad_actions(
+             x, y, w, h,
+             [("01", "Buka solusi yang sudah terbukti",
+               "Rencana dekarbonisasi menyeluruh, kerangka dan insentif lebih kuat"),
+              ("02", "Tangani biaya transisi energi",
+               "Rinci biaya penuh dan sumber pendanaannya"),
+              ("03", "Perkuat pembiayaan hijau",
+               "Produk investasi dekarbonisasi menurunkan biaya modal"),
+              ("04", "Dorong kolaborasi regional",
+               "Kemitraan lintas rantai nilai, sektor, dan publik-swasta")], "light")),
+], A.FOOT, 11)
+
+
 if __name__ == "__main__":
     out = ROOT / "examples" / f"atlas-{A.PALETTE}.pptx"
     A.render_pptx(out)

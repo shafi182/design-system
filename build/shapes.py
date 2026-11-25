@@ -11,6 +11,7 @@ Geometry is in slide pixels (1280x720), origin top-left.
 """
 from __future__ import annotations
 
+import math
 import sys
 from pathlib import Path
 
@@ -605,4 +606,203 @@ def before_after(x, y, w, h, left, right, theme="light", note="placeholder geo")
                      bold=True, caps=True, spacing=0.1))
         out.append(t(fx, y + h - 14, fw, 11, caption, "text.muted", theme, size=6.5))
     out.append(t(x, y + h - 2, w, 9, note, "text.muted", theme, size=5.8))
+    return out
+
+
+# ------------------------------------------------- matrices, cards, ranked, hubs
+def matrix_header(x, y, w, h, statement, col_labels, row_labels, cells, theme="light",
+                  label_w=88, head_h=24):
+    """Statement pill on top, then columns x rows grid (the ESG framework form)."""
+    out = [r(x, y, w, head_h, "brand.primary", theme, radius=int(head_h / 2)),
+           t(x + 16, y + head_h / 2 - 6, w - 32, 12, statement, "text.on-brand", theme,
+             size=8.5, bold=True)]
+    gy = y + head_h + 12
+    cw = (w - label_w) / len(col_labels)
+    for i, c in enumerate(col_labels):
+        out.append(t(x + label_w + i * cw + 8, gy, cw - 16, 12, c, "brand.primary", theme,
+                     size=7.5, bold=True, caps=True, spacing=0.1))
+        if i:
+            out.append(r(x + label_w + i * cw, gy + 18, 1, h - (gy - y) - 18,
+                         "border.subtle", theme))
+    out.append(r(x, gy + 18, w, 1, "border.strong", theme))
+    rows_y = gy + 24
+    rh = (h - (rows_y - y)) / len(row_labels)
+    for j, rl in enumerate(row_labels):
+        yy = rows_y + j * rh
+        if j:
+            out.append(r(x, yy, w, 1, "border.subtle", theme))
+        out.append(t(x, yy + rh / 2 - 6, label_w - 10, 12, rl, "text.muted", theme,
+                     size=7.2, caps=True, spacing=0.08))
+        for i, cell in enumerate(cells[j]):
+            out.append(t(x + label_w + i * cw + 8, yy + rh / 2 - 12, cw - 16, rh - 8, cell,
+                         "text.primary", theme, size=7.6, leading=1.25))
+    return out
+
+
+def benefit_panel(x, y, w, h, items, panel_title, panel_items, theme="light", split=0.60):
+    """Rows of benefit + a filled side panel of use cases (smart-contract form)."""
+    out = []
+    lw = w * split
+    rowh = h / len(items)
+    for i, (name, desc) in enumerate(items):
+        yy = y + i * rowh
+        if i:
+            out.append(r(x, yy, lw, 1, "border.subtle", theme))
+        out.append(r(x, yy + rowh / 2 - 7, 14, 14, "brand.subtle", theme, radius=2,
+                     stroke="border.subtle"))
+        out.append(t(x + 22, yy + rowh / 2 - 9, lw * 0.30, 14, name, "text.primary", theme,
+                     size=7.8, bold=True))
+        out.append(t(x + 22 + lw * 0.30, yy + rowh / 2 - 10, lw * 0.70 - lw * 0.30,
+                     rowh - 8, desc, "text.secondary", theme, size=7.2, leading=1.25))
+    px, pw = x + lw + 16, w - lw - 16
+    out.append(r(px, y, pw, h, "brand.primary", theme, radius=4))
+    out.append(t(px + 12, y + 10, pw - 24, 26, panel_title, "text.on-brand", theme, size=7.8,
+                 bold=True, leading=1.2))
+    for i, it in enumerate(panel_items):
+        yy = y + 40 + i * ((h - 50) / len(panel_items))
+        out.append(t(px + 12, yy, pw - 24, 12, it, "text.on-brand", theme, size=7.2,
+                     leading=1.2))
+    return out
+
+
+def country_cards(x, y, w, h, cards, theme="light", cols=3, gap=10):
+    """Card grid: country, one-line claim, then metric + signed delta rows."""
+    out = []
+    rows = math.ceil(len(cards) / cols)
+    cw = (w - gap * (cols - 1)) / cols
+    ch = (h - gap * (rows - 1)) / rows
+    for i, (name, claim, metrics) in enumerate(cards):
+        bx = x + (i % cols) * (cw + gap)
+        by = y + (i // cols) * (ch + gap)
+        out.append(r(bx, by, cw, ch, "surface.raised", theme, radius=4,
+                     stroke="border.subtle"))
+        out.append(t(bx + 10, by + 8, cw - 20, 12, name, "brand.primary", theme, size=7.2,
+                     bold=True, caps=True, spacing=0.1))
+        out.append(t(bx + 10, by + 24, cw - 20, 24, claim, "text.primary", theme, size=7,
+                     leading=1.2))
+        for j, (lab, val, delta) in enumerate(metrics[:3]):
+            yy = by + 52 + j * ((ch - 58) / 3)
+            out.append(t(bx + 10, yy, cw - 20, 10, lab, "text.muted", theme, size=6.4))
+            out.append(t(bx + 10, yy + 10, cw * 0.55, 14, val, "text.primary", theme,
+                         size=8.2, bold=True))
+            out.append(t(bx + cw * 0.55, yy + 11, cw * 0.45 - 10, 12, delta,
+                         "status.success" if delta.startswith("+") else "status.danger",
+                         theme, size=7, bold=True, align="right"))
+    return out
+
+
+def ranked_barriers(x, y, w, h, hero, items, theme="light", split=0.34):
+    """Hero stat on a band, then a ranked list with highlighted rows."""
+    out = []
+    lw = w * split
+    out.append(r(x, y, lw, h, "surface.band", theme, radius=4, stroke="border.subtle"))
+    out.append(t(x + 16, y + 16, lw - 32, 40, hero[0], "brand.primary", theme, size=27,
+                 bold=True))
+    out.append(t(x + 16, y + 60, lw - 32, h - 74, hero[1], "text.secondary", theme,
+                 size=7.6, leading=1.3))
+    px, pw = x + lw + 18, w - lw - 18
+    rowh = h / len(items)
+    for i, (name, hot) in enumerate(items):
+        yy = y + i * rowh
+        if hot:
+            out.append(r(px - 5, yy + 1, pw + 10, rowh - 2, "brand.subtle", theme, radius=2))
+        out.append(t(px, yy + rowh / 2 - 7, 22, 12, f"#{i + 1}",
+                     "brand.primary" if hot else "text.muted", theme, size=7.4, bold=True))
+        out.append(t(px + 24, yy + rowh / 2 - 9, pw - 24, rowh - 6, name, "text.primary",
+                     theme, size=7.6, leading=1.2))
+        if i < len(items) - 1:
+            out.append(r(px, yy + rowh - 1, pw, 1, "border.subtle", theme))
+    return out
+
+
+def segment_split(x, y, w, h, segments, theme="light", note=None):
+    """One proportional bar, share above, segment name below."""
+    out = [t(x, y, w, 10, "SEGMEN", "text.muted", theme, size=6.6, caps=True,
+              spacing=0.1)]
+    bar_y, barh = y + h * 0.34, 18
+    bx, total = x, sum(p for _, p in segments)
+    for i, (name, pct) in enumerate(segments):
+        sw = w * pct / total
+        out.append(r(bx, bar_y, max(sw - 2, 4), barh, SERIES[i % 4], theme, radius=2))
+        out.append(t(bx, bar_y - 15, max(sw - 2, 34), 12, f"{pct:.0f}%", "text.primary",
+                     theme, size=8, bold=True))
+        out.append(t(bx, bar_y + barh + 7, max(sw - 2, 58), 26, name, "text.secondary",
+                     theme, size=6.8, leading=1.15))
+        bx += sw
+    if note:
+        out.append(t(x, bar_y + barh + 44, w, h - (bar_y - y) - barh - 44, note,
+                     "text.muted", theme, size=7, leading=1.25))
+    return out
+
+
+def twin_hub(x, y, w, h, left, right, theme="light", caption_h=30):
+    """Two hub diagrams side by side: before/after role of the centre."""
+    out = []
+    cw = (w - 16) / 2
+    for k, (center, sats, foot, note) in enumerate((left, right)):
+        ox, oy = x + k * (cw + 16), y
+        ch = h - caption_h
+        cx, cy = ox + cw / 2, oy + ch / 2
+        rad = min(cw, ch) * 0.19
+        out.append(r(cx - rad, cy - rad, rad * 2, rad * 2, "brand.primary", theme,
+                     radius=int(rad)))
+        out.append(t(cx - rad + 4, cy - 6, rad * 2 - 8, 12, center, "text.on-brand", theme,
+                     size=6.8, bold=True, align="center"))
+        n = len(sats)
+        for i, name in enumerate(sats):
+            ang = -math.pi / 2 + 2 * math.pi * i / n
+            sx = cx + math.cos(ang) * cw * 0.36
+            sy = cy + math.sin(ang) * ch * 0.38
+            out.append(r(sx - 31, sy - 9, 62, 18, "surface.band", theme, radius=2,
+                         stroke="border.subtle"))
+            out.append(t(sx - 29, sy - 5, 58, 10, name, "text.primary", theme, size=6,
+                         align="center"))
+            out.append(r(cx + math.cos(ang) * rad * 1.08 - 1.5,
+                         cy + math.sin(ang) * rad * 1.08 - 1.5, 3, 3, "brand.primary",
+                         theme, radius=1))
+        out.append(t(ox, oy + ch + 2, cw, 12, foot, "text.muted", theme, size=6.8,
+                     caps=True, spacing=0.08, align="center"))
+        out.append(t(ox, oy + ch + 14, cw, caption_h - 14, note, "text.secondary", theme,
+                     size=6.8, align="center", leading=1.2))
+    return out
+
+
+def quad_actions(x, y, w, h, items, theme="light", gap=10):
+    """Four numbered actions in a 2x2 of filled blocks."""
+    out = []
+    cw, ch = (w - gap) / 2, (h - gap) / 2
+    for i, (num, name, body) in enumerate(items[:4]):
+        bx = x + (i % 2) * (cw + gap)
+        by = y + (i // 2) * (ch + gap)
+        out.append(r(bx, by, cw, ch, "brand.primary", theme, radius=4))
+        out.append(t(bx + 14, by + 10, cw - 28, 16, num, "text.on-brand", theme, size=11,
+                     bold=True))
+        out.append(t(bx + 14, by + 30, cw - 28, 28, name, "text.on-brand", theme, size=8.2,
+                     bold=True, leading=1.2))
+        out.append(t(bx + 14, by + 62, cw - 28, ch - 70, body, "text.on-brand", theme,
+                     size=7.2, leading=1.3))
+    return out
+
+
+def orbit_ring(x, y, w, h, center, items, theme="light"):
+    """Seven topics orbiting one statement — the institute-overview form."""
+    out = []
+    cx, cy = x + w / 2, y + h / 2
+    rad = min(w * 0.22, h * 0.26)
+    out.append(r(cx - rad, cy - rad, rad * 2, rad * 2, "brand.primary", theme,
+                 radius=int(rad)))
+    out.append(t(cx - rad * 0.74, cy - 16, rad * 1.48, 32, center, "text.on-brand", theme,
+                 size=8, bold=True, align="center", leading=1.2))
+    n = len(items)
+    for i, (name, desc) in enumerate(items):
+        ang = -math.pi / 2 + 2 * math.pi * i / n
+        bx = cx + math.cos(ang) * w * 0.40 - 66
+        by = cy + math.sin(ang) * h * 0.42 - 14
+        out.append(t(bx, by, 132, 12, name, "text.primary", theme, size=7, bold=True,
+                     align="center"))
+        out.append(t(bx, by + 12, 132, 22, desc, "text.secondary", theme, size=6.2,
+                     align="center", leading=1.15))
+        out.append(r(cx + math.cos(ang) * rad * 1.10 - 1.5,
+                     cy + math.sin(ang) * rad * 1.10 - 1.5, 3, 3, "brand.primary", theme,
+                     radius=1))
     return out

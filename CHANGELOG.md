@@ -7,7 +7,7 @@ perbaikan visual/kontras = patch.
 ## [0.9.0] — 2026-11-25
 
 ### Added
-- **`build/shapes.py`** — 28 bentuk siap pakai yang hanya memakai token (tidak ada hex):
+- **`build/shapes.py`** — 36 bentuk siap pakai yang hanya memakai token (tidak ada hex):
   blok angka (`kpi_strip`, `kpi_grid`, `stat_cards`, `stat_row`), teks
   (`headline`, `body_text`, `bullets`, `ticks`, `quote_block`, `banner`),
   tabel (`compare_table` dua periode + kolom delta, `delta_rows`, `icon_grid`, `list_rows`,
@@ -15,7 +15,13 @@ perbaikan visual/kontras = patch.
   diagram (`pyramid`, `twin_pyramid`, `band_stack`, `pillar_framework`, `concentric`,
   `ring_blocks`, `team_circle`, `flow_chain`, `journey_lane`, `branch`, `before_after`),
   peta (`map_bubbles`, `map_regions`).
-- **`build/atlas.py`** — deck katalog 9 slide, satu keluarga bentuk per slide, setiap panel
+- Bentuk gelombang kedua, dari referensi deck konsultan: `matrix_header` (pil pernyataan +
+  kolom pilar x baris pemangku), `benefit_panel` (daftar manfaat + panel kasus pakai),
+  `country_cards` (kartu negara, delta bertanda), `ranked_barriers` (angka utama + peringkat
+  tersorot), `orbit_ring` (7 topik mengorbit satu pernyataan), `segment_split` (bar
+  proporsional ternormalisasi), `twin_hub` (peran sebelum/sesudah), `quad_actions` (4 aksi
+  2x2).
+- **`build/atlas.py`** — deck katalog 11 slide, satu keluarga bentuk per slide, setiap panel
   diberi nama fungsi + aturan pakai. `examples/atlas-<palette>.pptx` dan
   `examples/preview-atlas-<palette>.html`.
 - `compare_table` menerima baris 3- atau 4-tuple `(nama, sebelum, sesudah[, delta])`;
