@@ -17,6 +17,7 @@ from pptx import Presentation
 from pptx.chart.data import CategoryChartData
 from pptx.dml.color import RGBColor
 from pptx.enum.chart import XL_CHART_TYPE, XL_LEGEND_POSITION
+from pptx.enum.shapes import MSO_SHAPE
 from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.util import Emu, Pt
 
@@ -52,12 +53,14 @@ def t(x, y, w, h, text, color, theme="light", font="body", size=16, bold=False,
             "caps": caps, "align": align}
 
 
-def r(x, y, w, h, fill, theme="light"):
-    return {"kind": "rect", "x": x, "y": y, "w": w, "h": h, "fill": fill, "theme": theme}
+def r(x, y, w, h, fill, theme="light", radius=0, stroke=None, stroke_w=1):
+    return {"kind": "rect", "x": x, "y": y, "w": w, "h": h, "fill": fill,
+            "theme": theme, "radius": radius, "stroke": stroke, "stroke_w": stroke_w}
 
 
-def img(x, y, w, h, name="photo-43.png", theme="light"):
-    return {"kind": "image", "x": x, "y": y, "w": w, "h": h, "src": name, "theme": theme}
+def img(x, y, w, h, name="photo-43.png", theme="light", radius=28):
+    return {"kind": "image", "x": x, "y": y, "w": w, "h": h, "src": name,
+            "theme": theme, "radius": radius}
 
 
 def chart(x, y, w, h, categories, series, kind="bar", theme="light", title=""):
@@ -85,8 +88,7 @@ def stat(x, y, w, number, label, theme="light", accent="brand.primary"):
 
 
 def card(x, y, w, h, number, label, delta, theme="dark", delta_color="brand.primary"):
-    return [r(x, y, w, h, "surface.raised", theme),
-            r(x, y, w, 2, "brand.primary", theme),
+    return [r(x, y, w, h, "surface.raised", theme, radius=18),
             t(x + 24, y + 28, w - 48, 64, number, "text.primary", theme,
               size=46, bold=True, font="mono", leading=1.0),
             t(x + 24, y + 100, w - 48, 40, label, "text.secondary", theme, size=13, leading=1.4),
@@ -98,7 +100,7 @@ SLIDES = [
     # 01 — cover: navy field + portrait photo panel
     {"theme": "dark", "elements": [
         r(0, 0, W, H, "surface.base", "dark"),
-        img(760, 0, 520, H, "photo-cover.png", "dark"),
+        img(780, 48, 452, 624, "photo-cover.png", "dark", radius=28),
         *kicker(96, "NV5 · CIKARANG · 2026", "dark"),
         t(M, 194, 620, 260, "Commissioning,\nwithout the guesswork.", "text.primary", "dark",
           font="heading", size=62, bold=True, leading=1.06, spacing=-0.03),
@@ -149,7 +151,7 @@ SLIDES = [
         t(M + 760, 340, 340, 30, "Hand over", "text.primary", font="heading", size=24, bold=True),
         t(M + 760, 378, 340, 90, "Laporan serah terima dihasilkan dari record, bukan diketik ulang.",
           "text.primary", size=13, leading=1.6),
-        r(M, 500, 1136, 100, "slide.callout-bg"),
+        r(M, 500, 1136, 100, "slide.callout-bg", radius=18),
         t(M + 28, 524, 700, 26, "Setiap temuan punya pemilik, bukti, dan tanggal.",
           "text.primary", font="heading", size=17, bold=True),
         t(M + 28, 556, 700, 24, "Yang tidak punya ketiganya, tidak masuk laporan serah terima.",
@@ -206,8 +208,7 @@ SLIDES = [
         t(M, 168, 900, 60, "Dua cara masuk.", "text.primary",
           font="heading", size=42, bold=True, leading=1.05, spacing=-0.02),
 
-        r(M, 280, 520, 300, "surface.raised"),
-        r(M, 280, 520, 2, "border.default"),
+        r(M, 280, 520, 300, "surface.raised", radius=18, stroke="border.default", stroke_w=1),
         t(M + 28, 304, 300, 22, "PILOT · SATU GEDUNG", "text.secondary", size=10, caps=True,
           spacing=0.14, font="mono"),
         t(M + 28, 336, 300, 60, "Rp 0", "text.primary", size=44, bold=True, font="mono", leading=1.0),
@@ -217,7 +218,7 @@ SLIDES = [
         t(M + 28, 528, 300, 22, "Termasuk pelatihan & template laporan", "text.secondary",
           size=11, font="mono"),
 
-        r(M + 560, 280, 576, 300, "brand.primary"),
+        r(M + 560, 280, 576, 300, "brand.primary", radius=18),
         t(M + 588, 304, 400, 22, "FULL · SEMUA GEDUNG", "text.on-brand", size=10, caps=True,
           spacing=0.14, font="mono"),
         t(M + 588, 336, 400, 60, "Rp 48 jt", "text.on-brand", size=44, bold=True, font="mono", leading=1.0),
@@ -315,6 +316,26 @@ SLIDES = [
 ]
 
 
+# ------------------------------------------------------------------ rounding
+ROUNDED = PHOTOS / "rounded"
+
+
+def rounded_photo(name: str, w: int, h: int, radius: int) -> Path:
+    """Crop the slot to a rounded rectangle once, so any replacement photo inherits it."""
+    from PIL import Image, ImageDraw
+
+    ROUNDED.mkdir(parents=True, exist_ok=True)
+    out = ROUNDED / f"{Path(name).stem}-{w}x{h}-r{radius}.png"
+    if out.exists():
+        return out
+    src = Image.open(PHOTOS / name).convert("RGB").resize((w, h), Image.LANCZOS).convert("RGBA")
+    mask = Image.new("L", (w, h), 0)
+    ImageDraw.Draw(mask).rounded_rectangle([0, 0, w - 1, h - 1], radius=radius, fill=255)
+    src.putalpha(mask)
+    src.save(out)
+    return out
+
+
 # ------------------------------------------------------------------ pptx
 ALIGN = {"left": PP_ALIGN.LEFT, "right": PP_ALIGN.RIGHT, "center": PP_ALIGN.CENTER}
 
@@ -376,15 +397,27 @@ def render_pptx(path: Path) -> None:
         for el in spec["elements"]:
             x, y, w, h = (Emu(int(el[k] * PX)) for k in ("x", "y", "w", "h"))
             if el["kind"] == "rect":
-                shape = slide.shapes.add_shape(1, x, y, w, h)
+                rad = int(el.get("radius") or 0)
+                if rad > 0:
+                    shape = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, x, y, w, h)
+                    shape.adjustments[0] = min(0.5, rad / min(el["w"], el["h"]))
+                else:
+                    shape = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, x, y, w, h)
                 shape.fill.solid()
                 shape.fill.fore_color.rgb = RGBColor.from_string(hexof(theme, el["fill"]))
-                shape.line.fill.background()
+                if el.get("stroke"):
+                    shape.line.color.rgb = RGBColor.from_string(hexof(theme, el["stroke"]))
+                    shape.line.width = Pt(el.get("stroke_w", 1) * 0.75)
+                else:
+                    shape.line.fill.background()
                 shape.shadow.inherit = False
                 continue
 
             if el["kind"] == "image":
-                slide.shapes.add_picture(str(PHOTOS / el["src"]), x, y, w, h)
+                rad = int(el.get("radius") or 0)
+                src = (rounded_photo(el["src"], int(el["w"]), int(el["h"]), rad)
+                       if rad > 0 else PHOTOS / el["src"])
+                slide.shapes.add_picture(str(src), x, y, w, h)
                 continue
 
             if el["kind"] == "chart":

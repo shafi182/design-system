@@ -1,8 +1,8 @@
 {
   "name": "@shafi/signal-deck-system",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "private": true,
-  "description": "Signal v0.4 \u2014 deck system. Navy/ivory/orange, KPI cards, charts, pricing, photo slots. One token source for deck, document, web and app.",
+  "description": "Signal v0.5 \u2014 deck system. Navy/ivory/orange, rounded surfaces, KPI cards, charts, pricing, photo slots.",
   "main": "dist/tailwind/preset.js",
   "files": [
     "dist"

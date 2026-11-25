@@ -56,7 +56,7 @@
     },
     "radius": {
       "$type": "dimension",
-      "$value": "{radius.md}"
+      "$value": "{radius.lg}"
     },
     "padding": {
       "$type": "dimension",
@@ -105,6 +105,14 @@
     "callout-bg": {
       "$type": "color",
       "$value": "{color.sand.500}"
+    },
+    "radius": {
+      "$type": "dimension",
+      "$value": "{radius.lg}"
+    },
+    "photo-radius": {
+      "$type": "dimension",
+      "$value": "{radius.xl}"
     }
   }
 }

@@ -105,10 +105,15 @@ def el_html(el, theme) -> str:
     base = (f"position:absolute;left:{el['x']}px;top:{el['y']}px;"
             f"width:{el['w']}px;height:{el['h']}px;")
     if el["kind"] == "rect":
-        return f'<div style="{base}background:{color(theme, el["fill"])};"></div>'
+        rad = el.get("radius") or 0
+        stroke = (f'border:{el.get("stroke_w", 1)}px solid {color(theme, el["stroke"])};'
+                  if el.get("stroke") else "")
+        return (f'<div style="{base}background:{color(theme, el["fill"])};{stroke}'
+                f'border-radius:{rad}px;"></div>')
     if el["kind"] == "image":
+        rad = el.get("radius") or 0
         return (f'<img src="file://{PHOTOS / el["src"]}" style="{base}object-fit:cover;'
-                f'display:block;">')
+                f'border-radius:{rad}px;display:block;">')
     if el["kind"] == "chart":
         return svg_chart(el, theme)
     text = el["text"].upper() if el.get("caps") else el["text"]

@@ -10,24 +10,33 @@
     "sm": {
       "$type": "dimension",
       "$value": {
-        "value": 2,
+        "value": 6,
         "unit": "px"
       }
     },
     "md": {
       "$type": "dimension",
       "$value": {
-        "value": 3,
+        "value": 12,
         "unit": "px"
       },
-      "$description": "Hampir kotak. Style 2 tidak memakai sudut membulat."
+      "$description": "Sudut kartu kecil, input, tombol sekunder."
     },
     "lg": {
       "$type": "dimension",
       "$value": {
-        "value": 6,
+        "value": 18,
         "unit": "px"
-      }
+      },
+      "$description": "Kartu, panel, band callout."
+    },
+    "xl": {
+      "$type": "dimension",
+      "$value": {
+        "value": 28,
+        "unit": "px"
+      },
+      "$description": "Permukaan besar: foto, panel penuh."
     },
     "pill": {
       "$type": "dimension",

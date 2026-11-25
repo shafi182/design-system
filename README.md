@@ -1,4 +1,4 @@
-# Signal v0.4 — deck system (navy · ivory · orange)
+# Signal v0.5 — deck system (navy · ivory · orange)
 
 Satu sumber kebenaran untuk **deck, dokumen, web, dan app**.
 Dua bahasa digabung: disiplin deck pitch (satu ide per slide, display besar, angka mono) dan bahasa
@@ -63,6 +63,21 @@ Manrope diambil dari Style 2: grotesk humanis, lebih hangat dari Space Grotesk t
 `layout.slide-width 1280` · `slide-height 720` · `margin-x 72`. Koordinat di `build/deck.py` memakai piksel
 slide; pptx mengonversi 1px = 9525 EMU, jadi preview HTML dan file PowerPoint identik.
 
+## Radius
+
+Skala membulat, satu sumbu:
+
+- `radius.sm` 6px — chip, tag, tombol kecil
+- `radius.md` 12px — input, tombol
+- `radius.lg` 18px — kartu, panel, band callout (`card.radius`, `slide.radius`)
+- `radius.xl` 28px — foto dan permukaan besar (`slide.photo-radius`)
+- `radius.pill` 999px
+
+Hairline, rule, dan garis pemisah tetap **0** — yang membulat hanya permukaan, bukan garis.
+Foto dipotong membulat sekali saat build (`build/deck.py::rounded_photo`) ke
+`examples/photos/rounded/`, jadi foto pengganti otomatis ikut membulat tanpa mengubah koordinat.
+Tidak ada shadow: pemisahan datang dari beda tone dan satu outline 1px pada kartu netral.
+
 ## Aturan
 
 1. **Semantic wajib alias.** Hex langsung mematikan theming dan dark mode.
@@ -70,7 +85,8 @@ slide; pptx mengonversi 1px = 9525 EMU, jadi preview HTML dan file PowerPoint id
 3. **Rename token = breaking change.** Naikkan major version.
 4. **Token baru hanya kalau dipakai ≥2 komponen.**
 5. **`dist/` tidak pernah diedit tangan.**
-6. **Kontras dijaga CI** — `build.py --check` memeriksa tema terang dan gelap.
+6. **Sudut membulat, bukan kotak.** Permukaan pakai `radius.lg` (18) atau `radius.xl` (28); garis tetap 0.
+7. **Kontras dijaga CI** — `build.py --check` memeriksa tema terang dan gelap.
 
 ## Modul (v0.4)
 
@@ -90,6 +106,7 @@ di kolom kiri. Placeholder sengaja diberi label `PHOTO` supaya kelihatan belum d
 
 ## Versioning
 
+- `v0.5.0` — sudut membulat: kartu 18px, foto 28px, outline 1px untuk kartu netral.
 - `v0.4.0` — modul Style 1 (KPI card, chart bar/line, pricing, budget, contact) + slot foto. Deck 9 slide.
 - `v0.3.0` — palet navy/ivory/orange, Manrope, bahasa infografik Style 2. Deck 6 slide tanpa slot foto.
 - `v0.2.0` — Signal pitch: ink/bone/orange, Space Grotesk.
