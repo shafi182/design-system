@@ -1,8 +1,8 @@
 {
   "name": "@shafi/signal-deck-system",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
-  "description": "Signal \u2014 pitch deck design system. One token source for deck, document, web and app.",
+  "description": "Signal v0.3 \u2014 deck system. Navy/ivory/orange, one token source for deck, document, web and app.",
   "main": "dist/tailwind/preset.js",
   "files": [
     "dist"

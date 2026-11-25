@@ -2,86 +2,92 @@
   "surface": {
     "base": {
       "$type": "color",
-      "$value": "{color.bone.100}",
-      "$description": "Kanvas slide terang."
+      "$value": "{color.ivory.500}",
+      "$description": "Kanvas terang. Kertas hangat, bukan putih."
     },
     "raised": {
       "$type": "color",
-      "$value": "{color.white}"
+      "$value": "{color.cream.500}"
     },
     "sunken": {
       "$type": "color",
-      "$value": "{color.bone.200}"
+      "$value": "{color.ivory.300}"
     },
     "inverse": {
       "$type": "color",
-      "$value": "{color.ink.950}",
-      "$description": "Slide gelap di tengah deck terang."
+      "$value": "{color.navy.900}"
     }
   },
   "text": {
     "primary": {
       "$type": "color",
-      "$value": "{color.ink.900}"
+      "$value": "{color.navy.900}",
+      "$description": "11.55:1 di ivory."
     },
     "secondary": {
       "$type": "color",
-      "$value": "{color.ink.500}"
+      "$value": "{color.teal.700}",
+      "$description": "6.69:1."
     },
     "muted": {
       "$type": "color",
-      "$value": "{color.ink.400}",
-      "$description": "Nomor slide, footer. Bukan untuk isi."
+      "$value": "{color.sage.600}",
+      "$description": "4.6:1 — batas bawah untuk teks kecil."
     },
     "inverse": {
       "$type": "color",
-      "$value": "{color.bone.50}"
+      "$value": "{color.ivory.500}"
     },
     "link": {
       "$type": "color",
-      "$value": "{color.signal.700}",
-      "$description": "Oranye 700 untuk teks di kanvas terang — 600 hanya 3.66:1, gagal."
+      "$value": "{color.orange.800}",
+      "$description": "4.8:1 di ivory. orange.700 hanya 3.64:1 — gagal."
     },
     "on-brand": {
       "$type": "color",
-      "$value": "{color.ink.950}",
-      "$description": "Hitam di atas oranye — 6.3:1. Putih di atas oranye hanya 3.1:1, gagal."
+      "$value": "{color.charcoal.900}",
+      "$description": "Charcoal di atas oranye 5.65:1. Putih hanya 3.13:1 — gagal."
     }
   },
   "border": {
     "subtle": {
       "$type": "color",
-      "$value": "{color.bone.300}"
+      "$value": "{color.olive.300}"
     },
     "default": {
       "$type": "color",
-      "$value": "{color.ink.200}"
+      "$value": "{color.olive.500}"
     },
     "strong": {
       "$type": "color",
-      "$value": "{color.ink.700}"
+      "$value": "{color.teal.700}"
     },
     "focus": {
       "$type": "color",
-      "$value": "{color.signal.500}"
+      "$value": "{color.orange.500}"
     }
   },
   "brand": {
     "primary": {
       "$type": "color",
-      "$value": "{color.signal.500}"
+      "$value": "{color.orange.500}"
     },
     "hover": {
       "$type": "color",
-      "$value": "{color.signal.600}"
+      "$value": "{color.orange.600}"
     },
     "active": {
       "$type": "color",
-      "$value": "{color.signal.700}"
+      "$value": "{color.orange.700}"
     },
     "subtle": {
       "$type": "color",
-      "$value": "{color.signal.100}"
+      "$value": "{color.orange.100}"
+    },
+    "calm": {
+      "$type": "color",
+      "$value": "{color.teal.700}",
+      "$description": "Aksen kedua: teal. Untuk garis dan label, bukan tombol."
     }
   },
   "status": {
@@ -113,7 +119,7 @@
   "overlay": {
     "scrim": {
       "$type": "color",
-      "$value": "#08090BB3"
+      "$value": "#142C36B3"
     }
   }
 }

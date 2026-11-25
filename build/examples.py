@@ -77,9 +77,9 @@ def build_deck(path: Path) -> None:
     text(s, "NV5 · CIKARANG · 2026", 1.1, 1.9, 9, 0.4,
          size=11, color="brand.primary", bold=True, serif=False, spacing=0.18)
     text(s, "Commissioning,\nwithout the guesswork.", 1.1, 3.35, 9.5, 2.2,
-         size=54, color="color.bone.50", bold=True)
+         size=54, color="color.ivory.500", bold=True)
     text(s, "Muhammad Shafiyuddin · November 2026", 1.1, 5.9, 7, 0.9,
-         size=12, color="color.ink.300", serif=False)
+         size=12, color="color.olive.500", serif=False)
 
     # --- content: warm canvas, serif heading, table
     s = prs.slides.add_slide(blank)
@@ -208,6 +208,6 @@ def build_report(path: Path) -> None:
 if __name__ == "__main__":
     out = ROOT / "examples"
     out.mkdir(exist_ok=True)
-    build_deck(out / "sample-deck.pptx")
+    # the deck lives in build/deck.py; this script only proves the Word target
     build_report(out / "sample-report.docx")
     print("examples:", *(f.name for f in sorted(out.iterdir())))

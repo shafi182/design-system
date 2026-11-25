@@ -205,9 +205,9 @@ def emit_office_theme(tokens: dict[str, dict]) -> str:
         ("accent3", "status.success"),
         ("accent4", "status.warning"),
         ("accent5", "status.danger"),
-        ("accent6", "color.ink.500"),
+        ("accent6", "color.sage.500"),
         ("hlink", "text.link"),
-        ("folHlink", "color.ink.400"),
+        ("folHlink", "color.olive.500"),
     ]
     clr = "\n".join(
         f'      <a:{slot}><a:srgbClr val="{hexof(tok)}"/></a:{slot}>' for slot, tok in mapping
@@ -319,7 +319,7 @@ def emit_docs(light: dict, dark: dict) -> str:
     return f"""<!doctype html>
 <html lang="id"><head><meta charset="utf-8"><title>Signal — pitch deck system</title>
 <link rel="stylesheet" href="../css/tokens.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{{box-sizing:border-box;margin:0;padding:0}}
 body{{background:var(--ds-surface-base);color:var(--ds-text-primary);
@@ -359,9 +359,9 @@ td{{padding:var(--ds-space-4) 0;border-bottom:1px solid var(--ds-table-row-borde
 tbody tr:hover{{background:var(--ds-table-row-hover-bg)}}
 .meta{{font-family:var(--ds-type-family-mono);font-size:11px;color:var(--ds-text-secondary);margin-top:var(--ds-space-11)}}
 </style></head><body>
-<div class="kicker">Signal · pitch deck system · v0.2.0</div>
+<div class="kicker">Signal · v0.3.0 · navy / ivory / orange</div>
 <h1>Signal</h1>
-<p class="lead">Sistem untuk deck yang harus meyakinkan dalam tiga detik pertama: display besar, satu aksen oranye, kanvas terang dan gelap bergantian. Nilai mentah hanya hidup di lapis core.</p>
+<p class="lead">Gabungan dua bahasa: disiplin deck pitch (satu ide per slide, display besar) dan bahasa infografik (garis hairline, label small-caps, modul bernomor). Nilai mentah hanya hidup di lapis core.</p>
 
 <h2>Surface &amp; text</h2>
 <div class="grid">

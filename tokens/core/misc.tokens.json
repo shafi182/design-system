@@ -17,15 +17,15 @@
     "md": {
       "$type": "dimension",
       "$value": {
-        "value": 4,
+        "value": 3,
         "unit": "px"
       },
-      "$description": "Sengaja tajam. Kartu membulat terasa produk, bukan pitch."
+      "$description": "Hampir kotak. Style 2 tidak memakai sudut membulat."
     },
     "lg": {
       "$type": "dimension",
       "$value": {
-        "value": 8,
+        "value": 6,
         "unit": "px"
       }
     },
@@ -46,20 +46,19 @@
           "unit": "px"
         }
       },
-      "thick": {
+      "rule": {
         "$type": "dimension",
         "$value": {
-          "value": 2,
+          "value": 3,
           "unit": "px"
         }
       },
-      "rule": {
+      "thick": {
         "$type": "dimension",
         "$value": {
           "value": 4,
           "unit": "px"
-        },
-        "$description": "Aturan aksen di bawah kicker."
+        }
       }
     }
   },
@@ -67,17 +66,17 @@
     "sm": {
       "$type": "shadow",
       "$value": {
-        "color": "#0F11151A",
+        "color": "#142C3614",
         "offsetX": {
           "value": 0,
           "unit": "px"
         },
         "offsetY": {
-          "value": 2,
+          "value": 1,
           "unit": "px"
         },
         "blur": {
-          "value": 6,
+          "value": 3,
           "unit": "px"
         },
         "spread": {
@@ -89,17 +88,17 @@
     "md": {
       "$type": "shadow",
       "$value": {
-        "color": "#0F111524",
+        "color": "#142C361F",
         "offsetX": {
           "value": 0,
           "unit": "px"
         },
         "offsetY": {
-          "value": 8,
+          "value": 6,
           "unit": "px"
         },
         "blur": {
-          "value": 24,
+          "value": 18,
           "unit": "px"
         },
         "spread": {
@@ -111,17 +110,17 @@
     "lg": {
       "$type": "shadow",
       "$value": {
-        "color": "#0F111533",
+        "color": "#142C3629",
         "offsetX": {
           "value": 0,
           "unit": "px"
         },
         "offsetY": {
-          "value": 20,
+          "value": 16,
           "unit": "px"
         },
         "blur": {
-          "value": 48,
+          "value": 40,
           "unit": "px"
         },
         "spread": {
@@ -217,10 +216,9 @@
     "margin-x": {
       "$type": "dimension",
       "$value": {
-        "value": 80,
+        "value": 72,
         "unit": "px"
-      },
-      "$description": "Margin kiri-kanan slide. 6.25% dari lebar."
+      }
     },
     "gutter": {
       "$type": "dimension",

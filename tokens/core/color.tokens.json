@@ -1,111 +1,167 @@
 {
   "color": {
     "$type": "color",
-    "ink": {
-      "50": {
-        "$value": "#F7F8FA"
-      },
-      "100": {
-        "$value": "#EDF0F3"
-      },
-      "200": {
-        "$value": "#D8DDE3"
-      },
-      "300": {
-        "$value": "#B9C0CA"
-      },
-      "400": {
-        "$value": "#8A93A1"
-      },
-      "500": {
-        "$value": "#5B6472",
-        "$description": "Teks sekunder di kanvas terang."
-      },
-      "600": {
-        "$value": "#3A414C"
-      },
-      "700": {
-        "$value": "#232830"
-      },
-      "800": {
-        "$value": "#171A1F"
+    "navy": {
+      "950": {
+        "$value": "#0D1E25"
       },
       "900": {
-        "$value": "#0F1115",
-        "$description": "Teks utama, dan kanvas slide gelap."
+        "$value": "#142C36",
+        "$description": "Kanvas gelap + teks utama di kanvas terang."
       },
-      "950": {
-        "$value": "#08090B",
-        "$description": "Hitam sinyal. Latar cover."
-      }
-    },
-    "bone": {
-      "50": {
-        "$value": "#FCFBF8"
-      },
-      "100": {
-        "$value": "#F6F4EE",
-        "$description": "Kanvas slide terang. Hangat, bukan putih pabrik."
-      },
-      "200": {
-        "$value": "#EBE8DF"
-      },
-      "300": {
-        "$value": "#DCD7CA"
-      }
-    },
-    "signal": {
-      "100": {
-        "$value": "#FFE7DC"
-      },
-      "300": {
-        "$value": "#FF9A73"
-      },
-      "400": {
-        "$value": "#FF7A47"
-      },
-      "500": {
-        "$value": "#FF5A1F",
-        "$description": "Aksen tunggal. Satu per slide, tidak lebih."
-      },
-      "600": {
-        "$value": "#E64510"
+      "800": {
+        "$value": "#1B3B47"
       },
       "700": {
-        "$value": "#B93509"
+        "$value": "#234853"
+      },
+      "600": {
+        "$value": "#2C5763"
+      }
+    },
+    "teal": {
+      "900": {
+        "$value": "#1B4045"
+      },
+      "700": {
+        "$value": "#24545A",
+        "$description": "Teks sekunder di kanvas terang (6.69:1)."
+      },
+      "600": {
+        "$value": "#2D656C"
+      },
+      "500": {
+        "$value": "#35737A"
+      },
+      "300": {
+        "$value": "#7FA6A9"
+      }
+    },
+    "sage": {
+      "700": {
+        "$value": "#3F6360"
+      },
+      "600": {
+        "$value": "#466B67"
+      },
+      "500": {
+        "$value": "#527C78",
+        "$description": "Garis, chart, blok. Bukan teks kecil — 3.69:1 di ivory."
+      },
+      "300": {
+        "$value": "#8FADA9"
+      },
+      "100": {
+        "$value": "#DCE6E2"
+      }
+    },
+    "olive": {
+      "700": {
+        "$value": "#8F937F"
+      },
+      "500": {
+        "$value": "#B6B9A5",
+        "$description": "Teks sekunder di navy (7.26:1) dan hairline di kanvas terang."
+      },
+      "300": {
+        "$value": "#D2D4C6"
+      },
+      "100": {
+        "$value": "#E8E9DF"
+      }
+    },
+    "ivory": {
+      "500": {
+        "$value": "#E9E5D9",
+        "$description": "Kanvas terang utama."
+      },
+      "300": {
+        "$value": "#F1EEE6"
+      },
+      "100": {
+        "$value": "#F7F5EF"
+      }
+    },
+    "cream": {
+      "500": {
+        "$value": "#FAF3E1",
+        "$description": "Panel dan kartu di atas ivory."
+      }
+    },
+    "sand": {
+      "500": {
+        "$value": "#F5E7C6",
+        "$description": "Band callout."
+      },
+      "300": {
+        "$value": "#F9F0DC"
+      }
+    },
+    "orange": {
+      "100": {
+        "$value": "#FFE3D2"
+      },
+      "300": {
+        "$value": "#FF9C63"
+      },
+      "500": {
+        "$value": "#FF6D1F",
+        "$description": "Aksen tunggal. Satu per slide."
+      },
+      "600": {
+        "$value": "#E05A12"
+      },
+      "700": {
+        "$value": "#C7500F"
+      },
+      "800": {
+        "$value": "#A8430B",
+        "$description": "Oranye tergelap. Satu-satunya oranye yang boleh jadi teks di kanvas terang (4.8:1)."
+      }
+    },
+    "charcoal": {
+      "900": {
+        "$value": "#222222",
+        "$description": "Teks isi di cream/ivory. Juga teks di atas oranye."
+      },
+      "700": {
+        "$value": "#3A3A3A"
+      },
+      "500": {
+        "$value": "#565656"
       }
     },
     "green": {
       "100": {
-        "$value": "#E3F4EC"
+        "$value": "#E0EDE5"
       },
       "500": {
-        "$value": "#0F8A5F"
+        "$value": "#2C6E52"
       },
       "700": {
-        "$value": "#0A6344"
+        "$value": "#1F4F3B"
       }
     },
     "amber": {
       "100": {
-        "$value": "#FBF0D8"
+        "$value": "#F7EBD3"
       },
       "500": {
-        "$value": "#9A6B0A"
+        "$value": "#8A6212"
       },
       "700": {
-        "$value": "#775208"
+        "$value": "#6B4B0C"
       }
     },
     "red": {
       "100": {
-        "$value": "#FAE3E0"
+        "$value": "#F6E1DC"
       },
       "500": {
-        "$value": "#C0322A"
+        "$value": "#A63A2C"
       },
       "700": {
-        "$value": "#8F231D"
+        "$value": "#7C2A20"
       }
     },
     "white": {

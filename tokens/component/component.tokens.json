@@ -84,11 +84,15 @@
   "slide": {
     "kicker-fg": {
       "$type": "color",
-      "$value": "{brand.primary}"
+      "$value": "{text.secondary}"
     },
     "rule": {
       "$type": "color",
       "$value": "{brand.primary}"
+    },
+    "rule-quiet": {
+      "$type": "color",
+      "$value": "{border.default}"
     },
     "footer-fg": {
       "$type": "color",
@@ -96,7 +100,11 @@
     },
     "page-no-fg": {
       "$type": "color",
-      "$value": "{text.secondary}"
+      "$value": "{text.muted}"
+    },
+    "callout-bg": {
+      "$type": "color",
+      "$value": "{color.sand.500}"
     }
   }
 }
