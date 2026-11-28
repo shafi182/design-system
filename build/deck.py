@@ -1,115 +1,42 @@
 #!/usr/bin/env python3
 """Pitch deck v0.4 — one slide spec, two renderers (pptx + html preview).
 
-Adds the Style 1 module set (KPI cards, charts, pricing, budget, contact) and
-photo slots on top of the v0.3 language. Coordinates are slide pixels (1280x720);
-1px = 9525 EMU, so the pptx is exactly 13.333in x 7.5in and the preview matches.
+M2: the palette, token, geometry and pptx-emission foundation now lives in
+build/base.py. This module keeps the slide content (SLIDES) and re-exports the
+original public surface as a compatibility shim.
 
     python build/photos.py      # placeholders (replace the PNGs with real shots)
     python build/deck.py        # examples/pitch-deck.pptx
 """
 from __future__ import annotations
 
-import json
-import os
 import sys
 from pathlib import Path
 
-from pptx import Presentation
-from pptx.chart.data import CategoryChartData
-from pptx.dml.color import RGBColor
-from pptx.enum.chart import XL_CHART_TYPE, XL_LEGEND_POSITION
-from pptx.enum.shapes import MSO_SHAPE
-from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
-from pptx.util import Emu, Pt
+import base
+from base import (ALIGN, H, M, PHOTOS, PX, ROOT, ROUNDED, TOK, W, add_chart, card,
+                  chart, font_of, footer, hexof, img, kicker, load_palette,
+                  photo_src, r, rounded_photo, stat, t, tok)
 
-ROOT = Path(__file__).resolve().parent.parent
-TOK = json.loads((ROOT / "dist" / "json" / "tokens.resolved.json").read_text())
+__all__ = [
+    "ALIGN", "DARK", "H", "LIGHT", "M", "PALETTE", "PHOTOS", "PX", "ROOT",
+    "ROUNDED", "SLIDES", "TOK", "W",
+    "add_chart", "card", "chart", "font_of", "footer", "hexof", "img", "kicker",
+    "load_palette", "photo_src", "r", "render_pptx", "rounded_photo", "stat",
+    "t", "tok",
+]
 
-# Two palettes, each with a light and a dark side. Pick with
-#   python build/deck.py adventurous
-PALETTE = os.environ.get("SIGNAL_PALETTE", "professional")
-
-
-def load_palette(name: str) -> None:
-    global PALETTE, LIGHT, DARK
-    PALETTE = name
-    LIGHT, DARK = TOK[f"{name}.light"], TOK[f"{name}.dark"]
+# PALETTE / LIGHT / DARK are deliberately not bound in this module: PEP 562
+# forwarding keeps them live, so deck.LIGHT is always base.LIGHT.
+_LIVE = ("PALETTE", "LIGHT", "DARK")
 
 
-LIGHT, DARK = TOK[f"{PALETTE}.light"], TOK[f"{PALETTE}.dark"]
-
-PX = 9525
-W, H = 1280, 720
-M = 72
-PHOTOS = ROOT / "examples" / "photos"
+def __getattr__(name: str):
+    if name in _LIVE:
+        return getattr(base, name)
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
-def tok(theme: str, name: str):
-    return (DARK if theme == "dark" else LIGHT)[name]
-
-
-def hexof(theme: str, name: str) -> str:
-    return str(tok(theme, name)).lstrip("#").upper()
-
-
-def font_of(which: str) -> str:
-    fam = LIGHT[f"type.family.{which}"]
-    return fam[0] if isinstance(fam, list) else fam.split(",")[0].strip().strip("'")
-
-
-# ------------------------------------------------------------------ helpers
-def t(x, y, w, h, text, color, theme="light", font="body", size=16, bold=False,
-      leading=1.3, spacing=0.0, caps=False, align="left"):
-    return {"kind": "text", "x": x, "y": y, "w": w, "h": h, "text": text,
-            "theme": theme, "color": color, "font": font, "size": size,
-            "bold": bold, "leading": leading, "spacing": spacing,
-            "caps": caps, "align": align}
-
-
-def r(x, y, w, h, fill, theme="light", radius=0, stroke=None, stroke_w=1):
-    return {"kind": "rect", "x": x, "y": y, "w": w, "h": h, "fill": fill,
-            "theme": theme, "radius": radius, "stroke": stroke, "stroke_w": stroke_w}
-
-
-def img(x, y, w, h, name="photo-43.png", theme="light", radius=28):
-    return {"kind": "image", "x": x, "y": y, "w": w, "h": h, "src": name,
-            "theme": theme, "radius": radius}
-
-
-def chart(x, y, w, h, categories, series, kind="bar", theme="light", title=""):
-    return {"kind": "chart", "x": x, "y": y, "w": w, "h": h, "categories": categories,
-            "series": series, "chart": kind, "theme": theme, "title": title}
-
-
-def kicker(y, label, theme="light"):
-    return [r(M, y + 2, 10, 10, "brand.primary", theme),
-            t(M + 24, y - 2, 620, 22, label, "slide.kicker-fg", theme,
-              size=11, bold=True, caps=True, spacing=0.18, font="mono"),
-            r(M, y + 34, 132, 3, "slide.rule", theme)]
-
-
-def footer(page, theme="light", label="Commissioning readiness · NV5"):
-    return [r(M, H - 108, W - 2 * M, 1, "border.subtle", theme),
-            t(M, H - 92, 700, 20, label, "slide.footer-fg", theme, size=10, font="mono"),
-            t(W - M - 80, H - 92, 80, 20, f"{page:02d}", "slide.page-no-fg", theme,
-              size=10, font="mono", align="right")]
-
-
-def stat(x, y, w, number, label, theme="light", accent="brand.primary"):
-    return [t(x, y, w, 70, number, accent, theme, size=60, bold=True, font="mono", leading=1.0),
-            t(x, y + 76, w, 44, label, "text.secondary", theme, size=13, leading=1.4)]
-
-
-def card(x, y, w, h, number, label, delta, theme="dark", delta_color="brand.accent-text"):
-    return [r(x, y, w, h, "surface.raised", theme, radius=18),
-            t(x + 24, y + 28, w - 48, 64, number, "text.primary", theme,
-              size=46, bold=True, font="mono", leading=1.0),
-            t(x + 24, y + 100, w - 48, 40, label, "text.secondary", theme, size=13, leading=1.4),
-            t(x + 24, y + h - 44, w - 48, 22, delta, delta_color, theme, size=11, font="mono")]
-
-
-# ------------------------------------------------------------------ slides
 SLIDES = [
     # 01 — cover: navy field + portrait photo panel
     {"theme": "dark", "elements": [
@@ -329,148 +256,18 @@ SLIDES = [
     ]},
 ]
 
+def render_pptx(path: Path, *, palette=None, appearance=None, theme=None) -> None:
+    """Compatibility wrapper: this deck renders its own SLIDES through base.
 
-def photo_src(name: str) -> str:
-    """Warm palette gets its own stand-in art; real photos can be dropped per palette."""
-    if PALETTE == "professional":
-        return name
-    alt = f"{Path(name).stem}-{PALETTE}.png"
-    return alt if (PHOTOS / alt).exists() else name
-
-
-# ------------------------------------------------------------------ rounding
-ROUNDED = PHOTOS / "rounded"
-
-
-def rounded_photo(name: str, w: int, h: int, radius: int) -> Path:
-    """Crop the slot to a rounded rectangle once, so any replacement photo inherits it."""
-    from PIL import Image, ImageDraw
-
-    ROUNDED.mkdir(parents=True, exist_ok=True)
-    out = ROUNDED / f"{Path(name).stem}-{w}x{h}-r{radius}.png"
-    if out.exists():
-        return out
-    src = Image.open(PHOTOS / name).convert("RGB").resize((w, h), Image.LANCZOS).convert("RGBA")
-    mask = Image.new("L", (w, h), 0)
-    ImageDraw.Draw(mask).rounded_rectangle([0, 0, w - 1, h - 1], radius=radius, fill=255)
-    src.putalpha(mask)
-    src.save(out)
-    return out
-
-
-# ------------------------------------------------------------------ pptx
-ALIGN = {"left": PP_ALIGN.LEFT, "right": PP_ALIGN.RIGHT, "center": PP_ALIGN.CENTER}
-
-
-def add_chart(slide, el, theme):
-    cd = CategoryChartData()
-    cd.categories = el["categories"]
-    for s in el["series"]:
-        cd.add_series(s["name"], s["values"])
-    kind = XL_CHART_TYPE.LINE_MARKERS if el.get("chart") == "line" else XL_CHART_TYPE.COLUMN_CLUSTERED
-    gf = slide.shapes.add_chart(kind, Emu(el["x"] * PX), Emu(el["y"] * PX),
-                                Emu(el["w"] * PX), Emu(el["h"] * PX), cd)
-    ch = gf.chart
-    ch.has_legend = True
-    ch.legend.position = XL_LEGEND_POSITION.TOP
-    ch.legend.include_in_layout = False
-    ch.font.size = Pt(10)
-    ch.font.name = font_of("mono")
-    ch.font.color.rgb = RGBColor.from_string(hexof(theme, "text.secondary"))
-    ch.has_title = bool(el.get("title"))
-    if el.get("title"):
-        ch.chart_title.text_frame.text = el["title"]
-
-    plot = ch.plots[0]
-    plot.gap_width = 60
-    plot.has_data_labels = False
-    va = ch.value_axis
-    va.has_major_gridlines = True
-    va.major_gridlines.format.line.color.rgb = RGBColor.from_string(hexof(theme, "border.subtle"))
-    va.major_gridlines.format.line.width = Pt(0.5)
-    va.format.line.color.rgb = RGBColor.from_string(hexof(theme, "border.default"))
-    va.tick_labels.font.size = Pt(9)
-    va.tick_labels.font.name = font_of("mono")
-    ca = ch.category_axis
-    ca.format.line.color.rgb = RGBColor.from_string(hexof(theme, "border.default"))
-    ca.tick_labels.font.size = Pt(10)
-    ca.tick_labels.font.name = font_of("body")
-    ca.tick_labels.font.color.rgb = RGBColor.from_string(hexof(theme, "text.primary"))
-
-    for i, s in enumerate(el["series"]):
-        ser = plot.series[i]
-        col = RGBColor.from_string(hexof(theme, s["color"]))
-        ser.format.fill.solid()
-        ser.format.fill.fore_color.rgb = col
-        ser.format.line.color.rgb = col
-        if el.get("chart") == "line":
-            ser.format.line.width = Pt(2.5)
-            ser.smooth = False
-
-
-def render_pptx(path: Path) -> None:
-    prs = Presentation()
-    prs.slide_width, prs.slide_height = Emu(W * PX), Emu(H * PX)
-    blank = prs.slide_layouts[6]
-
-    for spec in SLIDES:
-        theme = spec["theme"]
-        slide = prs.slides.add_slide(blank)
-        for el in spec["elements"]:
-            x, y, w, h = (Emu(int(el[k] * PX)) for k in ("x", "y", "w", "h"))
-            if el["kind"] == "rect":
-                rad = int(el.get("radius") or 0)
-                if rad > 0:
-                    shape = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, x, y, w, h)
-                    shape.adjustments[0] = min(0.5, rad / min(el["w"], el["h"]))
-                else:
-                    shape = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, x, y, w, h)
-                shape.fill.solid()
-                shape.fill.fore_color.rgb = RGBColor.from_string(hexof(theme, el["fill"]))
-                if el.get("stroke"):
-                    shape.line.color.rgb = RGBColor.from_string(hexof(theme, el["stroke"]))
-                    shape.line.width = Pt(el.get("stroke_w", 1) * 0.75)
-                else:
-                    shape.line.fill.background()
-                shape.shadow.inherit = False
-                continue
-
-            if el["kind"] == "image":
-                rad = int(el.get("radius") or 0)
-                src = (rounded_photo(photo_src(el["src"]), int(el["w"]), int(el["h"]), rad)
-                       if rad > 0 else PHOTOS / photo_src(el["src"]))
-                slide.shapes.add_picture(str(src), x, y, w, h)
-                continue
-
-            if el["kind"] == "chart":
-                add_chart(slide, el, theme)
-                continue
-
-            box = slide.shapes.add_textbox(x, y, w, h)
-            tf = box.text_frame
-            tf.word_wrap = True
-            tf.margin_left = tf.margin_right = tf.margin_top = tf.margin_bottom = 0
-            tf.vertical_anchor = MSO_ANCHOR.TOP
-            for i, line in enumerate(el["text"].split("\n")):
-                p = tf.paragraphs[0] if i == 0 else tf.add_paragraph()
-                p.alignment = ALIGN.get(el.get("align", "left"), PP_ALIGN.LEFT)
-                p.line_spacing = el.get("leading", 1.2)
-                run = p.add_run()
-                run.text = line.upper() if el.get("caps") else line
-                f = run.font
-                f.size = Pt(el["size"] * 0.75)
-                f.bold = bool(el.get("bold"))
-                f.name = font_of(el.get("font", "body"))
-                f.color.rgb = RGBColor.from_string(hexof(theme, el["color"]))
-                if el.get("spacing"):
-                    f._rPr.set("spc", str(int(el["spacing"] * 100)))
-
-    prs.save(path)
+    ``palette=`` and ``appearance=`` are independent (M3); ``theme=`` is the
+    deprecated alias for ``appearance=``.
+    """
+    base.render_pptx(path, SLIDES, palette=palette, appearance=appearance, theme=theme)
 
 
 if __name__ == "__main__":
-    load_palette(sys.argv[1] if len(sys.argv) > 1 else PALETTE)
-    out = ROOT / "examples" / f"pitch-deck-{PALETTE}.pptx"
+    load_palette(sys.argv[1] if len(sys.argv) > 1 else base.PALETTE)
+    out = ROOT / "examples" / f"pitch-deck-{base.PALETTE}.pptx"
     out.parent.mkdir(exist_ok=True)
     render_pptx(out)
     print("wrote", out, len(SLIDES), "slides")

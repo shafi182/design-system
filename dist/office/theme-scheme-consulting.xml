@@ -1,0 +1,27 @@
+<!-- Signal — paste into ppt/theme/theme1.xml (generated) -->
+<a:clrScheme name="Signal">
+      <a:dk1><a:srgbClr val="142C36"/></a:dk1>
+      <a:lt1><a:srgbClr val="F7F5EF"/></a:lt1>
+      <a:dk2><a:srgbClr val="1B4045"/></a:dk2>
+      <a:lt2><a:srgbClr val="E9E5D9"/></a:lt2>
+      <a:accent1><a:srgbClr val="24545A"/></a:accent1>
+      <a:accent2><a:srgbClr val="2D656C"/></a:accent2>
+      <a:accent3><a:srgbClr val="2C6E52"/></a:accent3>
+      <a:accent4><a:srgbClr val="8A6212"/></a:accent4>
+      <a:accent5><a:srgbClr val="A63A2C"/></a:accent5>
+      <a:accent6><a:srgbClr val="527C78"/></a:accent6>
+      <a:hlink><a:srgbClr val="24545A"/></a:hlink>
+      <a:folHlink><a:srgbClr val="B6B9A5"/></a:folHlink>
+</a:clrScheme>
+<a:fontScheme name="Signal">
+  <a:majorFont>
+    <a:latin typeface="Manrope"/>
+    <a:ea typeface=""/>
+    <a:cs typeface=""/>
+  </a:majorFont>
+  <a:minorFont>
+    <a:latin typeface="Manrope"/>
+    <a:ea typeface=""/>
+    <a:cs typeface=""/>
+  </a:minorFont>
+</a:fontScheme>

@@ -16,21 +16,43 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "build"))
 
-PALETTE = sys.argv[1] if len(sys.argv) > 1 else "professional"
+import compat  # noqa: E402
+
+PALETTE = compat.validate_palette(sys.argv[1] if len(sys.argv) > 1 else compat.DEFAULT_PALETTE)
 os.environ["SIGNAL_PALETTE"] = PALETTE
 
-from deck import LIGHT, DARK, SLIDES, W, H, photo_src  # noqa: E402
+import base  # noqa: E402
+from base import LIGHT, DARK, W, H, photo_src  # noqa: E402
+from deck import SLIDES  # noqa: E402
+
+# Geometry kinds introduced in M4; resolved by base.add_geometry / svg_geometry.
+GEOM_KINDS = base.NEW_KINDS
 
 PHOTOS = ROOT / "examples" / "photos"
 
 
 def color(theme: str, name: str) -> str:
-    return (DARK if theme == "dark" else LIGHT)[name]
+    """Return CSS custom property reference for a token.
+    
+    Example: color("light", "text.primary") → "var(--ds-text-primary)"
+    
+    Chart series are mapped to indexed vars: "chart.series.0" → "var(--ds-chart-series-0)"
+    """
+    if not name:
+        return ""
+    # Handle chart.series.{index} → --ds-chart-series-{index}
+    if name.startswith("chart.series."):
+        idx = name.split(".")[-1]
+        return f"var(--ds-chart-series-{idx})"
+    # Standard tokens: family.slot → --ds-family-slot
+    family, _, slot = name.partition(".")
+    if slot:
+        return f"var(--ds-{family}-{slot})"
+    return ""
 
 
 def fam(name: str) -> str:
-    f = LIGHT[f"type.family.{name}"]
-    return f[0] if isinstance(f, list) else f.split(",")[0].strip().strip("'")
+    return base.font_of(name)
 
 
 def svg_chart(el, theme) -> str:
@@ -105,6 +127,30 @@ def svg_chart(el, theme) -> str:
     return "".join(parts)
 
 
+def svg_geometry(el, theme) -> str:
+    """Inline SVG for a poly / chevron / ellipse element (M4)."""
+    kind = el["kind"]
+    x, y, w, h = base.geometry_box(el)
+    fill = color(theme, el["fill"]) if el.get("fill") is not None else None
+    stroke = color(theme, el["stroke"]) if el.get("stroke") is not None else None
+    paint = f'fill="{fill}"' if fill else 'fill="none"'
+    if stroke:
+        paint += f' stroke="{stroke}" stroke-width="{el.get("stroke_w", 1)}"'
+    if kind == "ellipse":
+        shape = (f'<ellipse cx="{x + w / 2.0:g}" cy="{y + h / 2.0:g}" '
+                 f'rx="{w / 2.0:g}" ry="{h / 2.0:g}" {paint}/>')
+    else:
+        pts = base.poly_abs_points(el) if kind == "poly" else base.chevron_abs_points(el)
+        shape = '<polygon points="%s" %s/>' % (
+            " ".join(f"{px},{py}" for px, py in pts), paint)
+    rot = base.geom_number(el, "rotation", 0)
+    if rot:
+        shape = (f'<g transform="rotate({rot:g} {x + w / 2.0:g} {y + h / 2.0:g})">'
+                 f'{shape}</g>')
+    return (f'<svg style="position:absolute;left:0;top:0;overflow:visible;" '
+            f'width="{W}" height="{H}" viewBox="0 0 {W} {H}">{shape}</svg>')
+
+
 def el_html(el, theme) -> str:
     base = (f"position:absolute;left:{el['x']}px;top:{el['y']}px;"
             f"width:{el['w']}px;height:{el['h']}px;")
@@ -118,6 +164,8 @@ def el_html(el, theme) -> str:
         rad = el.get("radius") or 0
         return (f'<img src="file://{PHOTOS / photo_src(el["src"])}" style="{base}object-fit:cover;'
                 f'border-radius:{rad}px;display:block;">')
+    if el["kind"] in GEOM_KINDS:
+        return svg_geometry(el, theme)
     if el["kind"] == "chart":
         return svg_chart(el, theme)
     text = el["text"].upper() if el.get("caps") else el["text"]
@@ -129,30 +177,69 @@ def el_html(el, theme) -> str:
             f'text-align:{el.get("align", "left")};white-space:pre-wrap;">{text}</div>')
 
 
-def build(path: Path) -> None:
+def build(path: Path, *, palette=None, appearance=None, theme=None) -> None:
+    """Render the pitch-deck preview to HTML.
+
+    ``palette=`` and ``appearance=`` are independent dimensions (M3); ``theme=``
+    is the deprecated alias for ``appearance=``.
+    """
+    resolved_palette, document_appearance = compat.resolve_document(
+        SLIDES, palette, appearance, theme)
+    with base.palette_scope(resolved_palette):
+        _build(path, document_appearance)
+
+
+def _build(path: Path, document_appearance: str) -> None:
+    palette = base.PALETTE
     slides = []
     for i, spec in enumerate(SLIDES, 1):
-        theme = spec["theme"]
+        theme = compat.resolve_slide(spec, document_appearance)
         bg = color(theme, "surface.base")
-        inner = "\n".join(el_html(el, theme) for el in spec["elements"])
-        slides.append(f'<section class="slide" id="s{i}" style="background:{bg};">{inner}</section>')
+        inner = "\n".join(el_html(el, compat.appearance_of(el, theme) or theme)
+                          for el in spec["elements"])
+        slides.append(
+            f'<section class="slide" id="s{i}" data-theme="{theme}" '
+            f'style="background:{bg};">{inner}</section>')
 
-    html = f"""<!doctype html><html><head><meta charset="utf-8">
-<title>Pitch deck preview — {PALETTE}</title>
+    # Generate scoped CSS rules for all palette × appearance combinations
+    import css_gen
+    themes = {
+        f"{palette}.light": base.LIGHT,
+        f"{palette}.dark": base.DARK,
+    }
+    scoped_css = css_gen.generate_all_scoped_rules(themes)
+
+    html = f"""<!doctype html><html data-palette="{palette}" data-theme="{document_appearance}"><head><meta charset="utf-8">
+<title>Pitch deck preview — {palette}</title>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{{margin:0;padding:0;box-sizing:border-box}}
 .num{{font-variant-numeric:tabular-nums}}
 body{{background:#333;display:flex;flex-direction:column;gap:24px;padding:24px;width:{W + 48}px}}
 .slide{{position:relative;width:{W}px;height:{H}px;overflow:hidden}}
+
+/* Design token CSS variables (M5) */
+{scoped_css}
 </style></head><body>
 {chr(10).join(slides)}
 </body></html>"""
     path.write_text(html, encoding="utf-8")
 
 
-if __name__ == "__main__":
-    out = ROOT / "examples" / f"preview-{PALETTE}.html"
+def main(argv=None) -> None:
+    """CLI entry point: render the requested palette into ``examples/``.
+
+    The palette must be forwarded explicitly: ``build()`` defaults ``palette=None``
+    to ``compat.DEFAULT_PALETTE`` (professional), which would otherwise override the
+    palette parsed from argv at import time.
+    """
+    argv = sys.argv[1:] if argv is None else argv
+    palette = compat.validate_palette(argv[0] if argv else PALETTE)
+    out = ROOT / "examples" / f"preview-{palette}.html"
     out.parent.mkdir(exist_ok=True)
-    build(out)
+    build(out, palette=palette)
     print("wrote", out, len(SLIDES), "slides")
+
+
+if __name__ == "__main__":
+    main()

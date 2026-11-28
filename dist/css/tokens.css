@@ -237,7 +237,7 @@
 
 /* Signal — professional dark (generated) */
 
-[data-theme="dark"] {
+:root[data-theme="dark"]:not([data-palette]), [data-palette="professional"][data-theme="dark"] {
   /* analyst */
   --ds-analyst-layout-gutter: 14px;
   --ds-analyst-layout-margin: 32px;
