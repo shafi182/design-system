@@ -28,9 +28,12 @@ from pptx.util import Emu, Pt
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "build"))
 
-PALETTE = sys.argv[1] if len(sys.argv) > 1 else "professional"
+import compat  # noqa: E402
+
+PALETTE = compat.validate_palette(sys.argv[1] if len(sys.argv) > 1 else compat.DEFAULT_PALETTE)
 os.environ["SIGNAL_PALETTE"] = PALETTE
 
+import base as B  # noqa: E402  (scoped palette state)
 import deck as D  # noqa: E402  (primitives + palette loader)
 import preview as PV  # noqa: E402  (svg chart for the HTML twin)
 
@@ -687,14 +690,27 @@ def add_chart(slide, el, theme):
     D.add_chart(slide, el, theme)
 
 
-def render_pptx(path: Path) -> None:
+def render_pptx(path: Path, *, palette=None, appearance=None, theme=None) -> None:
+    """Render the analyst deck to *path*.
+
+    ``palette=`` and ``appearance=`` are independent dimensions (M3); ``theme=``
+    is the deprecated alias for ``appearance=``.
+    """
+    resolved_palette, document_appearance = compat.resolve_document(
+        SLIDES, palette, appearance, theme)
+    with B.palette_scope(resolved_palette):
+        _render_pptx(path, document_appearance)
+
+
+def _render_pptx(path: Path, document_appearance: str) -> None:
     prs = Presentation()
     prs.slide_width, prs.slide_height = Emu(W * PX), Emu(H * PX)
     blank = prs.slide_layouts[6]
     for spec in SLIDES:
-        theme = spec["theme"]
+        theme = compat.resolve_slide(spec, document_appearance)
         slide = prs.slides.add_slide(blank)
         for el in spec["elements"]:
+            el_theme = compat.appearance_of(el, theme) or theme
             x, y, w, h = (Emu(int(el[k] * PX)) for k in ("x", "y", "w", "h"))
             if el["kind"] == "rect":
                 rad = int(el.get("radius") or 0)
@@ -704,9 +720,9 @@ def render_pptx(path: Path) -> None:
                 else:
                     shape = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, x, y, w, h)
                 shape.fill.solid()
-                shape.fill.fore_color.rgb = RGBColor.from_string(hx(theme, el["fill"]))
+                shape.fill.fore_color.rgb = RGBColor.from_string(hx(el_theme, el["fill"]))
                 if el.get("stroke"):
-                    shape.line.color.rgb = RGBColor.from_string(hx(theme, el["stroke"]))
+                    shape.line.color.rgb = RGBColor.from_string(hx(el_theme, el["stroke"]))
                     shape.line.width = Pt(el.get("stroke_w", 1) * 0.75)
                 else:
                     shape.line.fill.background()
@@ -718,8 +734,11 @@ def render_pptx(path: Path) -> None:
                        if rad > 0 else D.PHOTOS / D.photo_src(el["src"]))
                 slide.shapes.add_picture(str(src), x, y, w, h)
                 continue
+            if el["kind"] in B.NEW_KINDS:
+                B.add_geometry(slide, el, el_theme)
+                continue
             if el["kind"] in ("chart", "hbar", "hstack", "donut"):
-                add_chart(slide, el, theme)
+                add_chart(slide, el, el_theme)
                 continue
             box = slide.shapes.add_textbox(x, y, w, h)
             tf = box.text_frame
@@ -746,7 +765,19 @@ def render_pptx(path: Path) -> None:
 def el_html(el, theme):
     base = (f"position:absolute;left:{el['x']}px;top:{el['y']}px;"
             f"width:{el['w']}px;height:{el['h']}px;")
-    col = lambda name: str(tok(theme, name))
+    def col(name):
+        """Return CSS custom property reference for a token."""
+        if not name:
+            return ""
+        # Handle chart.series.{index} → --ds-chart-series-{index}
+        if name.startswith("chart.series."):
+            idx = name.split(".")[-1]
+            return f"var(--ds-chart-series-{idx})"
+        # Standard tokens: family.slot → --ds-family-slot
+        family, _, slot = name.partition(".")
+        if slot:
+            return f"var(--ds-{family}-{slot})"
+        return ""
     if el["kind"] == "rect":
         rad = el.get("radius") or 0
         stroke = (f"border:{el.get('stroke_w', 1)}px solid {col(el['stroke'])};"
@@ -757,6 +788,8 @@ def el_html(el, theme):
         rad = el.get("radius") or 0
         return (f'<img src="file://{D.PHOTOS / D.photo_src(el["src"])}" style="{base}'
                 f'object-fit:cover;border-radius:{rad}px;display:block;">')
+    if el["kind"] in PV.GEOM_KINDS:
+        return PV.svg_geometry(el, theme)
     if el["kind"] == "hbar":
         rows, maxv = el["rows"], el["max"]
         lab_w = el.get("label_w", 78)
@@ -821,29 +854,66 @@ def el_html(el, theme):
             f'font-variant-numeric:tabular-nums;">{text}</div>')
 
 
-def render_html(path: Path) -> None:
+def render_html(path: Path, *, palette=None, appearance=None, theme=None) -> None:
+    """Render the analyst deck to HTML.
+
+    ``palette=`` and ``appearance=`` are independent dimensions (M3); ``theme=``
+    is the deprecated alias for ``appearance=``.
+    """
+    resolved_palette, document_appearance = compat.resolve_document(
+        SLIDES, palette, appearance, theme)
+    with B.palette_scope(resolved_palette):
+        _render_html(path, document_appearance)
+
+
+def _render_html(path: Path, document_appearance: str) -> None:
+    palette = D.PALETTE
     slides = []
     for i, spec in enumerate(SLIDES, 1):
-        theme = spec["theme"]
-        inner = "\n".join(el_html(el, theme) for el in spec["elements"])
-        slides.append(f'<section class="slide" id="s{i}" style="background:'
+        theme = compat.resolve_slide(spec, document_appearance)
+        inner = "\n".join(el_html(el, compat.appearance_of(el, theme) or theme)
+                          for el in spec["elements"])
+        slides.append(f'<section class="slide" id="s{i}" data-theme="{theme}" style="background:'
                       f'{tok(theme, "surface.base")};">{inner}</section>')
-    html = f"""<!doctype html><html><head><meta charset="utf-8">
-<title>Analyst layout — {PALETTE}</title>
+    # Generate scoped CSS rules for all palette × appearance combinations
+    import css_gen
+    themes = {
+        f"{palette}.light": B.LIGHT,
+        f"{palette}.dark": B.DARK,
+    }
+    scoped_css = css_gen.generate_all_scoped_rules(themes)
+    
+    html = f"""<!doctype html><html data-palette="{palette}" data-theme="{document_appearance}"><head><meta charset="utf-8">
+<title>Analyst layout — {palette}</title>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{{margin:0;padding:0;box-sizing:border-box}}
 body{{background:#333;display:flex;flex-direction:column;gap:24px;padding:24px;width:{W + 48}px}}
 .slide{{position:relative;width:{W}px;height:{H}px;overflow:hidden;font-family:Manrope,sans-serif}}
+
+/* Design token CSS variables (M5) */
+{scoped_css}
 </style></head><body>
 {chr(10).join(slides)}
 </body></html>"""
     path.write_text(html, encoding="utf-8")
 
 
-if __name__ == "__main__":
-    out = ROOT / "examples" / f"analyst-{PALETTE}.pptx"
+def main(argv=None) -> None:
+    """CLI entry point: render the requested palette into ``examples/``.
+
+    ``render_pptx()`` already selects the palette through ``load_palette``; the HTML
+    twin needs the palette forwarded explicitly, otherwise ``render_html()`` resolves
+    ``palette=None`` to ``compat.DEFAULT_PALETTE`` (professional).
+    """
+    argv = sys.argv[1:] if argv is None else argv
+    palette = compat.validate_palette(argv[0] if argv else PALETTE)
+    out = ROOT / "examples" / f"analyst-{palette}.pptx"
     render_pptx(out)
-    html = ROOT / "examples" / f"preview-analyst-{PALETTE}.html"
-    render_html(html)
+    html = ROOT / "examples" / f"preview-analyst-{palette}.html"
+    render_html(html, palette=palette)
     print("wrote", out.name, "+", html.name, len(SLIDES), "slides")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,157 @@
+{
+  "surface": {
+    "base": {
+      "$type": "color",
+      "$value": "{color.ivory.500}",
+      "$description": "Consulting light mode canvas."
+    },
+    "raised": {
+      "$type": "color",
+      "$value": "{color.ivory.100}"
+    },
+    "sunken": {
+      "$type": "color",
+      "$value": "{color.olive.100}"
+    },
+    "inverse": {
+      "$type": "color",
+      "$value": "{color.navy.900}"
+    },
+    "band": {
+      "$type": "color",
+      "$value": "{color.olive.100}",
+      "$description": "Band callout: neutral tint for Consulting palette."
+    }
+  },
+  "text": {
+    "primary": {
+      "$type": "color",
+      "$value": "{color.navy.900}",
+      "$description": "11.55:1 on ivory — WCAG AAA."
+    },
+    "secondary": {
+      "$type": "color",
+      "$value": "{color.teal.700}",
+      "$description": "6.69:1 — supporting text."
+    },
+    "muted": {
+      "$type": "color",
+      "$value": "{color.sage.600}",
+      "$description": "Minimum threshold for small text captions."
+    },
+    "inverse": {
+      "$type": "color",
+      "$value": "{color.ivory.500}"
+    },
+    "link": {
+      "$type": "color",
+      "$value": "{color.teal.700}",
+      "$description": "6.69:1 — links standalone."
+    },
+    "on-brand": {
+      "$type": "color",
+      "$value": "{color.ivory.500}",
+      "$description": "Ivory on teal brand background."
+    }
+  },
+  "border": {
+    "subtle": {
+      "$type": "color",
+      "$value": "{color.olive.300}"
+    },
+    "default": {
+      "$type": "color",
+      "$value": "{color.olive.500}"
+    },
+    "strong": {
+      "$type": "color",
+      "$value": "{color.teal.700}"
+    },
+    "focus": {
+      "$type": "color",
+      "$value": "{color.sage.500}"
+    }
+  },
+  "brand": {
+    "primary": {
+      "$type": "color",
+      "$value": "{color.teal.700}",
+      "$description": "Consulting primary accent: teal."
+    },
+    "hover": {
+      "$type": "color",
+      "$value": "{color.teal.600}"
+    },
+    "active": {
+      "$type": "color",
+      "$value": "{color.teal.900}"
+    },
+    "subtle": {
+      "$type": "color",
+      "$value": "{color.sage.100}"
+    },
+    "calm": {
+      "$type": "color",
+      "$value": "{color.olive.700}",
+      "$description": "Secondary accent for charts."
+    },
+    "accent-text": {
+      "$type": "color",
+      "$value": "{color.teal.700}",
+      "$description": "6.69:1 on ivory — accent text."
+    }
+  },
+  "status": {
+    "success": {
+      "$type": "color",
+      "$value": "{color.green.500}"
+    },
+    "success-subtle": {
+      "$type": "color",
+      "$value": "{color.green.100}"
+    },
+    "warning": {
+      "$type": "color",
+      "$value": "{color.amber.500}"
+    },
+    "warning-subtle": {
+      "$type": "color",
+      "$value": "{color.amber.100}"
+    },
+    "danger": {
+      "$type": "color",
+      "$value": "{color.red.500}"
+    },
+    "danger-subtle": {
+      "$type": "color",
+      "$value": "{color.red.100}"
+    }
+  },
+  "overlay": {
+    "scrim": {
+      "$type": "color",
+      "$value": "#172B4D99"
+    }
+  },
+  "chart": {
+    "series": {
+      "1": {
+        "$type": "color",
+        "$value": "{color.teal.700}",
+        "$description": "Primary chart series."
+      },
+      "2": {
+        "$type": "color",
+        "$value": "{color.sage.500}"
+      },
+      "3": {
+        "$type": "color",
+        "$value": "{color.olive.700}"
+      },
+      "4": {
+        "$type": "color",
+        "$value": "{color.navy.700}"
+      }
+    }
+  }
+}

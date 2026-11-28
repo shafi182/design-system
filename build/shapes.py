@@ -21,7 +21,61 @@ sys.path.insert(0, str(ROOT / "build"))
 import analyst as A  # noqa: E402  (t / r / tokens / palette loader)
 
 t, r = A.t, A.r
+B = A.B  # base: geometry validation + absolute point math (M4)
 SERIES = ["chart.series.1", "chart.series.2", "chart.series.3", "chart.series.4"]
+
+
+# ------------------------------------------------------------- geometry primitives
+GEOM_THEMES = ("light", "dark")
+
+
+def _geom_style(fill, stroke, stroke_w, rotation, theme):
+    """Shared argument checks for the geometry factories (M4)."""
+    for name, val in (("fill", fill), ("stroke", stroke)):
+        if val is not None and not isinstance(val, str):
+            raise ValueError(f"{name} must be a token name or None, got {val!r}")
+    if isinstance(stroke_w, bool) or not isinstance(stroke_w, (int, float)) or stroke_w < 0:
+        raise ValueError(f"stroke_w must be a number >= 0, got {stroke_w!r}")
+    if isinstance(rotation, bool) or not isinstance(rotation, (int, float)):
+        raise ValueError(f"rotation must be a number, got {rotation!r}")
+    if theme not in GEOM_THEMES:
+        raise ValueError(f"theme must be one of {GEOM_THEMES}, got {theme!r}")
+    return {"fill": fill, "stroke": stroke, "stroke_w": stroke_w,
+            "rotation": rotation, "theme": theme}
+
+
+def poly(x, y, w, h, points, theme="light", fill="brand.primary", stroke=None,
+         stroke_w=1, rotation=0):
+    """Closed polygon. `points` are [u, v] pairs in 0..1, relative to the bbox.
+
+    Three or more points; the outline closes automatically. `fill=None` draws an
+    unfilled outline (pair it with `stroke`).
+    """
+    el = {"kind": "poly", "x": x, "y": y, "w": w, "h": h,
+          "points": [list(p) for p in points],
+          **_geom_style(fill, stroke, stroke_w, rotation, theme)}
+    B.poly_abs_points(el)  # fail at build time, not at render time
+    return [el]
+
+
+def chevron(x, y, w, h, adj=0.5, theme="light", fill="brand.primary", stroke=None,
+            stroke_w=1, rotation=0):
+    """Process arrow / breadcrumb segment. `adj` (0..1) sets the notch depth:
+    the horizontal inset is `adj * min(w, h)`, so tall and wide boxes agree.
+    """
+    el = {"kind": "chevron", "x": x, "y": y, "w": w, "h": h, "adj": adj,
+          **_geom_style(fill, stroke, stroke_w, rotation, theme)}
+    B.chevron_abs_points(el)
+    return [el]
+
+
+def ellipse(x, y, w, h, theme="light", fill="brand.primary", stroke=None,
+            stroke_w=1, rotation=0):
+    """Ellipse / circle: any aspect ratio, no adjustment handle."""
+    el = {"kind": "ellipse", "x": x, "y": y, "w": w, "h": h,
+          **_geom_style(fill, stroke, stroke_w, rotation, theme)}
+    B.geometry_box(el)
+    return [el]
 
 
 # --------------------------------------------------------------------- text blocks

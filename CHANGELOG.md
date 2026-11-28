@@ -4,6 +4,38 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id/1.1.0/).
 Versi mengikuti [SemVer](https://semver.org/lang/id/): rename token = major, tambah modul = minor,
 perbaikan visual/kontras = patch.
 
+## [Unreleased]
+
+### M3 — palet dan appearance dipisah
+
+Palet dan appearance kini dua dimensi independen. Tidak ada token baru, tidak ada
+perubahan nilai warna, dan tidak ada perubahan geometri atau tipografi.
+
+- `build/compat.py` baru — modul daun berisi `SUPPORTED_PALETTES`,
+  `SUPPORTED_APPEARANCES`, `validate_palette()`, `validate_appearance()`,
+  `resolve()`/`resolve_document()`, `appearance_of()`, dan peringatan deprecation.
+- `palette=` dan `appearance=` diterima di `base.render_pptx`, `deck.render_pptx`,
+  `preview.build`, `analyst.render_pptx`, dan `analyst.render_html`.
+  Parameter lama tetap pada posisinya; pemanggilan posisional tidak berubah.
+- Appearance per slide: default dokumen = appearance slide pertama; override
+  per slide menang atas default dokumen; `appearance=` hanya berlaku sebagai
+  fallback (D1, D6).
+- State palet memakai scoped stack dengan `try/finally`: render bersarang
+  mengembalikan palet sebelumnya, exception tidak membocorkan state, dan
+  `deck.LIGHT is base.LIGHT` tetap berlaku.
+- HTML kini membawa `data-palette` dan `data-theme`; blok CSS dark di-scope ke
+  paletnya (`[data-palette="professional"][data-theme="dark"]`), sehingga CSS
+  dark professional tidak bocor ke dokumen adventurous.
+- **Perubahan API yang disengaja:** palet tidak dikenal kini melempar
+  `ValueError` (sebelumnya `KeyError`). Appearance di luar `light`/`dark` juga
+  `ValueError`.
+- `theme=` masih bekerja sebagai alias appearance dan memicu
+  `DeprecationWarning`; `theme=` + `appearance=` dengan nilai berbeda ditolak
+  (`ValueError`), bukan dipilih diam-diam.
+- CI `validate.yml` mendapat job `matrix`: empat kombinasi palet × appearance,
+  cek metadata, isolasi CSS, kontrak resolver, dan isolasi state.
+- Versi paket tidak dinaikkan pada entri ini.
+
 ## [0.14.0] — 2026-11-25
 
 ### Atlas diperluas ke dua puluh layout referensi

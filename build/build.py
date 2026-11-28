@@ -143,6 +143,31 @@ def emit_css(tokens: dict[str, dict], selector: str, header: str) -> str:
     return "\n".join(lines) + "\n"
 
 
+def emit_scoped_css(themes: dict[str, dict]) -> str:
+    """Generate scoped CSS rules for all palette × appearance combinations.
+    
+    Produces CSS suitable for embedding in HTML <style> block.
+    Format: [data-palette="..."][data-theme="..."] { --ds-*: ...; }
+    
+    Input: themes dict keyed by "palette.appearance" (e.g., "professional.light")
+    Output: Multi-rule CSS string with all variables.
+    """
+    palettes = sorted({k.split(".")[0] for k in themes})
+    rules = []
+    
+    for palette in palettes:
+        for appearance in ["light", "dark"]:
+            key = f"{palette}.{appearance}"
+            if key not in themes:
+                continue
+            selector = f'[data-palette="{palette}"][data-theme="{appearance}"]'
+            header = f"/* {palette} {appearance} */"
+            rule = emit_css(themes[key], selector, header)
+            rules.append(rule)
+    
+    return "\n".join(rules)
+
+
 def emit_tailwind(tokens: dict[str, dict]) -> str:
     def pick(prefix: str) -> dict:
         out = {}
@@ -249,6 +274,169 @@ def contrast(a: str, b: str) -> float:
     la, lb = luminance(a), luminance(b)
     hi, lo = max(la, lb), min(la, lb)
     return (hi + 0.05) / (lo + 0.05)
+
+
+# ---------------------------------------------------------------- alpha compositing
+
+def parse_hex_color(hex_str: str) -> tuple[float, float, float, float]:
+    """Parse #RRGGBB or #RRGGBBAA to normalized (r, g, b, a) ∈ [0, 1].
+    
+    Args:
+        hex_str: Color in #RRGGBB or #RRGGBBAA format
+        
+    Returns:
+        (r, g, b, a) tuple, each normalized to [0, 1]
+        
+    Raises:
+        ValueError: Invalid HEX format
+    """
+    if not isinstance(hex_str, str) or not hex_str.startswith("#"):
+        raise ValueError(f"Invalid HEX format (must start with #): {hex_str}")
+    
+    hex_clean = hex_str[1:]  # Remove leading #
+    
+    if len(hex_clean) == 6:
+        # #RRGGBB format, fully opaque
+        try:
+            r = int(hex_clean[0:2], 16) / 255.0
+            g = int(hex_clean[2:4], 16) / 255.0
+            b = int(hex_clean[4:6], 16) / 255.0
+            a = 1.0
+        except ValueError:
+            raise ValueError(f"Invalid 6-digit HEX: {hex_str}")
+        return (r, g, b, a)
+    elif len(hex_clean) == 8:
+        # #RRGGBBAA format with alpha
+        try:
+            r = int(hex_clean[0:2], 16) / 255.0
+            g = int(hex_clean[2:4], 16) / 255.0
+            b = int(hex_clean[4:6], 16) / 255.0
+            a = int(hex_clean[6:8], 16) / 255.0
+        except ValueError:
+            raise ValueError(f"Invalid 8-digit HEX: {hex_str}")
+        return (r, g, b, a)
+    else:
+        raise ValueError(f"Invalid HEX format (must be 6 or 8 digits): {hex_str}")
+
+
+def composite_source_over(foreground: str, background: str) -> str:
+    """Composite foreground over background using Porter-Duff source-over.
+    
+    General formula (handles both opaque and translucent backgrounds):
+      a_out = a_f + a_b * (1 - a_f)
+      When a_out > 0: C_out = (C_f * a_f + C_b * a_b * (1 - a_f)) / a_out
+    
+    Args:
+        foreground: Overlay color (#RRGGBB or #RRGGBBAA)
+        background: Background color (#RRGGBB or #RRGGBBAA, assumed typically opaque)
+        
+    Returns:
+        Composited color as #RRGGBB (fully opaque)
+        
+    Raises:
+        ValueError: Invalid HEX format in either argument
+    """
+    fg_r, fg_g, fg_b, fg_a = parse_hex_color(foreground)
+    bg_r, bg_g, bg_b, bg_a = parse_hex_color(background)
+    
+    # Compute output alpha
+    a_out = fg_a + bg_a * (1.0 - fg_a)
+    
+    # Compute output RGB
+    if a_out > 0:
+        # General formula
+        comp_r = (fg_r * fg_a + bg_r * bg_a * (1.0 - fg_a)) / a_out
+        comp_g = (fg_g * fg_a + bg_g * bg_a * (1.0 - fg_a)) / a_out
+        comp_b = (fg_b * fg_a + bg_b * bg_a * (1.0 - fg_a)) / a_out
+    else:
+        # Both fully transparent (edge case)
+        comp_r = comp_g = comp_b = 0.0
+    
+    # Clamp to [0, 1] and round to nearest integer
+    comp_r_int = max(0, min(255, round(comp_r * 255.0)))
+    comp_g_int = max(0, min(255, round(comp_g * 255.0)))
+    comp_b_int = max(0, min(255, round(comp_b * 255.0)))
+    
+    # Return as fully opaque 6-digit HEX
+    return f"#{comp_r_int:02X}{comp_g_int:02X}{comp_b_int:02X}"
+
+
+# ---------------------------------------------------------------- alpha compositing validation
+
+def validate_alpha_compositing(themes: dict[str, dict]) -> list[str]:
+    """Validate alpha compositing behavior of overlay.scrim tokens.
+    
+    Renders each of the 6 overlay.scrim tokens over synthetic test backgrounds.
+    Uses Porter-Duff source-over compositing.
+    
+    Args:
+        themes: Built themes dict (keyed by "palette.appearance", e.g., "professional.light")
+    
+    Returns:
+        List of validation problems (empty if all pass)
+        
+    Note:
+        Synthetic backgrounds are mathematical test fixtures only.
+        They do NOT represent actual UI components or accessibility relationships.
+    """
+    problems = []
+    
+    # Map overlay.scrim tokens by theme
+    overlay_scrims = {
+        "professional.light": "#142C36B3",
+        "professional.dark": "#0D1E25B3",
+        "adventurous.light": "#222222B3",
+        "adventurous.dark": "#1A1A1AB3",
+        "consulting.light": "#172B4D99",
+        "consulting.dark": "#020617CC",
+    }
+    
+    # Synthetic test backgrounds (fixtures for mathematical verification)
+    fixtures = {
+        "white": "#FFFFFF",
+        "black": "#000000",
+    }
+    
+    # Expected results (pre-calculated per Porter-Duff formula)
+    # Format: (theme, fixture_name, background_hex) -> expected_result
+    expected = {
+        ("professional.light", "white", "#FFFFFF"): "#5A6B72",
+        ("professional.light", "black", "#000000"): "#0E1F26",
+        ("professional.dark", "white", "#FFFFFF"): "#556166",
+        ("professional.dark", "black", "#000000"): "#09151A",
+        ("adventurous.light", "white", "#FFFFFF"): "#646464",
+        ("adventurous.light", "black", "#000000"): "#181818",
+        ("adventurous.dark", "white", "#FFFFFF"): "#5E5E5E",
+        ("adventurous.dark", "black", "#000000"): "#121212",
+        ("consulting.light", "white", "#FFFFFF"): "#748094",
+        ("consulting.light", "black", "#000000"): "#0E1A2E",
+        ("consulting.dark", "white", "#FFFFFF"): "#353845",
+        ("consulting.dark", "black", "#000000"): "#020512",
+    }
+    
+    print("\nalpha compositing validation (synthetic test fixtures):")
+    
+    for theme in sorted(overlay_scrims):
+        if theme not in themes:
+            problems.append(f"Theme not found: {theme}")
+            continue
+        
+        fg_hex = overlay_scrims[theme]
+        print(f" [{theme}]")
+        
+        # Validate against each synthetic background
+        for fixture_name, bg_hex in fixtures.items():
+            result = composite_source_over(fg_hex, bg_hex)
+            exp = expected[(theme, fixture_name, bg_hex)]
+            
+            if result == exp:
+                print(f"  ok   {fg_hex} over {fixture_name:5} -> {result}")
+            else:
+                msg = f"Alpha compositing mismatch: {theme} over {fixture_name}: expected {exp}, got {result}"
+                problems.append(msg)
+                print(f"  FAIL {fg_hex} over {fixture_name:5} -> {result} (expected {exp})")
+    
+    return problems
 
 
 CHECKS = {
@@ -436,6 +624,9 @@ def main() -> int:
         print(f" [{theme}]")
         problems += run_contrast(built[theme], theme.split(".")[-1])
 
+    # Phase 2: Alpha compositing validation
+    problems += validate_alpha_compositing(built)
+
     if args.check:
         if problems:
             print("\nFAILED: " + "; ".join(problems))
@@ -465,8 +656,14 @@ def main() -> int:
         blocks = [emit_css(built[light_k], root_sel,
                            f"/* Signal — {palette} (generated) */\n")]
         if dark_k in built:
-            sel = '[data-theme="dark"]' if palette == default else \
-                  f'[data-palette="{palette}"][data-theme="dark"]'
+            # Dark rules are always palette-scoped: a bare [data-theme="dark"]
+            # would leak Professional dark tokens into adventurous documents
+            # that set data-theme="dark" (M3 S4). :root keeps working for
+            # documents that carry no data-palette at all.
+            sel = (':root[data-theme="dark"]:not([data-palette]), '
+                   '[data-palette="professional"][data-theme="dark"]'
+                   if palette == default else
+                   f'[data-palette="{palette}"][data-theme="dark"]')
             blocks.append(emit_css(built[dark_k], sel,
                                    f"/* Signal — {palette} dark (generated) */\n"))
         path = DIST / "css" / name

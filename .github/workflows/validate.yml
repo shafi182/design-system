@@ -52,3 +52,177 @@ jobs:
                   assert len(prs.slides) == want, f"{name}: {len(prs.slides)} slides"
                   print(name, len(prs.slides), "slides ok")
           PY
+
+  matrix:
+    runs-on: ubuntu-latest
+    needs: deck
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install deck dependencies
+        run: pip install python-pptx==1.0.2 pillow
+      - name: Build dist (palette-scoped CSS)
+        run: python build/build.py
+      - name: Render all four palette x appearance cells
+        run: |
+          python build/photos.py
+          for palette in professional adventurous; do
+            python build/deck.py "$palette"
+            python build/preview.py "$palette"
+            python build/analyst.py "$palette"
+          done
+      - name: M3 regression checks (metadata, CSS isolation, resolver, isolation)
+        run: |
+          python - <<'PY'
+          """CI step: M3 matrix + metadata + CSS isolation + compat contract.
+
+          Runs the four palette x appearance cells in one process, then asserts the
+          observable contracts M3 introduced. Kept dependency-light so the CI job only
+          needs python-pptx + pillow (already required by the deck job).
+          """
+          import os
+          import re
+          import sys
+          import tempfile
+          import warnings
+          from pathlib import Path
+
+          REPO = Path(os.environ.get("GITHUB_WORKSPACE") or os.getcwd()).resolve()
+          sys.path.insert(0, str(REPO / "build"))
+
+          import compat  # noqa: E402
+
+          failures = []
+
+
+          def check(name, cond, detail=""):
+              print(("PASS " if cond else "FAIL ") + name + (" — " + detail if detail else ""))
+              if not cond:
+                  failures.append(name)
+
+
+          # --- Gate D: resolver contract ------------------------------------------------
+          check("D-valid-palette", compat.validate_palette("adventurous") == "adventurous")
+          try:
+              compat.validate_palette("consulting")
+              check("D-invalid-palette", False, "no error")
+          except ValueError:
+              check("D-invalid-palette", True)
+          check("D-valid-appearance", compat.validate_appearance("dark") == "dark")
+          try:
+              compat.validate_appearance("dim")
+              check("D-invalid-appearance", False, "no error")
+          except ValueError:
+              check("D-invalid-appearance", True)
+          with warnings.catch_warnings(record=True) as caught:
+              warnings.simplefilter("always")
+              compat.resolve_document([{"theme": "light"}], None, None, "dark")
+              check("D-legacy-theme-warns",
+                    any(issubclass(w.category, DeprecationWarning) for w in caught))
+          try:
+              compat.resolve_document([{"theme": "light"}], None, "dark", "light")
+              check("D-conflict-rejected", False, "no error")
+          except ValueError:
+              check("D-conflict-rejected", True)
+          check("D-default-resolution",
+                compat.resolve_document([{"theme": "light"}], None, None, None)
+                == (compat.DEFAULT_PALETTE, "light"))
+          check("D-slide-overrides-fallback",
+                compat.appearance_of({"theme": "dark"}, fallback="light") == "dark"
+                and compat.appearance_of({"appearance": "light"}, fallback="dark") == "light")
+          check("D-doc-default-is-first-slide",
+                compat.resolve_document([{"theme": "dark"}, {"theme": "light"}], None, None, None)[1]
+                == "dark")
+
+          # --- Gate C/E/F: four cells ---------------------------------------------------
+          import deck  # noqa: E402
+          import preview  # noqa: E402
+          import base  # noqa: E402
+
+          CELLS = [(p, a) for p in compat.SUPPORTED_PALETTES
+                   for a in compat.SUPPORTED_APPEARANCES]
+          tmp = Path(tempfile.mkdtemp(prefix="signal-m3-ci-"))
+          for pal, app in CELLS:
+              html = tmp / f"deck-{pal}-{app}.html"
+              preview.build(html, palette=pal, appearance=app)
+              text = html.read_text()
+              check(f"C-metadata-{pal}-{app}",
+                    f'data-palette="{pal}"' in text and f'data-theme="{app}"' in text)
+              check(f"E-state-restored-{pal}-{app}", base.palette_stack_depth() == 0)
+              check(f"E-palette-restored-{pal}-{app}",
+                    base.current_palette() == compat.DEFAULT_PALETTE)
+
+          # mixed deck: per-slide appearance must survive a light document default
+          mixed = tmp / "mixed.html"
+          preview.build(mixed, palette="professional", appearance="light")
+          check("C-mixed-deck-keeps-both",
+                'data-theme="dark"' in mixed.read_text()
+                and 'data-theme="light"' in mixed.read_text())
+
+          # --- Gate F: CSS isolation ----------------------------------------------------
+          css_pro = (REPO / "dist/css/tokens.css").read_text()
+          css_adv = (REPO / "dist/css/tokens-adventurous.css").read_text()
+          pro_dark = re.search(r'\[data-palette="professional"\]\[data-theme="dark"\]', css_pro)
+          check("F-pro-dark-selector-scoped", bool(pro_dark))
+          check("F-pro-dark-not-in-adventurous", "data-palette=\"professional\"" not in css_adv)
+          def dark_surface(css, pal):
+              block = re.search(r'\[data-palette="%s"\]\[data-theme="dark"\]\s*\{(.*?)\n\}' % pal,
+                                css, re.S)
+              m = re.search(r"--ds-surface-base:\s*([^;]+);", block.group(1)) if block else None
+              return m.group(1).strip() if m else None
+
+
+          pro_surface = dark_surface(css_pro, "professional")
+          adv_surface = dark_surface(css_adv, "adventurous")
+          check("F-adv-dark-block-exists", adv_surface is not None)
+          check("F-dark-surfaces-differ",
+                pro_surface is not None and adv_surface is not None
+                and pro_surface.lower() != adv_surface.lower(),
+                f"professional={pro_surface} adventurous={adv_surface}")
+
+          # --- Gate A: positional compatibility ----------------------------------------
+          check("A-legacy-theme-kwarg", hasattr(base, "render_pptx")
+                and "theme" in base.render_pptx.__code__.co_varnames)
+          check("A-live-proxy", deck.LIGHT is base.LIGHT)
+
+          if failures:
+              print("\nM3 CI failures: " + ", ".join(failures))
+              raise SystemExit(1)
+          print(f"\nM3 matrix OK: {len(CELLS)} cells, {len(failures)} failures")
+          PY
+
+  enforce:
+    runs-on: ubuntu-latest
+    needs: matrix
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install deck dependencies
+        run: pip install python-pptx==1.0.2 pillow
+      - name: Assert gates use no machine-specific absolute paths
+        run: |
+          if grep -rn "/opt/data" build/*.py; then
+            echo "absolute path found in build/*.py — gates must be repository-relative."
+            exit 1
+          fi
+          test -d build/fixtures/mi1 && test -d build/fixtures/f3
+      - name: Build checks (token schema, aliases, WCAG contrast)
+        run: python build/build.py --check
+      - name: Structure validation (resolved tokens + CSS output)
+        run: python build/validate_structure.py
+      - name: Baseline verification
+        run: python build/verify_baselines.py
+      - name: Compositing tests (38 cases)
+        run: python build/test_compositing.py
+      - name: Palette identity gate (semantic contract)
+        run: python build/validate_palette_identity.py
+      - name: Palette identity self-test controls (3 positive, 5 negative)
+        run: python build/validate_palette_identity.py --self-test
+      - name: Palette identity test suite (39 cases)
+        run: python build/test_palette_identity.py

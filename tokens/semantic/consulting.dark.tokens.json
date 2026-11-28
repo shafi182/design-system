@@ -1,0 +1,152 @@
+{
+  "surface": {
+    "base": {
+      "$type": "color",
+      "$value": "{color.navy.900}"
+    },
+    "raised": {
+      "$type": "color",
+      "$value": "{color.navy.800}"
+    },
+    "sunken": {
+      "$type": "color",
+      "$value": "{color.navy.950}"
+    },
+    "inverse": {
+      "$type": "color",
+      "$value": "{color.ivory.500}"
+    },
+    "band": {
+      "$type": "color",
+      "$value": "{color.navy.800}",
+      "$description": "Band callout on navy canvas for Consulting dark mode."
+    }
+  },
+  "text": {
+    "primary": {
+      "$type": "color",
+      "$value": "{color.ivory.500}"
+    },
+    "secondary": {
+      "$type": "color",
+      "$value": "{color.olive.300}"
+    },
+    "muted": {
+      "$type": "color",
+      "$value": "{color.olive.500}",
+      "$description": "7.26:1 — adequate for small text."
+    },
+    "inverse": {
+      "$type": "color",
+      "$value": "{color.navy.900}"
+    },
+    "link": {
+      "$type": "color",
+      "$value": "{color.sage.300}"
+    },
+    "on-brand": {
+      "$type": "color",
+      "$value": "{color.navy.900}",
+      "$description": "Navy on sage brand background."
+    }
+  },
+  "border": {
+    "subtle": {
+      "$type": "color",
+      "$value": "{color.navy.700}"
+    },
+    "default": {
+      "$type": "color",
+      "$value": "{color.navy.600}"
+    },
+    "strong": {
+      "$type": "color",
+      "$value": "{color.sage.500}"
+    },
+    "focus": {
+      "$type": "color",
+      "$value": "{color.sage.300}"
+    }
+  },
+  "brand": {
+    "primary": {
+      "$type": "color",
+      "$value": "{color.sage.300}",
+      "$description": "On navy, accent must be light: teal.700 would sink."
+    },
+    "hover": {
+      "$type": "color",
+      "$value": "{color.sage.500}"
+    },
+    "active": {
+      "$type": "color",
+      "$value": "{color.teal.700}"
+    },
+    "subtle": {
+      "$type": "color",
+      "$value": "{color.teal.900}"
+    },
+    "calm": {
+      "$type": "color",
+      "$value": "{color.olive.300}",
+      "$description": "Secondary accent for charts."
+    },
+    "accent-text": {
+      "$type": "color",
+      "$value": "{color.sage.300}"
+    }
+  },
+  "status": {
+    "success": {
+      "$type": "color",
+      "$value": "{color.green.300}"
+    },
+    "success-subtle": {
+      "$type": "color",
+      "$value": "{color.green.100}"
+    },
+    "warning": {
+      "$type": "color",
+      "$value": "{color.amber.300}"
+    },
+    "warning-subtle": {
+      "$type": "color",
+      "$value": "{color.amber.100}"
+    },
+    "danger": {
+      "$type": "color",
+      "$value": "{color.red.300}"
+    },
+    "danger-subtle": {
+      "$type": "color",
+      "$value": "{color.red.100}"
+    }
+  },
+  "overlay": {
+    "scrim": {
+      "$type": "color",
+      "$value": "#020617CC"
+    }
+  },
+  "chart": {
+    "series": {
+      "1": {
+        "$type": "color",
+        "$value": "{color.sage.300}",
+        "$description": "Primary chart series (light accent on dark)."
+      },
+      "2": {
+        "$type": "color",
+        "$value": "{color.teal.300}"
+      },
+      "3": {
+        "$type": "color",
+        "$value": "{color.olive.500}"
+      },
+      "4": {
+        "$type": "color",
+        "$value": "{color.ivory.300}"
+      }
+    }
+  }
+}

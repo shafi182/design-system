@@ -399,5 +399,5 @@ if __name__ == "__main__":
     out = ROOT / "examples" / f"atlas-{A.PALETTE}.pptx"
     A.render_pptx(out)
     html = ROOT / "examples" / f"preview-atlas-{A.PALETTE}.html"
-    A.render_html(html)
+    A.render_html(html, palette=A.PALETTE)
     print("wrote", out.name, "+", html.name, len(A.SLIDES), "slides")
